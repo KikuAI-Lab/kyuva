@@ -133,7 +133,8 @@ class VoiceSyncEngine: ObservableObject {
         // Anti-jitter: don't sync too frequently
         guard Date().timeIntervalSince(lastSyncTime) >= minSyncInterval else { return }
         
-        let currentLine = scrollController.currentLineIndex
+        let lineHeight: CGFloat = 28
+        let currentLine = Int(scrollController.scrollOffset / lineHeight)
         let searchStart = max(0, currentLine - 1)
         let searchEnd = min(tokens.count, currentLine + 20)
         
@@ -167,7 +168,8 @@ class VoiceSyncEngine: ObservableObject {
             let jump = bestMatchLine - currentLine
             if jump > 0 && jump <= maxLinesJump {
                 confidence = bestMatchScore
-                scrollController.syncToLine(bestMatchLine, confidence: bestMatchScore)
+                let lineHeight: CGFloat = 28
+                scrollController.goToOffset(CGFloat(bestMatchLine) * lineHeight)
                 lastSyncTime = Date()
             }
         }

@@ -1,43 +1,74 @@
 import Foundation
 import Combine
 
-/// Controls scroll position and animation
+/// Controls smooth continuous scroll with pixel-perfect animation
 class ScrollController: ObservableObject {
     
-    @Published var currentLineIndex: Int = 0
-    @Published var isPaused: Bool = false
-    @Published var scrollSpeed: Double = 50 // pixels per second
+    /// Current scroll offset in pixels (animated smoothly)
+    @Published var scrollOffset: CGFloat = 0
     
-    private var timer: Timer?
-    private var accumulatedTime: Double = 0
-    private let linesPerScroll = 1
+    @Published var isPaused: Bool = true // Start paused
+    @Published var scrollSpeed: Double = 30 // pixels per second
+    
+    /// Highlighted line index (for flash animation on click)
+    @Published var highlightedLine: Int? = nil
+    
+    /// Total content height (set by view)
+    var contentHeight: CGFloat = 1000
+    
+    /// Visible height (set by view)
+    var visibleHeight: CGFloat = 150
+    
+    /// Line height for calculations
+    let lineHeight: CGFloat = 28
+    
+    private var displayLink: Timer?
+    private var lastUpdateTime: Date = Date()
+    private var autoResumeWorkItem: DispatchWorkItem?
     
     init() {
-        startAutoScroll()
+        startDisplayLink()
     }
     
     deinit {
-        timer?.invalidate()
+        displayLink?.invalidate()
+        autoResumeWorkItem?.cancel()
     }
     
-    // MARK: - Auto Scroll
+    // MARK: - Display Link (60fps)
     
-    func startAutoScroll() {
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+    private func startDisplayLink() {
+        displayLink?.invalidate()
+        lastUpdateTime = Date()
+        
+        displayLink = Timer.scheduledTimer(withTimeInterval: 1.0/60.0, repeats: true) { [weak self] _ in
             self?.tick()
         }
+        RunLoop.current.add(displayLink!, forMode: .common)
     }
     
     private func tick() {
-        guard !isPaused else { return }
+        guard !isPaused else {
+            lastUpdateTime = Date()
+            return
+        }
         
-        accumulatedTime += 0.1
-        let secondsPerLine = 100 / scrollSpeed
+        let now = Date()
+        let dt = now.timeIntervalSince(lastUpdateTime)
+        lastUpdateTime = now
         
-        if accumulatedTime >= secondsPerLine {
-            accumulatedTime = 0
-            advance(by: linesPerScroll)
+        // Smooth increment
+        let increment = CGFloat(scrollSpeed) * CGFloat(dt)
+        scrollOffset += increment
+        
+        // Clamp to content bounds
+        let maxOffset = max(0, contentHeight - visibleHeight)
+        if scrollOffset > maxOffset {
+            scrollOffset = maxOffset
+            isPaused = true // Auto-pause at end
+        }
+        if scrollOffset < 0 {
+            scrollOffset = 0
         }
     }
     
@@ -45,43 +76,77 @@ class ScrollController: ObservableObject {
     
     func pause() {
         isPaused = true
+        autoResumeWorkItem?.cancel()
     }
     
     func resume() {
         isPaused = false
+        lastUpdateTime = Date()
     }
     
     func togglePause() {
-        isPaused.toggle()
+        if isPaused {
+            resume()
+        } else {
+            pause()
+        }
     }
     
     func reset() {
-        currentLineIndex = 0
-        accumulatedTime = 0
+        scrollOffset = 0
+        isPaused = true
+        highlightedLine = nil
+        autoResumeWorkItem?.cancel()
     }
     
     func adjustSpeed(delta: Double) {
-        scrollSpeed = max(10, min(200, scrollSpeed + delta))
+        scrollSpeed = max(5, min(150, scrollSpeed + delta))
     }
     
-    func advance(by lines: Int) {
-        currentLineIndex += lines
-    }
-    
-    func goTo(line: Int) {
-        currentLineIndex = max(0, line)
-    }
-    
-    // MARK: - Voice Sync
-    
-    /// Called by VoiceSyncEngine when speech matches a line
-    func syncToLine(_ lineIndex: Int, confidence: Double) {
-        // Anti-jitter: only move forward, max 2 lines jump
-        guard lineIndex > currentLineIndex else { return }
-        guard lineIndex - currentLineIndex <= 3 else { return }
-        guard confidence > 0.6 else { return }
+    /// Jump to line with flash highlight and auto-resume after delay
+    func jumpToLine(_ lineIndex: Int, autoResumeAfter: TimeInterval = 1.0) {
+        let wasPlaying = !isPaused
         
-        currentLineIndex = lineIndex
-        accumulatedTime = 0
+        // Jump to the line
+        scrollOffset = max(0, CGFloat(lineIndex) * lineHeight)
+        lastUpdateTime = Date()
+        
+        // Flash highlight
+        highlightedLine = lineIndex
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.highlightedLine = nil
+        }
+        
+        // If was playing, pause briefly then auto-resume
+        if wasPlaying {
+            isPaused = true
+            
+            autoResumeWorkItem?.cancel()
+            let workItem = DispatchWorkItem { [weak self] in
+                self?.resume()
+            }
+            autoResumeWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + autoResumeAfter, execute: workItem)
+        }
+    }
+    
+    /// Scroll by delta (for mouse wheel)
+    func scrollByDelta(_ delta: CGFloat) {
+        scrollOffset = max(0, scrollOffset - delta)
+        
+        // Clamp
+        let maxOffset = max(0, contentHeight - visibleHeight)
+        scrollOffset = min(scrollOffset, maxOffset)
+    }
+    
+    /// Jump to specific pixel offset (legacy)
+    func goToOffset(_ offset: CGFloat) {
+        scrollOffset = max(0, offset)
+        lastUpdateTime = Date()
+    }
+    
+    /// Current line index based on offset
+    var currentLineIndex: Int {
+        Int(scrollOffset / lineHeight)
     }
 }

@@ -7,6 +7,17 @@ struct ProUpgradeView: View {
     
     var body: some View {
         VStack(spacing: 24) {
+            // Close button
+            HStack {
+                Spacer()
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
+            
             // Header
             VStack(spacing: 8) {
                 Image(systemName: "star.fill")
@@ -64,13 +75,26 @@ struct ProUpgradeView: View {
                     }
                     .disabled(store.purchaseState == .purchasing)
                 } else {
-                    ProgressView("Loading...")
+                    // No products loaded - show message instead of infinite loader
+                    Text("App Store not connected")
+                        .foregroundColor(.secondary)
+                    Text("Pro features will be available after App Store release")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
                 }
                 
                 Button("Restore Purchases") {
                     Task {
                         await store.restorePurchases()
                     }
+                }
+                .font(.caption)
+                .foregroundColor(.secondary)
+                
+                // Not now button
+                Button("Not now") {
+                    dismiss()
                 }
                 .font(.caption)
                 .foregroundColor(.secondary)
@@ -84,7 +108,7 @@ struct ProUpgradeView: View {
             }
         }
         .padding(24)
-        .frame(width: 320, height: 480)
+        .frame(width: 320, height: 520)
         .onChange(of: store.isPro) { newValue in
             if newValue {
                 dismiss()
