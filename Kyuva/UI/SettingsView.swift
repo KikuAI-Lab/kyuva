@@ -7,6 +7,9 @@ struct SettingsView: View {
     @AppStorage("scrollMode") private var scrollMode: ScrollMode = .auto
     
     @StateObject private var scriptManager = ScriptManager.shared
+    @StateObject private var store = StoreManager.shared
+    
+    @State private var showProUpgrade = false
     
     var body: some View {
         TabView {
@@ -33,9 +36,18 @@ struct SettingsView: View {
                 .tabItem {
                     Label("Hotkeys", systemImage: "keyboard")
                 }
+            
+            // Pro Tab
+            proTab
+                .tabItem {
+                    Label(store.isPro ? "Pro ✓" : "Pro", systemImage: "star.fill")
+                }
         }
         .padding()
         .frame(minWidth: 500, minHeight: 400)
+        .sheet(isPresented: $showProUpgrade) {
+            ProUpgradeView()
+        }
     }
     
     // MARK: - Script Tab
@@ -166,6 +178,74 @@ struct SettingsView: View {
             }
         }
         .padding()
+    }
+    
+    // MARK: - Pro Tab
+    
+    private var proTab: some View {
+        VStack(spacing: 20) {
+            if store.isPro {
+                // Pro activated
+                VStack(spacing: 12) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 48))
+                        .foregroundColor(.green)
+                    Text("Pro Activated")
+                        .font(.title2.bold())
+                    Text("Thank you for your support!")
+                        .foregroundColor(.secondary)
+                }
+            } else {
+                // Free user
+                VStack(spacing: 12) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 48))
+                        .foregroundColor(.yellow)
+                    Text("Upgrade to Pro")
+                        .font(.title2.bold())
+                    Text("Unlock all features")
+                        .foregroundColor(.secondary)
+                }
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    ProFeatureRow(text: "Voice-Follow Scrolling", locked: true)
+                    ProFeatureRow(text: "Unlimited Scripts (Free: 3)", locked: true)
+                    ProFeatureRow(text: "Custom Hotkeys", locked: true)
+                }
+                .padding()
+                .background(Color.secondary.opacity(0.1))
+                .cornerRadius(8)
+                
+                Button("Upgrade to Pro") {
+                    showProUpgrade = true
+                }
+                .buttonStyle(.borderedProminent)
+            }
+            
+            Spacer()
+            
+            Button("Restore Purchases") {
+                Task {
+                    await store.restorePurchases()
+                }
+            }
+            .font(.caption)
+        }
+        .padding()
+    }
+}
+
+struct ProFeatureRow: View {
+    let text: String
+    let locked: Bool
+    
+    var body: some View {
+        HStack {
+            Image(systemName: locked ? "lock.fill" : "checkmark")
+                .foregroundColor(locked ? .orange : .green)
+            Text(text)
+            Spacer()
+        }
     }
 }
 
