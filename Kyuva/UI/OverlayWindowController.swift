@@ -223,6 +223,10 @@ class OverlayWindowController: NSWindowController {
         hotkeyManager?.register(.toggleOverlay) { [weak self] in
             self?.toggleVisibility()
         }
+
+        hotkeyManager?.register(.nextDisplay) { [weak self] in
+            self?.moveToNextDisplay()
+        }
     }
 
     func showOverlay() {
@@ -244,6 +248,18 @@ class OverlayWindowController: NSWindowController {
         } else {
             showOverlay()
         }
+    }
+
+    func moveToNextDisplay() {
+        let screens = NSScreen.screens
+        guard let window, screens.count > 1 else { return }
+
+        let currentIndex = window.screen.flatMap { currentScreen in
+            screens.firstIndex { $0 === currentScreen }
+        } ?? 0
+        let nextScreen = screens[(currentIndex + 1) % screens.count]
+
+        MacOSWindowManager().moveToScreen(window, screen: nextScreen)
     }
     
     private var wasPlayingBeforeHover = false

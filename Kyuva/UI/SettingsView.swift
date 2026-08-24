@@ -366,6 +366,7 @@ struct SettingsView: View {
                 FixedHotkeyRow(label: "Pause/Resume", shortcut: HotkeyManager.Hotkey.togglePause.shortcut.display)
                 FixedHotkeyRow(label: "Reset", shortcut: HotkeyManager.Hotkey.reset.shortcut.display)
                 FixedHotkeyRow(label: "Toggle Overlay", shortcut: HotkeyManager.Hotkey.toggleOverlay.shortcut.display)
+                FixedHotkeyRow(label: "Move to Next Display", shortcut: HotkeyManager.Hotkey.nextDisplay.shortcut.display)
             }
         }
         .padding()

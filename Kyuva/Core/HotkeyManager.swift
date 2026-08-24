@@ -12,6 +12,7 @@ final class HotkeyManager {
         case togglePause
         case reset
         case toggleOverlay
+        case nextDisplay
 
         var shortcut: Shortcut {
             switch self {
@@ -25,6 +26,8 @@ final class HotkeyManager {
                 return Shortcut(keyCode: UInt32(kVK_ANSI_R), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥R")
             case .toggleOverlay:
                 return Shortcut(keyCode: UInt32(kVK_ANSI_T), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥T")
+            case .nextDisplay:
+                return Shortcut(keyCode: UInt32(kVK_ANSI_D), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥D")
             }
         }
     }

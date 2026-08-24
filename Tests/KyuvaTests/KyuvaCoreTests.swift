@@ -234,5 +234,6 @@ final class HotkeyDefinitionTests: XCTestCase {
 
         XCTAssertEqual(Set(systemDefinitions).count, shortcuts.count)
         XCTAssertEqual(HotkeyManager.Hotkey.togglePause.shortcut.display, "⌃⌥Space")
+        XCTAssertEqual(HotkeyManager.Hotkey.nextDisplay.shortcut.display, "⌃⌥D")
     }
 }

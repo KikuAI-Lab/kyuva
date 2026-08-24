@@ -27,6 +27,7 @@ The binary attached to the historical `v1.0.0` GitHub release is a development b
 ## Feature Snapshot
 
 - Camera-side overlay with adjustable size and appearance
+- Menu command and `⌃⌥D` shortcut for cycling the overlay across connected displays
 - Fixed-speed, words-per-minute, and target-duration scrolling
 - Centered reading cue with progress and remaining-time feedback
 - Bracketed stage-direction controls plus text-only mirroring for beam-splitter rigs

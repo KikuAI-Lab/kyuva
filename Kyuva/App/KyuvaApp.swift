@@ -8,5 +8,12 @@ struct KyuvaApp: App {
         Settings {
             SettingsView()
         }
+        .commands {
+            CommandMenu("Teleprompter") {
+                Button("Move to Next Display") {
+                    appDelegate.moveOverlayToNextDisplay()
+                }
+            }
+        }
     }
 }

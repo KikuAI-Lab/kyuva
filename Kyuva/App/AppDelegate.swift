@@ -44,6 +44,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         let menu = NSMenu()
         menu.addItem(NSMenuItem(title: "Show Teleprompter", action: #selector(showOverlay), keyEquivalent: "t"))
         menu.addItem(NSMenuItem(title: "Hide Teleprompter", action: #selector(hideOverlay), keyEquivalent: "h"))
+        let nextDisplayItem = NSMenuItem(
+            title: "Move to Next Display",
+            action: #selector(moveOverlayToNextDisplay),
+            keyEquivalent: ""
+        )
+        menu.addItem(nextDisplayItem)
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Settings...", action: #selector(openSettings), keyEquivalent: ","))
         menu.addItem(NSMenuItem(title: "Welcome Tour...", action: #selector(showOnboardingManual), keyEquivalent: ""))
@@ -107,6 +113,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     @objc private func hideOverlay() {
         overlayWindowController?.hideOverlay()
+    }
+
+    @objc func moveOverlayToNextDisplay() {
+        overlayWindowController?.moveToNextDisplay()
     }
     
     @objc private func openSettings() {
