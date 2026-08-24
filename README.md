@@ -22,6 +22,8 @@ The overlay is a normal macOS window and may appear in screen shares or recordin
 
 ## Release Status
 
+Kyuva is preparing a free first Mac App Store release for the 27 European Union storefronts. The first release has no purchases, subscriptions, advertising, account, analytics, or required backend. App Store availability is not claimed until the signed build, listing, and storefront state are verified.
+
 The binary attached to the historical `v1.0.0` GitHub release is a development build, not a verified App Store distribution artifact. Build the current source until a signed and verified replacement is published.
 
 ## Feature Snapshot
@@ -66,6 +68,10 @@ Kyuva keeps its core behavior local:
 - no analytics or tracking are built in
 
 More detail is available in [PRIVACY.md](PRIVACY.md).
+
+## Support
+
+See [SUPPORT.md](SUPPORT.md) for troubleshooting and the privacy-safe issue-reporting path.
 
 ## Follow the work
 
