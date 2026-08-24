@@ -136,6 +136,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         false
     }
 
+    func applicationWillTerminate(_ notification: Notification) {
+        ScriptManager.shared.flushPendingSave()
+    }
+
     func windowWillClose(_ notification: Notification) {
         guard let closingWindow = notification.object as? NSWindow else { return }
 

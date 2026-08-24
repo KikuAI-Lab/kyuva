@@ -106,6 +106,31 @@ final class LocalStoreTests: XCTestCase {
     }
 }
 
+final class ScriptManagerPersistenceTests: XCTestCase {
+    func testFlushPendingSavePersistsTheLatestDebouncedEdit() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("KyuvaManagerTests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let store = LocalStore(
+            directoryURL: directory,
+            saveQueue: DispatchQueue(label: "com.kyuva.tests.manager-store")
+        )
+        let manager = ScriptManager(storage: store)
+        let scriptId = try XCTUnwrap(manager.selectedScriptId)
+
+        manager.updateScriptName(scriptId, name: "Final name")
+        manager.updateScriptContent(scriptId, content: "The final unslept edit")
+        manager.flushPendingSave()
+
+        let reloaded = LocalStore(directoryURL: directory).loadScripts()
+        XCTAssertEqual(reloaded.count, 1)
+        XCTAssertEqual(reloaded.first?.name, "Final name")
+        XCTAssertEqual(reloaded.first?.content, "The final unslept edit")
+    }
+}
+
 final class ScrollControllerTests: XCTestCase {
     func testSavedScrollSpeedAppliesAtStartupAndWhenDefaultsChange() {
         let suiteName = "KyuvaTests.ScrollController.\(UUID().uuidString)"

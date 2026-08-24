@@ -93,14 +93,24 @@ class ScriptManager: ObservableObject {
     /// Call from UI to trigger debounced save
     func debounceSaveFromUI() {
         saveWorkItem?.cancel()
-        saveWorkItem = DispatchWorkItem { [weak self] in
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.saveWorkItem = nil
             self?.saveScripts()
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: saveWorkItem!)
+        saveWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: workItem)
     }
     
     private func debouncedSave() {
         debounceSaveFromUI()
+    }
+
+    /// Persist the latest in-memory scripts before the process exits.
+    func flushPendingSave() {
+        saveWorkItem?.cancel()
+        saveWorkItem = nil
+        saveScripts()
+        storage.waitForPendingWrites()
     }
     
     func selectNextScript() {
