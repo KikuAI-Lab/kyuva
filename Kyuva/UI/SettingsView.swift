@@ -445,7 +445,7 @@ struct SettingsView: View {
             
             Spacer()
             
-            Text("© 2026 KikuAI. All rights reserved.")
+            Text(copyrightText)
                 .font(.caption2)
                 .foregroundColor(.secondary)
         }
@@ -459,6 +459,10 @@ struct SettingsView: View {
             return "Version \(version) (\(build))"
         }
         return "Version \(version)"
+    }
+
+    private var copyrightText: String {
+        Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? ""
     }
 }
 

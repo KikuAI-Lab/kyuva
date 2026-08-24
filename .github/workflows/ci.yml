@@ -43,6 +43,11 @@ jobs:
           test -f "$KYUVA_PRIVACY_MANIFEST"
           plutil -lint "$KYUVA_PRIVACY_MANIFEST"
           lipo "$KYUVA_APP/Contents/MacOS/Kyuva" -verify_arch "${{ matrix.arch }}"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$KYUVA_APP/Contents/Info.plist")" = "com.kikuai.kyuva"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$KYUVA_APP/Contents/Info.plist")" = "1.0"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_APP/Contents/Info.plist")" = "1"
           test "$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$KYUVA_APP/Contents/Info.plist")" = "13.0"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' "$KYUVA_APP/Contents/Info.plist")" = "false"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :NSHumanReadableCopyright' "$KYUVA_APP/Contents/Info.plist")" = "© 2026 Mykyta Dudnichenko. All rights reserved."
           ! /usr/libexec/PlistBuddy -c 'Print :NSMicrophoneUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :NSSpeechRecognitionUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1

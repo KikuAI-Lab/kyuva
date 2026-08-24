@@ -5,7 +5,7 @@
 
 ## Overview
 
-Kyuva ("the App") is a macOS teleprompter project developed by KikuAI. Its source is public. This policy explains how the application handles data.
+Kyuva ("the App") is a macOS teleprompter published by Mykyta Dudnichenko. Its source is public. This policy explains how the application handles data.
 
 ## Data Collection
 
