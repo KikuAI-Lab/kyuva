@@ -5,7 +5,7 @@
 <h1 align="center">Kyuva</h1>
 
 <p align="center">
-  <strong>macOS teleprompter experiment with a camera-side overlay</strong>
+  <strong>Local-first macOS teleprompter with a camera-side overlay</strong>
 </p>
 
 <p align="center">
@@ -27,9 +27,11 @@ The binary attached to the historical `v1.0.0` GitHub release is a development b
 ## Feature Snapshot
 
 - Camera-side overlay with adjustable size and appearance
-- Smooth auto-scrolling plus manual wheel/trackpad control
-- Permission-free global shortcuts for play/pause, speed, reset, and visibility
-- Local script storage with import and export support
+- Fixed-speed, words-per-minute, and target-duration scrolling
+- Centered reading cue with progress and remaining-time feedback
+- Bracketed stage-direction controls plus text-only mirroring for beam-splitter rigs
+- Manual wheel/trackpad control and global shortcuts that do not request Accessibility permission
+- Recoverable local script storage with import and export support
 - No account, no analytics, and no required network service
 
 ## Build From Source
