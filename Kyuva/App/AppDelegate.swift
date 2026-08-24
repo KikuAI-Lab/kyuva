@@ -1,19 +1,20 @@
 import AppKit
 import SwiftUI
 
-class AppDelegate: NSObject, NSApplicationDelegate {
+class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     private var statusItem: NSStatusItem?
     private var overlayWindowController: OverlayWindowController?
     private var settingsWindow: NSWindow?
     private var onboardingWindow: NSWindow?
+    private var shouldShowOverlayAfterOnboarding = true
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         let completed = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
         print("[Kyuva] Starting up, hasCompletedOnboarding: \(completed)")
         
         setupStatusBarItem()
-        setupOverlayWindow()
+        setupOverlayWindow(isVisible: completed)
         
         // Listen for onboarding triggers from UI
         NotificationCenter.default.addObserver(
@@ -23,16 +24,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             object: nil
         )
         
-        // Show onboarding on first launch (BEFORE hiding dock icon)
+        // Kyuva remains a menu-bar agent throughout onboarding; the welcome
+        // window can become key without adding a temporary Dock icon.
         if !completed {
             print("[Kyuva] Showing onboarding...")
-            // Keep dock icon visible during onboarding
-            NSApp.setActivationPolicy(.regular)
-            showOnboarding()
+            showOnboarding(showOverlayOnClose: true)
         } else {
             print("[Kyuva] Skipping onboarding, already completed")
-            // Hide dock icon (menu bar app) - only after onboarding completed
-            NSApp.setActivationPolicy(.accessory)
         }
     }
     
@@ -55,21 +53,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         statusItem?.menu = menu
     }
     
-    private func setupOverlayWindow() {
+    private func setupOverlayWindow(isVisible: Bool) {
         overlayWindowController = OverlayWindowController()
-        overlayWindowController?.showWindow(nil)
+        if isVisible {
+            overlayWindowController?.showOverlay()
+        } else {
+            overlayWindowController?.hideOverlay()
+        }
     }
     
-    private func showOnboarding() {
-        // Create binding for onboarding state
-        @State var isPresented = true
+    private func showOnboarding(showOverlayOnClose: Bool) {
+        if let onboardingWindow {
+            onboardingWindow.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+
+        shouldShowOverlayAfterOnboarding = showOverlayOnClose
         
         let onboardingView = OnboardingHostView(
             onDismiss: { [weak self] in
                 self?.onboardingWindow?.close()
-                self?.onboardingWindow = nil
-                // Hide dock icon after onboarding completes
-                NSApp.setActivationPolicy(.accessory)
             }
         )
         
@@ -79,8 +83,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             backing: .buffered,
             defer: false
         )
+        onboardingWindow?.isReleasedWhenClosed = false
         onboardingWindow?.title = "Welcome to Kyuva"
         onboardingWindow?.contentView = NSHostingView(rootView: onboardingView)
+        onboardingWindow?.delegate = self
         onboardingWindow?.center()
         // Make sure it appears above everything
         onboardingWindow?.level = .floating
@@ -90,15 +96,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     @objc private func showOnboardingManual() {
-        showOnboarding()
+        showOnboarding(
+            showOverlayOnClose: overlayWindowController?.isOverlayVisible ?? false
+        )
     }
     
     @objc private func showOverlay() {
-        overlayWindowController?.showWindow(nil)
+        overlayWindowController?.showOverlay()
     }
     
     @objc private func hideOverlay() {
-        overlayWindowController?.close()
+        overlayWindowController?.hideOverlay()
     }
     
     @objc private func openSettings() {
@@ -110,8 +118,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
                 backing: .buffered,
                 defer: false
             )
+            settingsWindow?.isReleasedWhenClosed = false
             settingsWindow?.title = "Kyuva Settings"
             settingsWindow?.contentView = NSHostingView(rootView: settingsView)
+            settingsWindow?.delegate = self
             settingsWindow?.center()
         }
         settingsWindow?.makeKeyAndOrderFront(nil)
@@ -120,6 +130,32 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     @objc private func quitApp() {
         NSApplication.shared.terminate(nil)
+    }
+
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        false
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        guard let closingWindow = notification.object as? NSWindow else { return }
+
+        if closingWindow === onboardingWindow {
+            let shouldShowOverlay = shouldShowOverlayAfterOnboarding
+
+            // Defer overlay restoration until AppKit finishes the close event.
+            DispatchQueue.main.async { [weak self] in
+                self?.onboardingWindow = nil
+                if shouldShowOverlay {
+                    self?.overlayWindowController?.showOverlay()
+                } else {
+                    self?.overlayWindowController?.hideOverlay()
+                }
+            }
+        } else if closingWindow === settingsWindow {
+            DispatchQueue.main.async { [weak self] in
+                self?.settingsWindow = nil
+            }
+        }
     }
 }
 

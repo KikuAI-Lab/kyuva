@@ -21,3 +21,9 @@ jobs:
           xcodebuild -project Kyuva.xcodeproj -scheme Kyuva -configuration Debug
           -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
           -derivedDataPath "$RUNNER_TEMP/KyuvaDerivedData" build
+
+      - name: Validate bundled privacy manifest
+        run: |
+          KYUVA_PRIVACY_MANIFEST="$RUNNER_TEMP/KyuvaDerivedData/Build/Products/Debug/Kyuva.app/Contents/Resources/PrivacyInfo.xcprivacy"
+          test -f "$KYUVA_PRIVACY_MANIFEST"
+          plutil -lint "$KYUVA_PRIVACY_MANIFEST"

@@ -241,13 +241,25 @@ class OverlayWindowController: NSWindowController {
             self?.toggleVisibility()
         }
     }
+
+    func showOverlay() {
+        window?.makeKeyAndOrderFront(nil)
+    }
+
+    func hideOverlay() {
+        window?.orderOut(nil)
+    }
+
+    var isOverlayVisible: Bool {
+        window?.isVisible ?? false
+    }
     
     func toggleVisibility() {
         guard let window = window else { return }
         if window.isVisible {
-            window.orderOut(nil)
+            hideOverlay()
         } else {
-            window.makeKeyAndOrderFront(nil)
+            showOverlay()
         }
     }
     

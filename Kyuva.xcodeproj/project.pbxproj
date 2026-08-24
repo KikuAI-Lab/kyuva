@@ -18,6 +18,7 @@
 		012 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112 /* WindowManager.swift */; };
 		015 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122 /* OnboardingView.swift */; };
 		017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 115 /* Assets.xcassets */; };
+		018 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		114 /* Kyuva.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kyuva.entitlements; sourceTree = "<group>"; };
 		115 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		122 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		123 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -110,6 +112,7 @@
 				115 /* Assets.xcassets */,
 				113 /* Info.plist */,
 				114 /* Kyuva.entitlements */,
+				123 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -211,6 +214,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				017 /* Assets.xcassets in Resources */,
+				018 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
