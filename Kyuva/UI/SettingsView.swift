@@ -10,6 +10,13 @@ struct SettingsView: View {
     @AppStorage("overlayHeight") private var overlayHeight: Double = 150
     @AppStorage("textAlignment") private var textAlignment: Int = 1 // 0=Left, 1=Center, 2=Right
     @AppStorage("fontFamily") private var fontFamily: Int = 0 // 0=System, 1=Mono, 2=Serif, 3=Rounded
+    @AppStorage("mirrorText") private var mirrorText = false
+    @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
+
+    // Pace
+    @AppStorage(ScrollController.paceModeDefaultsKey) private var scrollPaceMode = ScrollPaceMode.fixedSpeed.rawValue
+    @AppStorage(ScrollController.wordsPerMinuteDefaultsKey) private var wordsPerMinute: Double = 150
+    @AppStorage(ScrollController.targetDurationDefaultsKey) private var targetDurationSeconds: Double = 300
     
     // Focus Mode
     @AppStorage("focusModeIntensity") private var focusModeIntensity: Int = 0 // 0=Off, 1=Subtle, 2=Medium, 3=Strong
@@ -105,7 +112,7 @@ struct SettingsView: View {
                     HStack {
                         Text(script.name)
                         Spacer()
-                        Text("\(script.content.split(separator: " ").count) words")
+                        Text("\(script.wordCount(excludingStageDirections: false)) words")
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
@@ -136,8 +143,8 @@ struct SettingsView: View {
                 
                 // Stats bar
                 HStack(spacing: 16) {
-                    let wordCount = scriptManager.scripts[index].content.split(separator: " ").count
-                    let readingTime = max(1, wordCount / 150)
+                    let wordCount = scriptManager.scripts[index].wordCount(excludingStageDirections: false)
+                    let readingTime = max(1, Int(ceil(Double(wordCount) / 150)))
                     
                     Label("\(wordCount) words", systemImage: "text.word.spacing")
                         .font(.caption)
@@ -236,6 +243,20 @@ struct SettingsView: View {
                     Text("Right").tag(2)
                 }
                 .pickerStyle(.segmented)
+
+                Toggle("Mirror text horizontally", isOn: $mirrorText)
+                    .help("Use with a physical beam-splitter teleprompter mirror.")
+
+                Picker("Bracketed Directions", selection: $stageDirectionStyle) {
+                    Text("Show").tag(0)
+                    Text("Dim").tag(1)
+                    Text("Hide").tag(2)
+                }
+                .pickerStyle(.segmented)
+
+                Text("Applies to complete lines wrapped in [square] or (round) brackets.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
             
             Section("Focus Mode") {
@@ -259,14 +280,48 @@ struct SettingsView: View {
     
     private var scrollTab: some View {
         Form {
-            Section("Speed") {
-                Slider(
-                    value: $scrollSpeed,
-                    in: ScrollController.minimumSpeed...ScrollController.maximumSpeed
-                ) {
-                    Text("Scroll Speed")
+            Section("Pace") {
+                Picker("Mode", selection: $scrollPaceMode) {
+                    ForEach(ScrollPaceMode.allCases) { mode in
+                        Text(mode.title).tag(mode.rawValue)
+                    }
                 }
-                Text("\(Int(scrollSpeed)) px/sec")
+                .pickerStyle(.segmented)
+
+                switch ScrollPaceMode(rawValue: scrollPaceMode) ?? .fixedSpeed {
+                case .fixedSpeed:
+                    Slider(
+                        value: $scrollSpeed,
+                        in: ScrollController.minimumSpeed...ScrollController.maximumSpeed
+                    ) {
+                        Text("Scroll Speed")
+                    }
+                    Text("\(Int(scrollSpeed)) px/sec")
+                        .foregroundColor(.secondary)
+                case .wordsPerMinute:
+                    Slider(
+                        value: $wordsPerMinute,
+                        in: ScrollController.minimumWordsPerMinute...ScrollController.maximumWordsPerMinute,
+                        step: 5
+                    ) {
+                        Text("Reading Pace")
+                    }
+                    Text("\(Int(wordsPerMinute)) words per minute")
+                        .foregroundColor(.secondary)
+                case .targetDuration:
+                    Slider(
+                        value: $targetDurationSeconds,
+                        in: ScrollController.minimumTargetDuration...ScrollController.maximumTargetDuration,
+                        step: 30
+                    ) {
+                        Text("Target Duration")
+                    }
+                    Text(durationText(targetDurationSeconds))
+                        .foregroundColor(.secondary)
+                }
+
+                Text("WPM and Duration use the measured script height, so the selected script reaches the end at the requested pace.")
+                    .font(.caption)
                     .foregroundColor(.secondary)
             }
             
@@ -283,6 +338,18 @@ struct SettingsView: View {
             }
         }
         .padding()
+    }
+
+    private func durationText(_ duration: TimeInterval) -> String {
+        let totalSeconds = Int(duration.rounded())
+        if totalSeconds >= 3_600 {
+            return String(
+                format: "%d hr %02d min",
+                totalSeconds / 3_600,
+                (totalSeconds % 3_600) / 60
+            )
+        }
+        return String(format: "%d min %02d sec", totalSeconds / 60, totalSeconds % 60)
     }
     
     // MARK: - Hotkeys Tab

@@ -200,33 +200,16 @@ class OverlayWindowController: NSWindowController {
         window.setFrameOrigin(newOrigin)
     }
     
-    /// Move overlay to built-in MacBook screen (if available)
-    func moveToBuiltInScreen() {
-        // Find the built-in screen (usually the MacBook display)
-        let builtInScreen = NSScreen.screens.first { screen in
-            // Built-in displays typically have localizedName containing "Built-in"
-            screen.localizedName.contains("Built-in") || screen.localizedName.contains("MacBook")
-        } ?? NSScreen.main ?? NSScreen.screens.first!
-        
-        let screenFrame = builtInScreen.frame
-        let width: CGFloat = 400
-        let height: CGFloat = 150
-        let x = screenFrame.midX - width / 2
-        let y = screenFrame.maxY - height - 30
-        
-        window?.setFrame(NSRect(x: x, y: y, width: width, height: height), display: true, animate: true)
-    }
-    
     private func setupManagers() {
         hotkeyManager = HotkeyManager()
         
         // Register global hotkeys
         hotkeyManager?.register(.speedUp) { [weak self] in
-            self?.scrollController?.adjustSpeed(delta: 10)
+            self?.scrollController?.adjustPace(steps: 2)
         }
         
         hotkeyManager?.register(.speedDown) { [weak self] in
-            self?.scrollController?.adjustSpeed(delta: -10)
+            self?.scrollController?.adjustPace(steps: -2)
         }
         
         hotkeyManager?.register(.togglePause) { [weak self] in
@@ -319,11 +302,27 @@ struct OverlayContentView: View {
     @AppStorage("focusModeIntensity") private var focusModeIntensity: Int = 0
     @AppStorage("textAlignment") private var textAlignment: Int = 1
     @AppStorage("fontFamily") private var fontFamily: Int = 0
+    @AppStorage("mirrorText") private var mirrorText = false
+    @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
     
     @State private var showControls = false
-    @State private var contentHeight: CGFloat = 0
-    
-    private let lineHeight: CGFloat = 28
+
+    private var lineHeight: CGFloat {
+        max(28, CGFloat(fontSize) * 1.2 + 8)
+    }
+
+    private var displayedLines: [PromptLine] {
+        if stageDirectionStyle == 2 {
+            return scriptManager.promptLines.filter { !$0.isStageDirection }
+        }
+        return scriptManager.promptLines
+    }
+
+    private var pacedWordCount: Int {
+        scriptManager.selectedScript?.wordCount(
+            excludingStageDirections: stageDirectionStyle != 0
+        ) ?? 0
+    }
     
     // Convert text alignment setting to SwiftUI alignment
     private var alignment: Alignment {
@@ -376,14 +375,17 @@ struct OverlayContentView: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                // Control bar with drag handle (shows on hover)
-                if showControls {
-                    controlBar
-                }
-                
-                // Main content
+        VStack(spacing: 0) {
+            // Control bar with drag handle (shows on hover)
+            if showControls {
+                controlBar
+            }
+
+            // Measure only the prompt viewport. The control bar changes the
+            // available height, and pace calculations must use that real area.
+            GeometryReader { geometry in
+                let readingEdgePadding = max(0, geometry.size.height / 2 - lineHeight / 2)
+
                 ZStack {
                     // Background
                     UnevenRoundedRectangle(
@@ -396,34 +398,49 @@ struct OverlayContentView: View {
                     
                     // Fixed-position container for the scrolling content
                     // This allows the mask to stay centered in the window
-                    ZStack {
-                        VStack(alignment: alignment == .leading ? .leading : (alignment == .trailing ? .trailing : .center), spacing: 8) {
-                            ForEach(Array(scriptManager.lines.enumerated()), id: \.offset) { index, line in
-                                Text(line)
-                                    .font(.system(size: fontSize, weight: .semibold, design: fontDesign))
-                                    .foregroundColor(.white)
-                                    .shadow(color: .black, radius: 1, x: 0, y: 1)
-                                    .frame(maxWidth: .infinity, alignment: alignment)
-                                    .lineLimit(nil)
-                                    .fixedSize(horizontal: false, vertical: true)
-                                    .padding(.vertical, 4)
-                                    .padding(.horizontal, 4)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 6)
-                                            .fill(scrollController.highlightedLine == index 
-                                                  ? Color.yellow.opacity(0.4) 
-                                                  : Color.clear)
-                                    )
-                                    .contentShape(Rectangle())
-                                    .onTapGesture {
-                                        scrollController.jumpToLine(index, autoResumeAfter: 1.0)
-                                    }
+                    ZStack(alignment: .top) {
+                        VStack(spacing: 0) {
+                            Color.clear
+                                .frame(height: readingEdgePadding)
+
+                            VStack(alignment: alignment == .leading ? .leading : (alignment == .trailing ? .trailing : .center), spacing: 8) {
+                                ForEach(Array(displayedLines.enumerated()), id: \.element.id) { displayIndex, promptLine in
+                                    Text(promptLine.text)
+                                        .font(.system(size: fontSize, weight: .semibold, design: fontDesign))
+                                        .foregroundColor(
+                                            .white.opacity(
+                                                promptLine.isStageDirection && stageDirectionStyle == 1 ? 0.5 : 1
+                                            )
+                                        )
+                                        .shadow(color: .black, radius: 1, x: 0, y: 1)
+                                        .frame(maxWidth: .infinity, alignment: alignment)
+                                        .lineLimit(nil)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                        .padding(.vertical, 4)
+                                        .padding(.horizontal, 4)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 6)
+                                                .fill(scrollController.highlightedLine == promptLine.sourceIndex
+                                                      ? Color.yellow.opacity(0.4)
+                                                      : Color.clear)
+                                        )
+                                        .contentShape(Rectangle())
+                                        .onTapGesture {
+                                            scrollController.jumpToLine(
+                                                displayIndex,
+                                                highlightedLineIndex: promptLine.sourceIndex,
+                                                autoResumeAfter: 1.0
+                                            )
+                                        }
+                                }
                             }
+                            .padding(.horizontal, 16)
+
+                            Color.clear
+                                .frame(height: readingEdgePadding)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 10)
-                        .padding(.bottom, geometry.size.height)
-                        .offset(y: -scrollController.scrollOffset + geometry.size.height / 2)
+                        .offset(y: -scrollController.scrollOffset)
+                        .scaleEffect(x: mirrorText ? -1 : 1, y: 1, anchor: .center)
                         .animation(.linear(duration: 0.016), value: scrollController.scrollOffset)
                         .background(
                             GeometryReader { contentGeo in
@@ -437,6 +454,7 @@ struct OverlayContentView: View {
                             }
                         )
                     }
+                    .frame(width: geometry.size.width, height: geometry.size.height, alignment: .top)
                     .contentShape(Rectangle())
                     .clipped() // Ensure content doesn't bleed out during resize
                     .mask(focusModeGradient(height: geometry.size.height))
@@ -451,44 +469,96 @@ struct OverlayContentView: View {
                     }
                     .padding(.horizontal, 16)
                     .allowsHitTesting(false)
+
+                    Image(systemName: "play.fill")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(.yellow.opacity(0.8))
+                        .frame(
+                            width: max(0, geometry.size.width - 14),
+                            height: geometry.size.height,
+                            alignment: .leading
+                        )
+                        .padding(.horizontal, 7)
+                        .allowsHitTesting(false)
+                        .accessibilityHidden(true)
+
+                    VStack {
+                        Spacer()
+                        ProgressView(value: scrollController.progress)
+                            .progressViewStyle(.linear)
+                            .tint(.yellow)
+                            .padding(.horizontal, 6)
+                            .padding(.bottom, 2)
+                            .accessibilityLabel("Script progress")
+                            .accessibilityValue("\(Int(scrollController.progress * 100)) percent")
+                    }
+                    .allowsHitTesting(false)
+
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Label(remainingTimeText, systemImage: "clock")
+                                .font(.system(size: 9, weight: .medium, design: .monospaced))
+                                .foregroundColor(.white.opacity(0.7))
+                                .padding(.horizontal, 7)
+                                .padding(.vertical, 4)
+                                .background(.black.opacity(0.45))
+                                .clipShape(Capsule())
+                        }
+                        Spacer()
+                    }
+                    .padding(7)
+                    .allowsHitTesting(false)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel("Remaining time")
+                    .accessibilityValue(remainingTimeText)
                     
                     // Pause indicator
                     if scrollController.isPaused && !showControls {
                         VStack {
-                            Spacer()
                             HStack(spacing: 8) {
                                 Image(systemName: scrollController.scrollOffset == 0 ? "play.circle.fill" : "pause.circle.fill")
                                 Text(scrollController.scrollOffset == 0 ? "READY" : "PAUSED")
                                     .font(.system(.caption, design: .monospaced).bold())
+                                Spacer()
                             }
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 7)
-                            .background(.ultraThinMaterial)
-                            .cornerRadius(20)
-                            .foregroundColor(.white)
-                            .padding(.bottom, 20)
+                            .foregroundColor(.white.opacity(0.85))
+                            Spacer()
                         }
+                        .padding(7)
                     }
                 }
+                .frame(width: geometry.size.width, height: geometry.size.height)
             }
-            .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 16, bottomTrailingRadius: 16, topTrailingRadius: 0))
         }
+        .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 16, bottomTrailingRadius: 16, topTrailingRadius: 0))
         .onHover { hovering in
             withAnimation(.easeInOut(duration: 0.15)) {
                 showControls = hovering
             }
             onHover(hovering)
         }
+        .onAppear {
+            scrollController.updateWordCount(pacedWordCount)
+        }
+        .onChange(of: scriptManager.selectedScript?.content) { _ in
+            scrollController.updateWordCount(pacedWordCount)
+        }
+        .onChange(of: stageDirectionStyle) { _ in
+            scrollController.updateWordCount(pacedWordCount)
+        }
     }
     
     private func updateContentHeight(_ height: CGFloat, visibleHeight: CGFloat) {
-        contentHeight = height
-        scrollController.contentHeight = height
-        scrollController.visibleHeight = visibleHeight
+        scrollController.updateContentMetrics(
+            contentHeight: height,
+            visibleHeight: visibleHeight,
+            wordCount: pacedWordCount
+        )
     }
     
     private var controlBar: some View {
-        HStack(spacing: 12) {
+        HStack(spacing: 8) {
             // Drag handle
             Image(systemName: "line.3.horizontal")
                 .font(.caption)
@@ -512,32 +582,40 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .help(scrollController.isPaused ? "Start scrolling" : "Pause scrolling")
+            .accessibilityLabel(scrollController.isPaused ? "Start scrolling" : "Pause scrolling")
             
             Divider()
                 .frame(height: 16)
                 .background(.white.opacity(0.3))
             
             // Speed controls - bigger tap targets
-            Button(action: { scrollController.adjustSpeed(delta: -5) }) {
+            Button(action: { scrollController.adjustPace(steps: -1) }) {
                 Image(systemName: "minus.circle.fill")
                     .font(.system(size: 16))
                     .frame(width: 28, height: 28)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .help("Slower")
+            .accessibilityLabel("Slower")
             
-            Text("\(Int(scrollController.scrollSpeed))")
+            Text(scrollController.paceControlLabel)
                 .font(.system(size: 12, weight: .medium, design: .monospaced))
                 .foregroundColor(.white.opacity(0.8))
-                .frame(width: 30)
+                .frame(minWidth: 34)
+                .accessibilityLabel("Pace")
+                .accessibilityValue(scrollController.paceControlLabel)
             
-            Button(action: { scrollController.adjustSpeed(delta: 5) }) {
+            Button(action: { scrollController.adjustPace(steps: 1) }) {
                 Image(systemName: "plus.circle.fill")
                     .font(.system(size: 16))
                     .frame(width: 28, height: 28)
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .help("Faster")
+            .accessibilityLabel("Faster")
             
             Spacer()
             
@@ -549,102 +627,26 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .help("Reset to the beginning")
+            .accessibilityLabel("Reset to the beginning")
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
         .background(.black.opacity(0.7))
         .foregroundColor(.white)
     }
-}
 
-// MARK: - Color Extension
-
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 6:
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8:
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (255, 255, 255, 255)
+    private var remainingTimeText: String {
+        guard let remainingTime = scrollController.remainingTime else { return "—" }
+        let totalSeconds = max(0, Int(ceil(remainingTime)))
+        if totalSeconds >= 3_600 {
+            return String(
+                format: "%d:%02d:%02d",
+                totalSeconds / 3_600,
+                (totalSeconds % 3_600) / 60,
+                totalSeconds % 60
+            )
         }
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue: Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
-}
-
-// MARK: - Scroll Wheel Event
-
-struct ScrollWheelReceiver: NSViewRepresentable {
-    var onScroll: (CGFloat) -> Void
-    
-    func makeNSView(context: Context) -> ScrollWheelCaptureView {
-        let view = ScrollWheelCaptureView()
-        view.onScroll = onScroll
-        return view
-    }
-    
-    func updateNSView(_ nsView: ScrollWheelCaptureView, context: Context) {
-        nsView.onScroll = onScroll
-    }
-}
-
-class ScrollWheelCaptureView: NSView {
-    var onScroll: ((CGFloat) -> Void)?
-    private var trackingArea: NSTrackingArea?
-    
-    override func updateTrackingAreas() {
-        super.updateTrackingAreas()
-        
-        if let existing = trackingArea {
-            removeTrackingArea(existing)
-        }
-        
-        trackingArea = NSTrackingArea(
-            rect: bounds,
-            options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited],
-            owner: self,
-            userInfo: nil
-        )
-        addTrackingArea(trackingArea!)
-    }
-    
-    override var acceptsFirstResponder: Bool { true }
-    
-    override func scrollWheel(with event: NSEvent) {
-        // Use scrollingDeltaY for smooth trackpad, deltaY for mouse wheel
-        let delta = event.hasPreciseScrollingDeltas ? event.scrollingDeltaY : event.deltaY * 10
-        onScroll?(delta)
-    }
-}
-
-// Remove old unused code
-struct ScrollWheelModifier: ViewModifier {
-    var onScroll: (CGFloat) -> Void
-    
-    func body(content: Content) -> some View {
-        content // No longer used
-    }
-}
-
-struct ScrollWheelHandler: NSViewRepresentable {
-    var onScroll: (CGFloat) -> Void
-    func makeNSView(context: Context) -> NSView { NSView() }
-    func updateNSView(_ nsView: NSView, context: Context) {}
-}
-
-extension View {
-    func onScrollWheelEvent(_ handler: @escaping (CGFloat) -> Void) -> some View {
-        self
+        return String(format: "%d:%02d", totalSeconds / 60, totalSeconds % 60)
     }
 }

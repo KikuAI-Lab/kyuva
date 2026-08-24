@@ -2,16 +2,44 @@ import Foundation
 import Combine
 import SwiftUI
 
+enum ScrollPaceMode: Int, CaseIterable, Identifiable {
+    case fixedSpeed = 0
+    case wordsPerMinute = 1
+    case targetDuration = 2
+
+    var id: Int { rawValue }
+
+    var title: String {
+        switch self {
+        case .fixedSpeed: return "Fixed"
+        case .wordsPerMinute: return "WPM"
+        case .targetDuration: return "Duration"
+        }
+    }
+}
+
 /// Controls smooth continuous scroll with pixel-perfect animation
 class ScrollController: ObservableObject {
     static let minimumSpeed: Double = 10
     static let maximumSpeed: Double = 200
+    static let minimumWordsPerMinute: Double = 60
+    static let maximumWordsPerMinute: Double = 240
+    static let minimumTargetDuration: TimeInterval = 30
+    static let maximumTargetDuration: TimeInterval = 3_600
+
+    static let paceModeDefaultsKey = "scrollPaceMode"
+    static let speedDefaultsKey = "scrollSpeed"
+    static let wordsPerMinuteDefaultsKey = "wordsPerMinute"
+    static let targetDurationDefaultsKey = "targetDurationSeconds"
     
     /// Current scroll offset in pixels (animated smoothly)
     @Published var scrollOffset: CGFloat = 0
     
     @Published var isPaused: Bool = true // Start paused
-    @Published var scrollSpeed: Double = 50 // pixels per second (matches the Settings default)
+    @Published private(set) var scrollSpeed: Double = 50
+    @Published private(set) var paceMode: ScrollPaceMode = .fixedSpeed
+    @Published private(set) var wordsPerMinute: Double = 150
+    @Published private(set) var targetDurationSeconds: TimeInterval = 300
     
     /// Highlighted line index (for flash animation on click)
     @Published var highlightedLine: Int? = nil
@@ -20,10 +48,10 @@ class ScrollController: ObservableObject {
     var wasManuallyPaused: Bool = false
     
     /// Total content height (set by view)
-    var contentHeight: CGFloat = 1000
+    private(set) var contentHeight: CGFloat = 1000
     
     /// Visible height (set by view)
-    var visibleHeight: CGFloat = 150
+    private(set) var visibleHeight: CGFloat = 150
     
     /// Line height for calculations
     let lineHeight: CGFloat = 28
@@ -32,13 +60,13 @@ class ScrollController: ObservableObject {
     private var scrollTimer: Timer?
     private var lastUpdateTime: Date = Date()
     private let userDefaults: UserDefaults
+    private var fixedScrollSpeed: Double = 50
+    private var wordCount = 0
     
     init(startTimer: Bool = true, userDefaults: UserDefaults = .standard) {
         self.userDefaults = userDefaults
 
-        if userDefaults.object(forKey: "scrollSpeed") != nil {
-            scrollSpeed = Self.clampedSpeed(userDefaults.double(forKey: "scrollSpeed"))
-        }
+        loadPaceSettings(from: userDefaults)
 
         if startTimer {
             startScrollTimer()
@@ -81,7 +109,7 @@ class ScrollController: ObservableObject {
         scrollOffset += increment
         
         // Clamp to content bounds
-        let maxOffset = max(0, contentHeight - visibleHeight)
+        let maxOffset = maximumOffset
         if scrollOffset >= maxOffset {
             switch endBehavior {
             case 1: // Start Over
@@ -101,12 +129,10 @@ class ScrollController: ObservableObject {
     
     // MARK: - Controls
 
-    /// Apply the persisted scroll speed without advancing the scroll position.
+    /// Apply persisted pace settings without advancing the scroll position.
     /// This is also used when UserDefaults changes while the overlay is visible.
-    func applyPersistedScrollSpeed(from userDefaults: UserDefaults = .standard) {
-        guard userDefaults.object(forKey: "scrollSpeed") != nil else { return }
-
-        scrollSpeed = Self.clampedSpeed(userDefaults.double(forKey: "scrollSpeed"))
+    func applyPersistedScrollSpeed(from userDefaults: UserDefaults? = nil) {
+        loadPaceSettings(from: userDefaults ?? self.userDefaults)
     }
     
     func pause() {
@@ -121,6 +147,10 @@ class ScrollController: ObservableObject {
     }
     
     func resume() {
+        guard maximumOffset > 0, scrollSpeed > 0 else {
+            isPaused = true
+            return
+        }
         isPaused = false
         wasManuallyPaused = false
         lastUpdateTime = Date()
@@ -142,24 +172,58 @@ class ScrollController: ObservableObject {
     }
     
     func adjustSpeed(delta: Double) {
-        scrollSpeed = Self.clampedSpeed(scrollSpeed + delta)
-        userDefaults.set(scrollSpeed, forKey: "scrollSpeed")
+        fixedScrollSpeed = Self.clampedSpeed(fixedScrollSpeed + delta)
+        userDefaults.set(fixedScrollSpeed, forKey: Self.speedDefaultsKey)
+        recalculateScrollSpeed()
+    }
+
+    /// Positive steps make the current mode faster; negative steps make it slower.
+    func adjustPace(steps: Double) {
+        guard steps != 0 else { return }
+
+        switch paceMode {
+        case .fixedSpeed:
+            fixedScrollSpeed = Self.clampedSpeed(fixedScrollSpeed + steps * 5)
+            userDefaults.set(fixedScrollSpeed, forKey: Self.speedDefaultsKey)
+        case .wordsPerMinute:
+            wordsPerMinute = Self.clampedWordsPerMinute(wordsPerMinute + steps * 5)
+            userDefaults.set(wordsPerMinute, forKey: Self.wordsPerMinuteDefaultsKey)
+        case .targetDuration:
+            targetDurationSeconds = Self.clampedTargetDuration(
+                targetDurationSeconds - steps * 30
+            )
+            userDefaults.set(targetDurationSeconds, forKey: Self.targetDurationDefaultsKey)
+        }
+
+        recalculateScrollSpeed()
     }
 
     private static func clampedSpeed(_ speed: Double) -> Double {
         min(maximumSpeed, max(minimumSpeed, speed))
     }
+
+    private static func clampedWordsPerMinute(_ value: Double) -> Double {
+        min(maximumWordsPerMinute, max(minimumWordsPerMinute, value))
+    }
+
+    private static func clampedTargetDuration(_ value: TimeInterval) -> TimeInterval {
+        min(maximumTargetDuration, max(minimumTargetDuration, value))
+    }
     
     /// Jump to line with flash highlight and auto-resume after delay
-    func jumpToLine(_ lineIndex: Int, autoResumeAfter: TimeInterval = 1.0) {
+    func jumpToLine(
+        _ lineIndex: Int,
+        highlightedLineIndex: Int? = nil,
+        autoResumeAfter: TimeInterval = 1.0
+    ) {
         let wasPlaying = !isPaused
         
         // Jump to the line
-        scrollOffset = max(0, CGFloat(lineIndex) * lineHeight)
+        scrollOffset = min(maximumOffset, max(0, CGFloat(lineIndex) * lineHeight))
         lastUpdateTime = Date()
         
         // Flash highlight
-        highlightedLine = lineIndex
+        highlightedLine = highlightedLineIndex ?? lineIndex
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
             self?.highlightedLine = nil
         }
@@ -182,18 +246,106 @@ class ScrollController: ObservableObject {
         scrollOffset = max(0, scrollOffset - delta)
         
         // Clamp
-        let maxOffset = max(0, contentHeight - visibleHeight)
-        scrollOffset = min(scrollOffset, maxOffset)
+        scrollOffset = min(scrollOffset, maximumOffset)
     }
     
     /// Jump to specific pixel offset (legacy)
     func goToOffset(_ offset: CGFloat) {
-        scrollOffset = max(0, offset)
+        scrollOffset = min(maximumOffset, max(0, offset))
         lastUpdateTime = Date()
+    }
+
+    func updateContentMetrics(
+        contentHeight: CGFloat,
+        visibleHeight: CGFloat,
+        wordCount: Int
+    ) {
+        self.contentHeight = max(0, contentHeight)
+        self.visibleHeight = max(0, visibleHeight)
+        self.wordCount = max(0, wordCount)
+        scrollOffset = min(scrollOffset, maximumOffset)
+        recalculateScrollSpeed()
+    }
+
+    func updateWordCount(_ wordCount: Int) {
+        self.wordCount = max(0, wordCount)
+        recalculateScrollSpeed()
+    }
+
+    var maximumOffset: CGFloat {
+        max(0, contentHeight - visibleHeight)
+    }
+
+    var progress: Double {
+        guard maximumOffset > 0 else { return 0 }
+        return min(1, max(0, Double(scrollOffset / maximumOffset)))
+    }
+
+    var remainingTime: TimeInterval? {
+        guard scrollSpeed > 0 else { return nil }
+        return Double(max(0, maximumOffset - scrollOffset)) / scrollSpeed
+    }
+
+    var paceControlLabel: String {
+        switch paceMode {
+        case .fixedSpeed:
+            return "\(Int(fixedScrollSpeed))"
+        case .wordsPerMinute:
+            return "\(Int(wordsPerMinute))w"
+        case .targetDuration:
+            let totalSeconds = Int(targetDurationSeconds.rounded())
+            return String(format: "%d:%02d", totalSeconds / 60, totalSeconds % 60)
+        }
     }
     
     /// Current line index based on offset
     var currentLineIndex: Int {
         Int(scrollOffset / lineHeight)
+    }
+
+    private func loadPaceSettings(from defaults: UserDefaults) {
+        paceMode = ScrollPaceMode(
+            rawValue: defaults.integer(forKey: Self.paceModeDefaultsKey)
+        ) ?? .fixedSpeed
+
+        if defaults.object(forKey: Self.speedDefaultsKey) != nil {
+            fixedScrollSpeed = Self.clampedSpeed(
+                defaults.double(forKey: Self.speedDefaultsKey)
+            )
+        }
+        if defaults.object(forKey: Self.wordsPerMinuteDefaultsKey) != nil {
+            wordsPerMinute = Self.clampedWordsPerMinute(
+                defaults.double(forKey: Self.wordsPerMinuteDefaultsKey)
+            )
+        }
+        if defaults.object(forKey: Self.targetDurationDefaultsKey) != nil {
+            targetDurationSeconds = Self.clampedTargetDuration(
+                defaults.double(forKey: Self.targetDurationDefaultsKey)
+            )
+        }
+
+        recalculateScrollSpeed()
+    }
+
+    private func recalculateScrollSpeed() {
+        let travelDistance = Double(maximumOffset)
+
+        switch paceMode {
+        case .fixedSpeed:
+            scrollSpeed = fixedScrollSpeed
+        case .wordsPerMinute:
+            guard travelDistance > 0, wordCount > 0 else {
+                scrollSpeed = 0
+                return
+            }
+            let readDuration = Double(wordCount) / wordsPerMinute * 60
+            scrollSpeed = travelDistance / readDuration
+        case .targetDuration:
+            guard travelDistance > 0 else {
+                scrollSpeed = 0
+                return
+            }
+            scrollSpeed = travelDistance / targetDurationSeconds
+        }
     }
 }

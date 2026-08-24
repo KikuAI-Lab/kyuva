@@ -26,6 +26,27 @@ final class ScriptTests: XCTestCase {
         XCTAssertEqual(script.tokens.map(\.word), ["updated", "line", "second", "updated", "line"])
         XCTAssertEqual(script.tokens.map(\.lineIndex), [0, 0, 1, 1, 1])
     }
+
+    func testPromptLinesRecognizeOnlyCompleteBracketedDirections() {
+        let script = Script(
+            name: "Directions",
+            content: "Opening line\n[Smile at camera]\n(Pause)\n[unfinished\nClosing line"
+        )
+
+        XCTAssertEqual(script.promptLines.map(\.text), [
+            "Opening line",
+            "[Smile at camera]",
+            "(Pause)",
+            "[unfinished",
+            "Closing line"
+        ])
+        XCTAssertEqual(
+            script.promptLines.map(\.isStageDirection),
+            [false, true, true, false, false]
+        )
+        XCTAssertEqual(script.wordCount(excludingStageDirections: false), 9)
+        XCTAssertEqual(script.wordCount(excludingStageDirections: true), 5)
+    }
 }
 
 final class LocalStoreTests: XCTestCase {
@@ -109,6 +130,75 @@ final class ScrollControllerTests: XCTestCase {
         controller.adjustSpeed(delta: -500)
         XCTAssertEqual(controller.scrollSpeed, ScrollController.minimumSpeed)
         XCTAssertEqual(defaults.double(forKey: "scrollSpeed"), ScrollController.minimumSpeed)
+    }
+
+    func testWordsPerMinuteDerivesSpeedProgressAndRemainingTime() {
+        let suiteName = "KyuvaTests.ScrollController.WPM.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.set(ScrollPaceMode.wordsPerMinute.rawValue, forKey: ScrollController.paceModeDefaultsKey)
+        defaults.set(120, forKey: ScrollController.wordsPerMinuteDefaultsKey)
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let controller = ScrollController(startTimer: false, userDefaults: defaults)
+        controller.updateContentMetrics(contentHeight: 1_150, visibleHeight: 150, wordCount: 200)
+
+        XCTAssertEqual(controller.paceMode, .wordsPerMinute)
+        XCTAssertEqual(controller.scrollSpeed, 10, accuracy: 0.0001)
+        XCTAssertEqual(controller.remainingTime ?? -1, 100, accuracy: 0.0001)
+        XCTAssertEqual(controller.paceControlLabel, "120w")
+
+        controller.goToOffset(250)
+        XCTAssertEqual(controller.progress, 0.25, accuracy: 0.0001)
+        XCTAssertEqual(controller.remainingTime ?? -1, 75, accuracy: 0.0001)
+
+        controller.adjustPace(steps: 2)
+        XCTAssertEqual(controller.wordsPerMinute, 130, accuracy: 0.0001)
+        XCTAssertEqual(defaults.double(forKey: ScrollController.wordsPerMinuteDefaultsKey), 130)
+        XCTAssertEqual(controller.scrollSpeed, 10.833_333, accuracy: 0.0001)
+    }
+
+    func testApplyingDefaultsSwitchesPaceModeWithoutMovingTheScript() {
+        let suiteName = "KyuvaTests.ScrollController.ModeSwitch.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.set(50, forKey: ScrollController.speedDefaultsKey)
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let controller = ScrollController(startTimer: false, userDefaults: defaults)
+        controller.updateContentMetrics(contentHeight: 1_150, visibleHeight: 150, wordCount: 200)
+        controller.goToOffset(250)
+
+        defaults.set(ScrollPaceMode.wordsPerMinute.rawValue, forKey: ScrollController.paceModeDefaultsKey)
+        defaults.set(120, forKey: ScrollController.wordsPerMinuteDefaultsKey)
+        controller.applyPersistedScrollSpeed(from: defaults)
+
+        XCTAssertEqual(controller.paceMode, .wordsPerMinute)
+        XCTAssertEqual(controller.scrollSpeed, 10, accuracy: 0.0001)
+        XCTAssertEqual(controller.scrollOffset, 250)
+    }
+
+    func testTargetDurationDerivesSpeedAndFasterControlShortensDuration() {
+        let suiteName = "KyuvaTests.ScrollController.Duration.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.set(ScrollPaceMode.targetDuration.rawValue, forKey: ScrollController.paceModeDefaultsKey)
+        defaults.set(120, forKey: ScrollController.targetDurationDefaultsKey)
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let controller = ScrollController(startTimer: false, userDefaults: defaults)
+        controller.updateContentMetrics(contentHeight: 750, visibleHeight: 150, wordCount: 100)
+
+        XCTAssertEqual(controller.paceMode, .targetDuration)
+        XCTAssertEqual(controller.scrollSpeed, 5, accuracy: 0.0001)
+        XCTAssertEqual(controller.remainingTime ?? -1, 120, accuracy: 0.0001)
+        XCTAssertEqual(controller.paceControlLabel, "2:00")
+
+        controller.goToOffset(150)
+        XCTAssertEqual(controller.progress, 0.25, accuracy: 0.0001)
+        XCTAssertEqual(controller.remainingTime ?? -1, 90, accuracy: 0.0001)
+
+        controller.adjustPace(steps: 1)
+        XCTAssertEqual(controller.targetDurationSeconds, 90, accuracy: 0.0001)
+        XCTAssertEqual(defaults.double(forKey: ScrollController.targetDurationDefaultsKey), 90)
+        XCTAssertEqual(controller.scrollSpeed, 6.666_667, accuracy: 0.0001)
     }
 }
 
