@@ -2,6 +2,23 @@ import AppKit
 import SwiftUI
 import Combine
 
+struct WindowDragTracker {
+    private var startOrigin: CGPoint?
+
+    mutating func origin(currentOrigin: CGPoint, translation: CGPoint) -> CGPoint {
+        let origin = startOrigin ?? currentOrigin
+        startOrigin = origin
+        return CGPoint(
+            x: origin.x + translation.x,
+            y: origin.y - translation.y
+        )
+    }
+
+    mutating func reset() {
+        startOrigin = nil
+    }
+}
+
 /// Controller for the camera-side overlay window.
 ///
 /// The overlay is a normal macOS window. It may be visible in screen shares
@@ -14,6 +31,7 @@ class OverlayWindowController: NSWindowController {
     private var hotkeyManager: HotkeyManager?
     private var isHovering = false
     private var cancellables = Set<AnyCancellable>()
+    private var dragTracker = WindowDragTracker()
     
     convenience init() {
         // Get screen with notch (main screen on MacBooks with notch)
@@ -90,8 +108,11 @@ class OverlayWindowController: NSWindowController {
             onHover: { [weak self] isHovering in
                 self?.handleHover(isHovering)
             },
-            onDrag: { [weak self] translation in
+            onDrag: { [weak self] translation, isEnded in
                 self?.handleDrag(translation)
+                if isEnded {
+                    self?.dragTracker.reset()
+                }
             },
             onResize: { [weak self] (widthDelta: CGFloat, heightDelta: CGFloat, isEnded: Bool) in
                 self?.handleResize(widthDelta: widthDelta, heightDelta: heightDelta)
@@ -192,12 +213,12 @@ class OverlayWindowController: NSWindowController {
     
     private func handleDrag(_ translation: CGPoint) {
         guard let window = window else { return }
-        let currentFrame = window.frame
-        let newOrigin = CGPoint(
-            x: currentFrame.origin.x + translation.x,
-            y: currentFrame.origin.y - translation.y
+        window.setFrameOrigin(
+            dragTracker.origin(
+                currentOrigin: window.frame.origin,
+                translation: translation
+            )
         )
-        window.setFrameOrigin(newOrigin)
     }
     
     private func setupManagers() {
@@ -302,10 +323,10 @@ struct OverlayContentView: View {
     @ObservedObject var scriptManager: ScriptManager
     @ObservedObject var scrollController: ScrollController
     var onHover: (Bool) -> Void
-    var onDrag: ((CGPoint) -> Void)?
+    var onDrag: ((CGPoint, Bool) -> Void)?
     var onResize: ((CGFloat, CGFloat, Bool) -> Void)? // width delta, height delta, isEnded
     
-    init(scriptManager: ScriptManager, scrollController: ScrollController, onHover: @escaping (Bool) -> Void, onDrag: ((CGPoint) -> Void)? = nil, onResize: ((CGFloat, CGFloat, Bool) -> Void)? = nil) {
+    init(scriptManager: ScriptManager, scrollController: ScrollController, onHover: @escaping (Bool) -> Void, onDrag: ((CGPoint, Bool) -> Void)? = nil, onResize: ((CGFloat, CGFloat, Bool) -> Void)? = nil) {
         self.scriptManager = scriptManager
         self.scrollController = scrollController
         self.onHover = onHover
@@ -582,7 +603,16 @@ struct OverlayContentView: View {
                 .gesture(
                     DragGesture()
                         .onChanged { value in
-                            onDrag?(CGPoint(x: value.translation.width, y: value.translation.height))
+                            onDrag?(
+                                CGPoint(x: value.translation.width, y: value.translation.height),
+                                false
+                            )
+                        }
+                        .onEnded { value in
+                            onDrag?(
+                                CGPoint(x: value.translation.width, y: value.translation.height),
+                                true
+                            )
                         }
                 )
             

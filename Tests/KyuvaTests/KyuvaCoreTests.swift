@@ -237,3 +237,29 @@ final class HotkeyDefinitionTests: XCTestCase {
         XCTAssertEqual(HotkeyManager.Hotkey.nextDisplay.shortcut.display, "⌃⌥D")
     }
 }
+
+final class WindowDragTrackerTests: XCTestCase {
+    func testCumulativeGestureTranslationUsesTheOriginalWindowOrigin() {
+        var tracker = WindowDragTracker()
+        let start = CGPoint(x: 100, y: 200)
+
+        let first = tracker.origin(
+            currentOrigin: start,
+            translation: CGPoint(x: 10, y: 5)
+        )
+        XCTAssertEqual(first, CGPoint(x: 110, y: 195))
+
+        let second = tracker.origin(
+            currentOrigin: first,
+            translation: CGPoint(x: 20, y: 10)
+        )
+        XCTAssertEqual(second, CGPoint(x: 120, y: 190))
+
+        tracker.reset()
+        let nextGesture = tracker.origin(
+            currentOrigin: second,
+            translation: CGPoint(x: 5, y: 5)
+        )
+        XCTAssertEqual(nextGesture, CGPoint(x: 125, y: 185))
+    }
+}
