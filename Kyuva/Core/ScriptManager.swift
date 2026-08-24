@@ -137,7 +137,7 @@ class ScriptManager: ObservableObject {
                 selectedScriptId = script.id
                 saveScripts()
             } catch {
-                print("Failed to import script: \(error)")
+                NSApp.presentError(error)
             }
         }
     }
@@ -151,7 +151,7 @@ class ScriptManager: ObservableObject {
             do {
                 try script.content.write(to: url, atomically: true, encoding: .utf8)
             } catch {
-                print("Failed to export script: \(error)")
+                NSApp.presentError(error)
             }
         }
     }
