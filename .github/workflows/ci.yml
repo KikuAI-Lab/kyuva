@@ -9,21 +9,40 @@ permissions:
 
 jobs:
   macos:
-    runs-on: macos-14
+    name: macOS 15 (${{ matrix.arch }})
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15
+            arch: arm64
+          - runner: macos-15-intel
+            arch: x86_64
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
 
       - name: SwiftPM tests
         run: swift test --disable-sandbox
 
-      - name: Xcode build
+      - name: SwiftPM release build
+        run: swift build -c release --disable-sandbox
+
+      - name: Xcode release build
         run: >-
-          xcodebuild -project Kyuva.xcodeproj -scheme Kyuva -configuration Debug
-          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+          xcodebuild -project Kyuva.xcodeproj -scheme Kyuva -configuration Release
+          -destination 'platform=macOS,arch=${{ matrix.arch }}'
+          ARCHS=${{ matrix.arch }} ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO
           -derivedDataPath "$RUNNER_TEMP/KyuvaDerivedData" build
 
-      - name: Validate bundled privacy manifest
+      - name: Validate release bundle
         run: |
-          KYUVA_PRIVACY_MANIFEST="$RUNNER_TEMP/KyuvaDerivedData/Build/Products/Debug/Kyuva.app/Contents/Resources/PrivacyInfo.xcprivacy"
+          KYUVA_APP="$RUNNER_TEMP/KyuvaDerivedData/Build/Products/Release/Kyuva.app"
+          KYUVA_PRIVACY_MANIFEST="$KYUVA_APP/Contents/Resources/PrivacyInfo.xcprivacy"
           test -f "$KYUVA_PRIVACY_MANIFEST"
           plutil -lint "$KYUVA_PRIVACY_MANIFEST"
+          lipo "$KYUVA_APP/Contents/MacOS/Kyuva" -verify_arch "${{ matrix.arch }}"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$KYUVA_APP/Contents/Info.plist")" = "13.0"
+          ! /usr/libexec/PlistBuddy -c 'Print :NSMicrophoneUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
+          ! /usr/libexec/PlistBuddy -c 'Print :NSSpeechRecognitionUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
