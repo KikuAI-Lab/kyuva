@@ -1,104 +1,137 @@
-import Foundation
 import Carbon
+import Foundation
 
-/// Manages global keyboard shortcuts
-class HotkeyManager {
-    
-    enum Hotkey {
-        case speedUp      // Shift + →
-        case speedDown    // Shift + ←
-        case togglePause  // Space
-        case reset        // Cmd + R
-        case toggleOverlay // Cmd + T
+/// Registers only Kyuva's explicit shortcuts with macOS.
+///
+/// `RegisterEventHotKey` avoids observing arbitrary keystrokes, so Kyuva does
+/// not need Accessibility or Input Monitoring permission for its controls.
+final class HotkeyManager {
+    enum Hotkey: UInt32, CaseIterable {
+        case speedUp = 1
+        case speedDown
+        case togglePause
+        case reset
+        case toggleOverlay
+
+        var shortcut: Shortcut {
+            switch self {
+            case .speedUp:
+                return Shortcut(keyCode: UInt32(kVK_RightArrow), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥→")
+            case .speedDown:
+                return Shortcut(keyCode: UInt32(kVK_LeftArrow), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥←")
+            case .togglePause:
+                return Shortcut(keyCode: UInt32(kVK_Space), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥Space")
+            case .reset:
+                return Shortcut(keyCode: UInt32(kVK_ANSI_R), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥R")
+            case .toggleOverlay:
+                return Shortcut(keyCode: UInt32(kVK_ANSI_T), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥T")
+            }
+        }
     }
-    
+
+    struct Shortcut: Equatable {
+        let keyCode: UInt32
+        let modifiers: UInt32
+        let display: String
+    }
+
+    private static let signature: OSType = 0x4B595556 // "KYUV"
+
     private var handlers: [Hotkey: () -> Void] = [:]
-    private var eventTap: CFMachPort?
-    private var runLoopSource: CFRunLoopSource?
-    
+    private var eventHandler: EventHandlerRef?
+    private var registeredHotkeys: [EventHotKeyRef] = []
+
     init() {
-        setupEventTap()
+        installEventHandler()
+        registerSystemHotkeys()
     }
-    
+
     deinit {
-        if let eventTap = eventTap {
-            CGEvent.tapEnable(tap: eventTap, enable: false)
+        for hotkey in registeredHotkeys {
+            UnregisterEventHotKey(hotkey)
         }
-        if let runLoopSource = runLoopSource {
-            CFRunLoopRemoveSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
+        if let eventHandler {
+            RemoveEventHandler(eventHandler)
         }
     }
-    
+
     func register(_ hotkey: Hotkey, handler: @escaping () -> Void) {
         handlers[hotkey] = handler
     }
-    
-    private func setupEventTap() {
-        let eventMask = (1 << CGEventType.keyDown.rawValue)
-        
-        let callback: CGEventTapCallBack = { proxy, type, event, refcon in
-            guard let refcon = refcon else { return Unmanaged.passUnretained(event) }
-            let manager = Unmanaged<HotkeyManager>.fromOpaque(refcon).takeUnretainedValue()
-            return manager.handleEvent(proxy: proxy, type: type, event: event)
-        }
-        
-        eventTap = CGEvent.tapCreate(
-            tap: .cgSessionEventTap,
-            place: .headInsertEventTap,
-            options: .defaultTap,
-            eventsOfInterest: CGEventMask(eventMask),
-            callback: callback,
-            userInfo: Unmanaged.passUnretained(self).toOpaque()
+
+    private func installEventHandler() {
+        var eventType = EventTypeSpec(
+            eventClass: OSType(kEventClassKeyboard),
+            eventKind: UInt32(kEventHotKeyPressed)
         )
-        
-        guard let eventTap = eventTap else {
-            print("⚠️ Failed to create event tap. Grant Accessibility permissions.")
-            return
+
+        let callback: EventHandlerUPP = { _, event, userData in
+            guard let event, let userData else { return OSStatus(eventNotHandledErr) }
+
+            let manager = Unmanaged<HotkeyManager>
+                .fromOpaque(userData)
+                .takeUnretainedValue()
+            return manager.handle(event)
         }
-        
-        runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0)
-        CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource, .commonModes)
-        CGEvent.tapEnable(tap: eventTap, enable: true)
+
+        let status = InstallEventHandler(
+            GetApplicationEventTarget(),
+            callback,
+            1,
+            &eventType,
+            Unmanaged.passUnretained(self).toOpaque(),
+            &eventHandler
+        )
+
+        if status != noErr {
+            print("[Kyuva] Failed to install the global shortcut handler: \(status)")
+        }
     }
-    
-    private func handleEvent(proxy: CGEventTapProxy, type: CGEventType, event: CGEvent) -> Unmanaged<CGEvent>? {
-        guard type == .keyDown else {
-            return Unmanaged.passUnretained(event)
+
+    private func registerSystemHotkeys() {
+        guard eventHandler != nil else { return }
+
+        for hotkey in Hotkey.allCases {
+            let shortcut = hotkey.shortcut
+            var reference: EventHotKeyRef?
+            let identifier = EventHotKeyID(signature: Self.signature, id: hotkey.rawValue)
+            let status = RegisterEventHotKey(
+                shortcut.keyCode,
+                shortcut.modifiers,
+                identifier,
+                GetApplicationEventTarget(),
+                0,
+                &reference
+            )
+
+            if status == noErr, let reference {
+                registeredHotkeys.append(reference)
+            } else {
+                print("[Kyuva] Could not register shortcut \(shortcut.display): \(status)")
+            }
         }
-        
-        let keyCode = event.getIntegerValueField(.keyboardEventKeycode)
-        let flags = event.flags
-        
-        // Shift + Right Arrow (speed up)
-        if keyCode == 124 && flags.contains(.maskShift) {
-            handlers[.speedUp]?()
-            return nil // Consume event
+    }
+
+    private func handle(_ event: EventRef) -> OSStatus {
+        var identifier = EventHotKeyID()
+        let status = GetEventParameter(
+            event,
+            EventParamName(kEventParamDirectObject),
+            EventParamType(typeEventHotKeyID),
+            nil,
+            MemoryLayout<EventHotKeyID>.size,
+            nil,
+            &identifier
+        )
+
+        guard status == noErr,
+              identifier.signature == Self.signature,
+              let hotkey = Hotkey(rawValue: identifier.id),
+              let handler = handlers[hotkey] else {
+            return OSStatus(eventNotHandledErr)
         }
-        
-        // Shift + Left Arrow (speed down)
-        if keyCode == 123 && flags.contains(.maskShift) {
-            handlers[.speedDown]?()
-            return nil
-        }
-        
-        // Control + Space (toggle pause) - 49
-        if keyCode == 49 && flags.contains(.maskControl) {
-            handlers[.togglePause]?()
-            return nil // Consume only when modifier is present
-        }
-        
-        // Cmd + R (reset) - 15
-        if keyCode == 15 && flags.contains(.maskCommand) {
-            handlers[.reset]?()
-            return nil
-        }
-        
-        // Cmd + Option + T (toggle overlay) - 17
-        if keyCode == 17 && flags.contains(.maskCommand) && flags.contains(.maskAlternate) {
-            handlers[.toggleOverlay]?()
-            return nil
-        }
-        
-        return Unmanaged.passUnretained(event)
+
+        handler()
+        return noErr
     }
 }

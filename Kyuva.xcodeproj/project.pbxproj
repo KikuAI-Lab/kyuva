@@ -14,15 +14,9 @@
 		005 /* ScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105 /* ScriptManager.swift */; };
 		006 /* ScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106 /* ScrollController.swift */; };
 		007 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107 /* HotkeyManager.swift */; };
-		008 /* VoiceSyncEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 108 /* VoiceSyncEngine.swift */; };
 		009 /* LocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109 /* LocalStore.swift */; };
-		010 /* CaptureExclusionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110 /* CaptureExclusionProvider.swift */; };
-		011 /* SpeechProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111 /* SpeechProvider.swift */; };
 		012 /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112 /* WindowManager.swift */; };
-		013 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 120 /* StoreManager.swift */; };
-		014 /* AudioLevelMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 121 /* AudioLevelMonitor.swift */; };
 		015 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122 /* OnboardingView.swift */; };
-		016 /* ProUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 123 /* ProUpgradeView.swift */; };
 		017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 115 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -35,19 +29,12 @@
 		105 /* ScriptManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptManager.swift; sourceTree = "<group>"; };
 		106 /* ScrollController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollController.swift; sourceTree = "<group>"; };
 		107 /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
-		108 /* VoiceSyncEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceSyncEngine.swift; sourceTree = "<group>"; };
 		109 /* LocalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStore.swift; sourceTree = "<group>"; };
-		110 /* CaptureExclusionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureExclusionProvider.swift; sourceTree = "<group>"; };
-		111 /* SpeechProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechProvider.swift; sourceTree = "<group>"; };
 		112 /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		113 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		114 /* Kyuva.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kyuva.entitlements; sourceTree = "<group>"; };
 		115 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		116 /* Kyuva.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Kyuva.storekit; sourceTree = "<group>"; };
-		120 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
-		121 /* AudioLevelMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioLevelMonitor.swift; sourceTree = "<group>"; };
 		122 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		123 /* ProUpgradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProUpgradeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -94,7 +81,6 @@
 				103 /* OverlayWindowController.swift */,
 				104 /* SettingsView.swift */,
 				122 /* OnboardingView.swift */,
-				123 /* ProUpgradeView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -105,9 +91,6 @@
 				105 /* ScriptManager.swift */,
 				106 /* ScrollController.swift */,
 				107 /* HotkeyManager.swift */,
-				108 /* VoiceSyncEngine.swift */,
-				120 /* StoreManager.swift */,
-				121 /* AudioLevelMonitor.swift */,
 				215 /* Storage */,
 			);
 			path = Core;
@@ -116,8 +99,6 @@
 		213 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
-				110 /* CaptureExclusionProvider.swift */,
-				111 /* SpeechProvider.swift */,
 				112 /* WindowManager.swift */,
 			);
 			path = Platform;
@@ -129,7 +110,6 @@
 				115 /* Assets.xcassets */,
 				113 /* Info.plist */,
 				114 /* Kyuva.entitlements */,
-				116 /* Kyuva.storekit */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -207,15 +187,9 @@
 				005 /* ScriptManager.swift in Sources */,
 				006 /* ScrollController.swift in Sources */,
 				007 /* HotkeyManager.swift in Sources */,
-				008 /* VoiceSyncEngine.swift in Sources */,
 				009 /* LocalStore.swift in Sources */,
-				010 /* CaptureExclusionProvider.swift in Sources */,
-				011 /* SpeechProvider.swift in Sources */,
 				012 /* WindowManager.swift in Sources */,
-				013 /* StoreManager.swift in Sources */,
-				014 /* AudioLevelMonitor.swift in Sources */,
 				015 /* OnboardingView.swift in Sources */,
-				016 /* ProUpgradeView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -374,8 +348,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 KikuAI. All rights reserved.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Kyuva uses the microphone for voice-follow scrolling.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Kyuva uses on-device speech recognition to scroll your script.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -403,8 +375,6 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 KikuAI. All rights reserved.";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Kyuva uses the microphone for voice-follow scrolling.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Kyuva uses on-device speech recognition to scroll your script.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

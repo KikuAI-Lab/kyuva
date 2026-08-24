@@ -14,10 +14,18 @@ let package = Package(
         .executableTarget(
             name: "Kyuva",
             path: "Kyuva",
-            exclude: ["Resources/Info.plist"],
+            exclude: [
+                "Resources/Info.plist",
+                "Resources/Kyuva.entitlements"
+            ],
             resources: [
                 .process("Resources")
             ]
+        ),
+        .testTarget(
+            name: "KyuvaTests",
+            dependencies: ["Kyuva"],
+            path: "Tests/KyuvaTests"
         )
     ]
 )

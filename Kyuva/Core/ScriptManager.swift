@@ -162,8 +162,8 @@ class ScriptManager: ObservableObject {
         so you can read notes while keeping natural eye contact.
         
         • Hover over the overlay to pause
-        • Use Shift + ← / → to adjust speed
-        • Press Space to pause/resume
+        • Use Control + Option + ← / → to adjust speed
+        • Press Control + Option + Space to pause/resume
         
         Replace this with your script, meeting notes,
         or bullet points.

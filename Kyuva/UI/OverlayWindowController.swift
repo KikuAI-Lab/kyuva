@@ -2,8 +2,11 @@ import AppKit
 import SwiftUI
 import Combine
 
-/// Controller for the invisible overlay window
-/// Key feature: window is excluded from screen capture
+/// Controller for the camera-side overlay window.
+///
+/// The overlay is a normal macOS window. It may be visible in screen shares
+/// and recordings, so users should verify the preview or share a single app
+/// window that omits Kyuva.
 class OverlayWindowController: NSWindowController {
     
     private var scrollController: ScrollController?
@@ -41,9 +44,6 @@ class OverlayWindowController: NSWindowController {
     }
     
     private func setupWindow(_ window: NSWindow) {
-        // CRITICAL: Exclude from screen capture (Zoom, Meet, OBS, etc.)
-        window.sharingType = .none
-        
         // Always on top
         window.level = .floating
         window.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
@@ -80,8 +80,9 @@ class OverlayWindowController: NSWindowController {
     }
     
     private func setupContent() {
-        scriptManager = ScriptManager()
-        scrollController = ScrollController()
+        // Settings and the overlay observe the same live script collection.
+        scriptManager = ScriptManager.shared
+        scrollController = ScrollController(userDefaults: .standard)
         
         let contentView = OverlayContentView(
             scriptManager: scriptManager!,
@@ -120,19 +121,6 @@ class OverlayWindowController: NSWindowController {
             }
             .store(in: &cancellables)
         
-        // Check initial scroll mode and enable voice if needed
-        updateVoiceMode()
-    }
-    
-    /// Update voice mode based on current scrollMode setting
-    private func updateVoiceMode() {
-        let scrollModeRaw = UserDefaults.standard.string(forKey: "scrollMode") ?? "auto"
-        if scrollModeRaw == "voiceFollow" {
-            print("[OverlayWindowController] Voice Follow mode active — enabling audio monitor")
-            scrollController?.enableVoiceMode()
-        } else {
-            scrollController?.disableVoiceMode()
-        }
     }
     
     private var lastResizeSize: CGSize?
@@ -171,8 +159,8 @@ class OverlayWindowController: NSWindowController {
     }
     
     @objc private func settingsDidChange() {
+        scrollController?.applyPersistedScrollSpeed()
         updateOverlaySize()
-        updateVoiceMode()
     }
     
     /// Update overlay window size based on current settings
@@ -648,4 +636,3 @@ extension View {
         self
     }
 }
-

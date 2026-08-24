@@ -4,21 +4,20 @@ import SwiftUI
 
 /// Controls smooth continuous scroll with pixel-perfect animation
 class ScrollController: ObservableObject {
+    static let minimumSpeed: Double = 10
+    static let maximumSpeed: Double = 200
     
     /// Current scroll offset in pixels (animated smoothly)
     @Published var scrollOffset: CGFloat = 0
     
     @Published var isPaused: Bool = true // Start paused
-    @Published var scrollSpeed: Double = 10 // pixels per second (default 10 for ultra-smooth reading)
+    @Published var scrollSpeed: Double = 50 // pixels per second (matches the Settings default)
     
     /// Highlighted line index (for flash animation on click)
     @Published var highlightedLine: Int? = nil
     
     /// Track if user manually paused (vs hover-pause)
     var wasManuallyPaused: Bool = false
-    
-    /// Voice mode: scroll only when speaking
-    @Published var voiceModeEnabled: Bool = false
     
     /// Total content height (set by view)
     var contentHeight: CGFloat = 1000
@@ -30,52 +29,25 @@ class ScrollController: ObservableObject {
     let lineHeight: CGFloat = 28
     
     private var autoResumeWorkItem: DispatchWorkItem?
-    
-    /// Audio monitor for voice mode
-    var audioMonitor: AudioLevelMonitor?
-    private var cancellables = Set<AnyCancellable>()
     private var scrollTimer: Timer?
     private var lastUpdateTime: Date = Date()
+    private let userDefaults: UserDefaults
     
-    init() {
-        startScrollTimer()
+    init(startTimer: Bool = true, userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+
+        if userDefaults.object(forKey: "scrollSpeed") != nil {
+            scrollSpeed = Self.clampedSpeed(userDefaults.double(forKey: "scrollSpeed"))
+        }
+
+        if startTimer {
+            startScrollTimer()
+        }
     }
     
     deinit {
         scrollTimer?.invalidate()
         autoResumeWorkItem?.cancel()
-        audioMonitor?.stop()
-    }
-    
-    // MARK: - Voice Mode
-    
-    func enableVoiceMode() {
-        if audioMonitor == nil {
-            audioMonitor = AudioLevelMonitor()
-        }
-        
-        // Subscribe to isSpeaking changes
-        audioMonitor?.$isSpeaking
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isSpeaking in
-                guard let self = self, self.voiceModeEnabled else { return }
-                
-                // Respect manual pause — ignore voice input until user manually resumes
-                if self.wasManuallyPaused { return }
-                
-                // In voice mode: scroll when speaking, pause when silent
-                self.isPaused = !isSpeaking
-            }
-            .store(in: &cancellables)
-        
-        voiceModeEnabled = true
-        audioMonitor?.start()
-    }
-    
-    func disableVoiceMode() {
-        voiceModeEnabled = false
-        audioMonitor?.stop()
-        cancellables.removeAll()
     }
     
     // MARK: - Scroll Timer (High frequency for smooth updates)
@@ -128,6 +100,14 @@ class ScrollController: ObservableObject {
     }
     
     // MARK: - Controls
+
+    /// Apply the persisted scroll speed without advancing the scroll position.
+    /// This is also used when UserDefaults changes while the overlay is visible.
+    func applyPersistedScrollSpeed(from userDefaults: UserDefaults = .standard) {
+        guard userDefaults.object(forKey: "scrollSpeed") != nil else { return }
+
+        scrollSpeed = Self.clampedSpeed(userDefaults.double(forKey: "scrollSpeed"))
+    }
     
     func pause() {
         isPaused = true
@@ -162,7 +142,12 @@ class ScrollController: ObservableObject {
     }
     
     func adjustSpeed(delta: Double) {
-        scrollSpeed = max(5, min(150, scrollSpeed + delta))
+        scrollSpeed = Self.clampedSpeed(scrollSpeed + delta)
+        userDefaults.set(scrollSpeed, forKey: "scrollSpeed")
+    }
+
+    private static func clampedSpeed(_ speed: Double) -> Double {
+        min(maximumSpeed, max(minimumSpeed, speed))
     }
     
     /// Jump to line with flash highlight and auto-resume after delay

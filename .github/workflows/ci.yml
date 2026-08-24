@@ -1,0 +1,20 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: SwiftPM tests
+        run: swift test --disable-sandbox
+
+      - name: Xcode build
+        run: >-
+          xcodebuild -project Kyuva.xcodeproj -scheme Kyuva -configuration Debug
+          -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+          -derivedDataPath "$RUNNER_TEMP/KyuvaDerivedData" build

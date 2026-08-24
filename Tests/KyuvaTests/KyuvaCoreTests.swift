@@ -1,0 +1,123 @@
+import XCTest
+@testable import Kyuva
+
+final class ScriptTests: XCTestCase {
+    func testReindexFiltersBlankLinesAndKeepsTokenLineIndexes() {
+        var script = Script(
+            name: "Token fixture",
+            content: "Hello, WORLD!\n\nSwiftUI's camera-side text.\nKyuva"
+        )
+
+        XCTAssertEqual(script.lines, [
+            "Hello, WORLD!",
+            "SwiftUI's camera-side text.",
+            "Kyuva"
+        ])
+        XCTAssertEqual(script.tokens.map(\.word), [
+            "hello", "world", "swiftui", "s", "camera", "side", "text", "kyuva"
+        ])
+        XCTAssertEqual(script.tokens.map(\.lineIndex), [0, 0, 1, 1, 1, 1, 1, 2])
+        XCTAssertEqual(script.tokens.filter(\.isAnchor).map(\.word), ["swiftui"])
+
+        script.content = "Updated line\n\nSecond updated line"
+        script.reindex()
+
+        XCTAssertEqual(script.lines, ["Updated line", "Second updated line"])
+        XCTAssertEqual(script.tokens.map(\.word), ["updated", "line", "second", "updated", "line"])
+        XCTAssertEqual(script.tokens.map(\.lineIndex), [0, 0, 1, 1, 1])
+    }
+}
+
+final class LocalStoreTests: XCTestCase {
+    func testScriptsRoundTripThroughInjectedDirectory() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("KyuvaTests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let queue = DispatchQueue(label: "com.kyuva.tests.local-store")
+        let store = LocalStore(directoryURL: directory, saveQueue: queue)
+        let script = Script(name: "Round trip", content: "First line\nSecond line")
+
+        store.saveScripts([script])
+        store.waitForPendingWrites()
+
+        let loaded = store.loadScripts()
+        XCTAssertEqual(loaded.count, 1)
+        XCTAssertEqual(loaded.first?.id, script.id)
+        XCTAssertEqual(loaded.first?.name, script.name)
+        XCTAssertEqual(loaded.first?.content, script.content)
+        XCTAssertEqual(loaded.first?.lines, script.lines)
+        XCTAssertEqual(loaded.first?.tokens.map(\.word), script.tokens.map(\.word))
+    }
+
+    func testCorruptPrimaryRecoversLastKnownGoodBackupAndPreservesEvidence() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("KyuvaRecoveryTests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let store = LocalStore(
+            directoryURL: directory,
+            saveQueue: DispatchQueue(label: "com.kyuva.tests.recovery-store")
+        )
+        let lastKnownGood = Script(name: "Recover me", content: "Important local script")
+        let newer = Script(name: "Newer", content: "A later valid revision")
+
+        store.saveScripts([lastKnownGood])
+        store.waitForPendingWrites()
+        store.saveScripts([newer])
+        store.waitForPendingWrites()
+
+        let primaryURL = directory.appendingPathComponent("scripts.json")
+        try Data("not valid JSON".utf8).write(to: primaryURL, options: .atomic)
+
+        let recovered = store.loadScripts()
+        XCTAssertEqual(recovered.map(\.id), [lastKnownGood.id])
+        XCTAssertEqual(recovered.map(\.content), [lastKnownGood.content])
+
+        let preservedFiles = try FileManager.default.contentsOfDirectory(
+            at: directory,
+            includingPropertiesForKeys: nil
+        ).filter { $0.lastPathComponent.hasPrefix("scripts.corrupt-") }
+        XCTAssertEqual(preservedFiles.count, 1)
+        XCTAssertEqual(try Data(contentsOf: preservedFiles[0]), Data("not valid JSON".utf8))
+    }
+}
+
+final class ScrollControllerTests: XCTestCase {
+    func testSavedScrollSpeedAppliesAtStartupAndWhenDefaultsChange() {
+        let suiteName = "KyuvaTests.ScrollController.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.set(72.5, forKey: "scrollSpeed")
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let controller = ScrollController(startTimer: false, userDefaults: defaults)
+        XCTAssertEqual(controller.scrollSpeed, 72.5, accuracy: 0.0001)
+        XCTAssertEqual(controller.scrollOffset, 0)
+
+        defaults.set(118.25, forKey: "scrollSpeed")
+        controller.applyPersistedScrollSpeed(from: defaults)
+
+        XCTAssertEqual(controller.scrollSpeed, 118.25, accuracy: 0.0001)
+        XCTAssertEqual(controller.scrollOffset, 0)
+
+        controller.adjustSpeed(delta: 200)
+        XCTAssertEqual(controller.scrollSpeed, ScrollController.maximumSpeed)
+        XCTAssertEqual(defaults.double(forKey: "scrollSpeed"), ScrollController.maximumSpeed)
+
+        controller.adjustSpeed(delta: -500)
+        XCTAssertEqual(controller.scrollSpeed, ScrollController.minimumSpeed)
+        XCTAssertEqual(defaults.double(forKey: "scrollSpeed"), ScrollController.minimumSpeed)
+    }
+}
+
+final class HotkeyDefinitionTests: XCTestCase {
+    func testFixedHotkeysHaveUniqueSystemDefinitions() {
+        let shortcuts = HotkeyManager.Hotkey.allCases.map(\.shortcut)
+        let systemDefinitions = shortcuts.map { "\($0.keyCode)-\($0.modifiers)" }
+
+        XCTAssertEqual(Set(systemDefinitions).count, shortcuts.count)
+        XCTAssertEqual(HotkeyManager.Hotkey.togglePause.shortcut.display, "⌃⌥Space")
+    }
+}

@@ -30,9 +30,5 @@
     <true/>
     <key>NSHumanReadableCopyright</key>
     <string>© 2026 KikuAI. All rights reserved.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Kyuva uses the microphone for voice-follow scrolling. Your voice is processed entirely on your device and never sent anywhere.</string>
-    <key>NSSpeechRecognitionUsageDescription</key>
-    <string>Kyuva uses on-device speech recognition to scroll your script as you speak. All processing happens locally on your Mac.</string>
 </dict>
 </plist>
