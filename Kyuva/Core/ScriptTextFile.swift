@@ -20,10 +20,27 @@ enum ScriptTextImportError: Error, LocalizedError {
 enum ScriptTextFile {
     static let maximumBytes = 1_048_576
 
+    static func writeExport(
+        name: String,
+        content: String,
+        in baseDirectory: URL = FileManager.default.temporaryDirectory
+    ) throws -> URL {
+        let directory = baseDirectory
+            .appendingPathComponent("Kyuva-Share-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: directory,
+            withIntermediateDirectories: true
+        )
+        let url = directory.appendingPathComponent(exportName(for: name))
+        try Data(content.utf8).write(to: url, options: .atomic)
+        return url
+    }
+
     static func exportName(for name: String) -> String {
-        let sourceName = name.lowercased().hasSuffix(".txt")
-            ? String(name.dropLast(4))
-            : name
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let sourceName = trimmedName.lowercased().hasSuffix(".txt")
+            ? String(trimmedName.dropLast(4))
+            : trimmedName
         let disallowed = CharacterSet.controlCharacters
             .union(CharacterSet(charactersIn: "/:"))
         let cleaned = sourceName

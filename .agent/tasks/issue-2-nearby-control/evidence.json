@@ -1,0 +1,98 @@
+{
+  "status": "BLOCKED",
+  "capturedAt": "2026-08-25T18:48:17Z",
+  "acceptanceCriteria": {
+    "AC1": {
+      "status": "UNKNOWN",
+      "evidence": "Actual iPhone simulator ShareLink -> Save to Files -> fileImporter round-trip passed with the exact committed 48-byte UTF-8 artifact; the required physical Mac <-> iPhone AirDrop/Files matrix is still unavailable."
+    },
+    "AC2": {
+      "status": "UNKNOWN",
+      "evidence": "TLS-PSK matching and mismatched loopback checks pass and the simulator discovers the advertised service, but real macOS Local Network consent and the physical Bonjour session remain unproved."
+    },
+    "AC3": {
+      "status": "PASS",
+      "evidence": "The bounded five-command protocol, version/key/sequence/replay/frame validation, one-client behavior, and fresh 31-test suite pass."
+    },
+    "AC4": {
+      "status": "UNKNOWN",
+      "evidence": "Simulator discovery and bounded visible timeout pass; the required physical iPhone-to-Mac command and acknowledgement matrix remains unavailable."
+    },
+    "AC5": {
+      "status": "PASS",
+      "evidence": "Current source and prior product inspection match the frozen entitlement, privacy, Bonjour, dependency, and prohibited-capability contract."
+    },
+    "AC6": {
+      "status": "PASS",
+      "evidence": "Source products remain version 1.0 build 2; during this repository slice App Store Connect remained on the already uploaded macOS 1.0 build 1."
+    },
+    "AC7": {
+      "status": "PASS",
+      "evidence": "Fresh 31-test run and unsigned macOS universal, iOS, and watchOS Release builds passed from disposable directories; the current read-only verdict records every criterion."
+    },
+    "AC8": {
+      "status": "UNKNOWN",
+      "evidence": "The required physical iPhone 15 Pro and paired Apple Watch Series 10 install, prompt, idle-sleep, Mac-remote, and Watch regression matrix remains unavailable."
+    },
+    "AC9": {
+      "status": "PASS",
+      "evidence": "No upload, App Review action, accessibility publication, credential, provider, agreement, or irreversible action occurred inside this repository slice."
+    }
+  },
+  "checks": {
+    "swiftPackageTests": {
+      "status": "PASS",
+      "evidence": "swift test --scratch-path <temporary-root>/SwiftPM; 31 tests passed, 0 failures"
+    },
+    "macOSUniversalReleaseBuild": {
+      "status": "PASS",
+      "evidence": "unsigned xcodebuild Release; x86_64 arm64; BUILD SUCCEEDED"
+    },
+    "iOSReleaseBuild": {
+      "status": "PASS",
+      "evidence": "unsigned xcodebuild Release with embedded Watch target; BUILD SUCCEEDED"
+    },
+    "watchOSReleaseBuild": {
+      "status": "PASS",
+      "evidence": "independent unsigned xcodebuild Release; BUILD SUCCEEDED"
+    },
+    "systemFileRoundTrip": {
+      "status": "PASS",
+      "evidence": "Kyuva ShareLink saved QA Scene-One.txt through the iOS system Files UI; Kyuva fileImporter then created and selected QA Scene-One with the exact Unicode content"
+    },
+    "hostAccessibilityPreferences": {
+      "status": "PASS",
+      "evidence": "Release prompt remained legible under temporary Increase Contrast and Reduce Transparency; both were restored off and the original Local Network pane was restored. The host exposes no separate Bold Text setting."
+    },
+    "changedBehaviorReview": {
+      "status": "PASS",
+      "evidence": "No findings. Residual risk is limited to the explicit physical-device and real Local Network consent gates."
+    },
+    "diffCheck": {
+      "status": "PASS",
+      "evidence": "git diff --check"
+    }
+  },
+  "rawArtifacts": [
+    {
+      "path": "raw/files/QA Scene-One.txt",
+      "sha256": "9cf2c31d1df6b252b660f7a017ea2f17578205b76da47332dcca1637d9cba707"
+    },
+    {
+      "path": "raw/screenshots/ios-share-save-final.png",
+      "sha256": "39df94d39746b7258f74875ca96f85baf58dc0932e0ed9eadcff382d5405107e"
+    },
+    {
+      "path": "raw/screenshots/ios-import-roundtrip-final.png",
+      "sha256": "77ffc942e6982fbab91dd5e0fed73d15034408b9534d57db3241d19242244353"
+    },
+    {
+      "path": "raw/screenshots/macos-increase-contrast-final.png",
+      "sha256": "344c285bcdae02945087b2e3ec98f725d60279afeda562adb85262d9c94b3297"
+    },
+    {
+      "path": "raw/screenshots/macos-reduce-transparency-final.png",
+      "sha256": "fd1ab1c62d09d6ca38b3e3e611a32ed699044459e86f13bd4ae275ff807eed09"
+    }
+  ]
+}

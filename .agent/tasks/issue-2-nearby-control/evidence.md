@@ -1,19 +1,19 @@
 # Evidence — 2026-08-25
 
 All commands ran from the repository root. Disposable build data and full logs
-lived under a validated `/tmp/kyuva-final.*` root and are not committed because
+lived under validated task-specific `/tmp` roots and are not committed because
 they contain machine-local paths and process identifiers.
 
 ## Deterministic checks
 
 - `swift test --scratch-path <scratch>/swiftpm`
-  - PASS: 30 tests, 0 failures
+  - PASS: 31 tests, 0 failures
   - includes matching TLS-PSK loopback handshake
   - includes inverted mismatched-PSK readiness check
   - includes strict command, version, sequence, replay, frame-size, nested-key,
     response-sequence, and raw-progress validation
-  - includes UTF-8, exact 1 MiB, oversized import, and safe export-filename
-    boundaries
+  - includes UTF-8, exact 1 MiB, oversized import, safe export-filename
+    boundaries, and exact atomic export-file creation
 - macOS universal Release build
   - PASS: `xcodebuild`, `** BUILD SUCCEEDED **`
   - binary architectures: `x86_64 arm64`
@@ -67,9 +67,14 @@ dependency found” metadata skip; the targets do not define App Intents.
 - A sandboxed Mac QA identity reached the new 20-second Local Network recovery
   message. macOS did not display or register a consent entry, so real Mac
   Bonjour advertisement and physical cross-device commands remain unproved.
-- Simulator `.txt` import/share round-trip and a large Dynamic Type layout pass
-  succeeded earlier in this slice. Physical AirDrop/Files transfer remains
-  unproved.
+- The final iPhone simulator invoked Kyuva's actual `ShareLink`, chose the
+  system Save to Files action, and wrote `QA Scene-One.txt`. The saved artifact
+  was 48 bytes, had SHA-256
+  `9cf2c31d1df6b252b660f7a017ea2f17578205b76da47332dcca1637d9cba707`,
+  and contained the exact synthetic UTF-8 source including the camera emoji.
+  Kyuva's actual system file importer then created and selected
+  `QA Scene-One` with the same text and eight-word count. Physical
+  AirDrop/Files transfer remains unproved.
 
 ## External-state boundary
 
@@ -103,3 +108,49 @@ accessibility tree.
 The verifier verdict was not reissued for this Mac-only accessibility delta.
 The physical transfer, Bonjour consent, iPhone remote, and Watch gates remain
 UNKNOWN/HOLD; App Store Connect was not changed.
+
+## Transfer and host-accessibility delta — 2026-08-25T18:47:03Z
+
+The final source adds a deterministic export-file boundary and routes
+CoreTransferable through it. A first focused test reproduced the duplicate
+extension defect for an uppercase `.TXT` title with trailing whitespace; the
+suffix-normalization fix then passed the focused suite and the complete run.
+
+- `swift test --scratch-path <scratch>/SwiftPM`
+  - PASS: 31 tests, 0 failures
+- unsigned macOS universal Release build
+  - PASS: `x86_64 arm64`, `** BUILD SUCCEEDED **`
+- unsigned iOS Release build, including the embedded Watch target
+  - PASS: `** BUILD SUCCEEDED **`
+- independent unsigned watchOS Release build
+  - PASS: `** BUILD SUCCEEDED **`
+- `git diff --check`
+  - PASS
+- skeptical changed-behavior review
+  - PASS: no implementation findings
+  - residual risk remains the physical-device matrix and real Bonjour consent
+
+Committed raw proof:
+
+- `raw/files/QA Scene-One.txt`
+  - exact system-saved export, SHA-256
+    `9cf2c31d1df6b252b660f7a017ea2f17578205b76da47332dcca1637d9cba707`
+- `raw/screenshots/ios-share-save-final.png`
+  - system Files save UI, SHA-256
+    `39df94d39746b7258f74875ca96f85baf58dc0932e0ed9eadcff382d5405107e`
+- `raw/screenshots/ios-import-roundtrip-final.png`
+  - imported script selected with exact synthetic text, SHA-256
+    `77ffc942e6982fbab91dd5e0fed73d15034408b9534d57db3241d19242244353`
+- `raw/screenshots/macos-increase-contrast-final.png`
+  - Release prompt under temporary Increase Contrast, SHA-256
+    `344c285bcdae02945087b2e3ec98f725d60279afeda562adb85262d9c94b3297`
+- `raw/screenshots/macos-reduce-transparency-final.png`
+  - Release prompt under temporary Reduce Transparency, SHA-256
+    `fd1ab1c62d09d6ca38b3e3e611a32ed699044459e86f13bd4ae275ff807eed09`
+
+System Settings reported no separate Bold Text preference on this macOS host.
+Both changed preferences were verified back at their original `off` values,
+and the original Local Network pane was restored. This host and simulator proof
+closes the former local FileRepresentation/system-UI gap only. AC1, AC2, AC4,
+and AC8 remain BLOCKED pending the physical iPhone/Watch matrix and real macOS
+Local Network consent.

@@ -8,20 +8,13 @@ struct ScriptTextTransfer: Transferable {
 
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(exportedContentType: .plainText) { transfer in
-            let directory = FileManager.default.temporaryDirectory
-                .appendingPathComponent("Kyuva-Share-\(UUID().uuidString)", isDirectory: true)
-            try FileManager.default.createDirectory(
-                at: directory,
-                withIntermediateDirectories: true
+            SentTransferredFile(
+                try ScriptTextFile.writeExport(
+                    name: transfer.name,
+                    content: transfer.content
+                )
             )
-            let url = directory.appendingPathComponent(transfer.fileName)
-            try Data(transfer.content.utf8).write(to: url, options: .atomic)
-            return SentTransferredFile(url)
         }
-    }
-
-    private var fileName: String {
-        ScriptTextFile.exportName(for: name)
     }
 }
 

@@ -3,6 +3,29 @@ import XCTest
 @testable import Kyuva
 
 final class ScriptTextFileTests: XCTestCase {
+    func testWriteExportCreatesAReadableUTF8TextFileWithSafeName() throws {
+        let baseDirectory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("KyuvaExportTests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(
+            at: baseDirectory,
+            withIntermediateDirectories: true
+        )
+        defer { try? FileManager.default.removeItem(at: baseDirectory) }
+
+        let url = try ScriptTextFile.writeExport(
+            name: " Scene/One.TXT ",
+            content: "Opening line\n[Smile at camera] 🎥",
+            in: baseDirectory
+        )
+
+        XCTAssertEqual(url.lastPathComponent, "Scene-One.txt")
+        XCTAssertEqual(url.deletingLastPathComponent().deletingLastPathComponent(), baseDirectory)
+        XCTAssertEqual(
+            try String(contentsOf: url, encoding: .utf8),
+            "Opening line\n[Smile at camera] 🎥"
+        )
+    }
+
     func testExportNameIsSafeBoundedAndKeepsOneTextExtension() {
         XCTAssertEqual(
             ScriptTextFile.exportName(for: "  Scene/Take:One  .TXT"),

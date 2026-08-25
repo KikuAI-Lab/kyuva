@@ -27,31 +27,18 @@ Status: BLOCKED.
    host-advertised service, but that is supporting evidence only and does not
    close the physical gate. This is a release gate, not proof of a code failure.
 
-3. **MEDIUM — deterministic transfer boundary is closed; actual integration
-   remains unverified (AC1, AC3).**
-
-   The former deterministic boundary gap is closed: `Kyuva/Core/ScriptTextFile.swift:3-46`
-   now centralizes the 1 MiB limit, UTF-8 decoding, and bounded safe export
-   name; `Tests/KyuvaTests/KyuvaCoreTests.swift:5-42` covers the exact limit,
-   oversize and invalid UTF-8 rejection, and filename sanitization. The fresh
-   SwiftPM run passes 30/30, and `Kyuva.xcodeproj/project.pbxproj` includes
-   `ScriptTextFile.swift` in both Mac and iOS source phases.
-
-   The residual gap is deliberately narrower: no deterministic test invokes
-   `ScriptTextTransfer.transferRepresentation`'s `FileRepresentation` closure
-   or the actual `ShareLink`/`fileImporter` system UI. The simulator `.txt`
-   round-trip is supporting evidence, not physical AirDrop/Files proof. The
-   actual `LocalRemoteServer`/`MacRemoteClient` framing loop is also not driven
-   end-to-end; NWBrowser discovery and Local Network consent remain the
-   separate HIGH F-002 gap.
-
 ## Verified clean in this review
 
-- `swift test --scratch-path <temporary-root>/swiftpm`: 30 tests passed, 0
-  failures, including the new script-transfer boundary tests.
+- `swift test --scratch-path <temporary-root>/swiftpm`: 31 tests passed, 0
+  failures, including exact atomic export-file creation.
 - Fresh unsigned Release builds passed for macOS universal, iOS, and watchOS;
   fresh signed macOS and iOS builds (with embedded Watch) passed strict deep
   signature verification.
+- `ScriptTextTransfer` now delegates export creation to the tested
+  `ScriptTextFile.writeExport` boundary. The actual iPhone ShareLink → Save to
+  Files → fileImporter system round-trip passed with the committed exact
+  artifact and screenshots. The former F-003 local integration gap is closed;
+  AC1 remains blocked only by its explicit physical AirDrop/Files requirement.
 - Built product inspection passed for version `1.0` build `2`, embedded Watch
   app, `_kyuva._tcp`, local-network usage strings, and the intended Mac
   sandbox capabilities.

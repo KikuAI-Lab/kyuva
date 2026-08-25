@@ -65,3 +65,26 @@ commands, remote-controller breadth, cloud collaboration, and recording tools.
 Kyuva's next differentiator should remain the narrow local-first path: after
 the v1 physical release gates close, prototype offline, stage-direction-aware
 speech following before considering cloud sync or a recording suite.
+
+The final transfer-proof delta keeps CoreTransferable as a thin adapter. Its
+`FileRepresentation` closure now delegates file creation to
+`ScriptTextFile.writeExport`, which is injectable and covered without invoking
+system UI. That test exposed a real edge case: a title ending in an uppercase
+`.TXT` followed by whitespace produced a duplicate extension. Trimming before
+suffix detection fixes the case without changing the existing filename limit
+or sanitization contract.
+
+The same source then passed an actual iPhone simulator system round-trip with
+synthetic content: Kyuva's Share Sheet saved `QA Scene-One.txt` to Files, the
+saved 48-byte UTF-8 artifact matched the source exactly, and Kyuva's system file
+importer created and selected `QA Scene-One` with the same Unicode content.
+This closes the former local FileRepresentation/system-UI evidence gap, but it
+does not substitute for AC1's mandatory physical AirDrop/Files matrix.
+
+The approved macOS accessibility preference pass temporarily exercised the
+current Release prompt with Increase Contrast and Reduce Transparency, one at a
+time. Both remained legible and exposed the same prompt semantics. The host has
+no separate Bold Text setting (`No Results for “Bold Text”` in System
+Settings). Increase Contrast and Reduce Transparency were restored to their
+original off state, and System Settings was returned to its original Local
+Network pane.

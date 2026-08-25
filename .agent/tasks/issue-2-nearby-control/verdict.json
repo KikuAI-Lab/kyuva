@@ -1,67 +1,56 @@
 {
   "status": "BLOCKED",
-  "verifiedAt": "2026-08-25T16:35:43Z",
-  "verifier": "adversarial_nearby_control_review",
+  "verifiedAt": "2026-08-25T18:48:17Z",
+  "verifier": "fresh_read_only_transfer_review",
   "productionCodeChangedByVerifier": false,
   "reviewScope": [
     ".agent/tasks/issue-2-nearby-control/spec.md",
+    ".agent/tasks/issue-2-nearby-control/evidence.md",
+    ".agent/tasks/issue-2-nearby-control/evidence.json",
+    "Kyuva/Core/ScriptTextFile.swift",
+    "KyuvaMobile/Transfer/ScriptTextTransfer.swift",
+    "Tests/KyuvaTests/KyuvaCoreTests.swift",
     "Kyuva/Core/LocalRemoteProtocol.swift",
     "Kyuva/Core/LocalRemoteSecurity.swift",
     "Kyuva/Platform/LocalRemoteServer.swift",
-    "KyuvaMobile/Connectivity/MacRemoteClient.swift",
-    "KyuvaMobile/Transfer/ScriptTextTransfer.swift",
-    "Kyuva/Core/ScriptTextFile.swift",
-    "KyuvaMobile/UI/MobileMacRemoteView.swift",
-    "Kyuva/App/AppDelegate.swift",
-    "Kyuva/UI/OverlayWindowController.swift",
-    "Kyuva/UI/SettingsView.swift",
-    "KyuvaMobile/UI/MobileEditorView.swift",
-    "KyuvaMobile/App/KyuvaMobileApp.swift",
-    "Kyuva/Resources/Info.plist",
-    "KyuvaMobile/Resources/Info.plist",
-    "Kyuva/Resources/Kyuva.entitlements",
-    "Kyuva.xcodeproj/project.pbxproj",
-    "PRIVACY.md",
-    "README.md",
-    "SUPPORT.md",
-    "Tests/KyuvaTests/KyuvaCoreTests.swift"
+    "KyuvaMobile/Connectivity/MacRemoteClient.swift"
   ],
   "checks": {
     "swiftPackageTests": {
       "status": "PASS",
-      "evidence": "swift test --scratch-path <temporary-root>/swiftpm; 30 tests passed, 0 failures, including UTF-8, exact 1 MiB, oversized import, and safe export-filename boundaries"
+      "evidence": "fresh verifier run: 31 tests passed, 0 failures, including exact atomic UTF-8 export creation and filename normalization"
     },
     "macOSUniversalReleaseBuild": {
       "status": "PASS",
-      "evidence": "fresh unsigned universal xcodebuild Release build succeeded with x86_64 and arm64; fresh signed macOS Release build and strict deep signature verification also passed"
+      "evidence": "fresh unsigned universal Release build succeeded with x86_64 and arm64"
     },
     "iOSReleaseBuild": {
       "status": "PASS",
-      "evidence": "fresh unsigned xcodebuild Release build succeeded; fresh signed iOS Release build with embedded Watch app and strict deep signature verification also passed"
+      "evidence": "fresh unsigned iOS Release build with embedded Watch target succeeded"
     },
     "watchOSReleaseBuild": {
       "status": "PASS",
-      "evidence": "fresh independent unsigned watchOS Release build succeeded; embedded Watch product was present and strict deep signature verification passed in the signed iOS product"
+      "evidence": "fresh independent unsigned watchOS Release build succeeded"
     },
-    "productConfigurationInspection": {
+    "systemFileRoundTrip": {
       "status": "PASS",
-      "evidence": "Built plists show macOS/iOS/watchOS version 1.0 build 2; iOS embeds Watch app; Bonjour _kyuva._tcp and local-network strings are present; source entitlements contain only sandbox, user-selected file access, network client/server"
+      "evidence": "actual simulator ShareLink -> Save to Files -> fileImporter path passed with committed 48-byte UTF-8 artifact and screenshots"
     },
-    "diffAndForbiddenSurfaceScan": {
+    "hostAccessibilityPreferences": {
       "status": "PASS",
-      "evidence": "git diff --check passed; no MultipeerConnectivity, backend, URLSession, analytics, StoreKit, camera, microphone, Speech, or third-party package was added; remote payload contains no script content"
+      "evidence": "temporary Increase Contrast and Reduce Transparency prompt checks passed; preferences and prior System Settings pane were restored; current host has no separate Bold Text setting"
+    },
+    "diffAndChangedBehaviorReview": {
+      "status": "PASS",
+      "evidence": "git diff --check passed; adversarial changed-behavior review found no correctness, regression, data-loss, permission, or silent-failure issue in the export delta"
     },
     "macLocalNetworkConsent": {
       "status": "UNKNOWN",
-      "evidence": "A sandboxed Mac QA identity reached the 20-second Local Network recovery state, but macOS did not display or register a consent entry; real Mac Bonjour advertisement remains unproved"
+      "evidence": "real physical macOS Local Network consent and Bonjour registration remain unavailable"
     },
-    "physicalTransfer": {
+    "physicalTransferRemoteAndWatch": {
       "status": "UNKNOWN",
-      "evidence": "iPhone simulator .txt import/share round-trip passed; no fresh physical Mac-to-iPhone or iPhone-to-Mac AirDrop/Files pass was available, so AC1 remains unproved"
-    },
-    "physicalRemoteAndWatchRegression": {
-      "status": "UNKNOWN",
-      "evidence": "Simulator Watch remote and visible TLS timeout behavior passed earlier in the slice; physical iPhone/Watch were unavailable at final readback and no current build was installed"
+      "evidence": "the required physical Mac/iPhone/Watch acceptance matrix remains unavailable"
     }
   },
   "acceptanceCriteria": {
@@ -82,30 +71,27 @@
       "status": "BLOCKED",
       "criteria": ["AC1", "AC4", "AC8"],
       "title": "Mandatory physical acceptance is unproven",
-      "evidence": "Spec AC1/AC4/AC8 at .agent/tasks/issue-2-nearby-control/spec.md:34-37,48-51,69-73 requires a fresh physical transfer pass, physical iPhone-to-Mac controls, real prompt ergonomics/idle-sleep checks, and iPhone-to-Watch regression. No sanitized device receipt or physical readback exists in the current task artifacts.",
-      "impact": "Builds and loopback tests cannot establish that AirDrop/Files, Bonjour discovery, Local Network consent, remote controls, or WatchConnectivity work on the intended devices. Do not call AC1, AC4, or AC8 PASS or ship this slice.",
-      "requiredResolution": "Run and record the fresh physical matrix without credentials or provider mutations; preserve only sanitized evidence."
+      "evidence": "Frozen spec AC1/AC4/AC8 requires a fresh physical AirDrop/Files pass, physical iPhone-to-Mac controls and acknowledgements, real prompt viewport/idle-sleep checks, and iPhone-to-Watch regression. No sanitized physical-device receipt exists in the current task artifacts.",
+      "impact": "Simulator and build evidence cannot establish physical transfer, prompt ergonomics, Mac remote controls, or WatchConnectivity on the intended devices.",
+      "requiredResolution": "Run and record the physical matrix without credentials or provider mutations; preserve only sanitized evidence."
     },
     {
       "id": "F-002",
       "severity": "HIGH",
       "status": "BLOCKED",
       "criteria": ["AC2"],
-      "title": "Real Bonjour/browser and local-network-consent integration is not verified",
-      "evidence": "Tests/KyuvaTests/KyuvaCoreTests.swift:417-519 covers direct NWListener/NWConnection loopback TLS-PSK, but no test drives Kyuva/Platform/LocalRemoteServer.swift:83-163 plus KyuvaMobile/Connectivity/MacRemoteClient.swift:117-247 through NWBrowser, service registration, or the macOS/iOS Local Network permission path. The simulator discovered a host-advertised service, but the implementation's 20-second authorization probe and service-registration state transition remain unobserved on the physical Mac.",
-      "impact": "The kill gate is conditional on TLS-PSK plus Bonjour building and connecting on the minimum targets and on consent being usable. The unsigned Release builds prove API compilation only, not discovery or consent behavior.",
-      "requiredResolution": "Exercise the real listener/browser path on physical Mac and iPhone, including correct and wrong code, denial/retry, disconnect, and one-session enforcement; record PASS/FAIL/UNKNOWN."
-    },
+      "title": "Real Bonjour and Local Network consent integration is unverified",
+      "evidence": "Direct TLS-PSK loopback tests and simulator discovery pass, but no physical test drives the real Mac listener and iPhone browser through service registration, Local Network consent, correct/wrong code, denial/retry, disconnect, and one-session enforcement.",
+      "impact": "Release builds prove API compilation and local protocol behavior, not the physical permission and discovery path required by the frozen criterion.",
+      "requiredResolution": "Exercise the real listener/browser path on physical Mac and iPhone and record PASS/FAIL/UNKNOWN."
+    }
+  ],
+  "resolvedFindings": [
     {
       "id": "F-003",
-      "severity": "MEDIUM",
-      "status": "BLOCKED",
-      "criteria": ["AC1", "AC3"],
-      "title": "Deterministic script-transfer boundary is closed; actual FileRepresentation and transport integration remain unverified",
-      "closedScope": "Kyuva/Core/ScriptTextFile.swift:3-46 now centralizes the 1 MiB limit, UTF-8 decoding, and bounded safe export name. Tests/KyuvaTests/KyuvaCoreTests.swift:5-42 adds four boundary tests, and the fresh SwiftPM run passes 30/30. KyuvaMobile/Transfer/ScriptTextTransfer.swift:5-52 uses those helpers for FileRepresentation export and security-scoped import; project.pbxproj includes ScriptTextFile in both Mac and iOS source phases.",
-      "residualScope": "No deterministic test invokes ScriptTextTransfer.transferRepresentation's FileRepresentation closure or the actual ShareLink/fileImporter system UI. The simulator .txt round-trip is supporting evidence, not physical AirDrop/Files proof. The actual LocalRemoteServer/MacRemoteClient framing path is still not driven end-to-end; NWBrowser discovery and Local Network consent remain the separate F-002 gap.",
-      "impact": "The previous byte-boundary, UTF-8, and filename-sanitization test gap is closed. AC1 physical transfer and AC3 real transport integration cannot be marked PASS from these unit/build results alone.",
-      "requiredResolution": "Preserve F-003 as BLOCKED for the residual integration evidence; obtain the physical transfer/remote matrix for F-001 and, if deterministic coverage is required, add a harness for the FileRepresentation closure and real server/client framing without moving script content onto the remote channel."
+      "status": "PASS",
+      "title": "Deterministic export and actual simulator system-file integration",
+      "evidence": "CoreTransferable delegates to tested ScriptTextFile.writeExport; the 31-test suite passes; actual ShareLink, Save to Files, and fileImporter UI passed with the committed exact artifact. AC1 remains blocked only by its explicit physical-device requirement."
     }
   ],
   "unknowns": [
@@ -114,9 +100,7 @@
     "Physical iPhone-to-Mac remote commands, acknowledgements, hidden-prompt error, and disconnect behavior",
     "Physical iPhone prompt viewport and idle-sleep behavior",
     "Physical iPhone-to-Watch controls after this build",
-    "Direct CoreTransferable FileRepresentation closure and ShareLink/fileImporter execution beyond the simulator round-trip",
-    "End-to-end LocalRemoteServer/MacRemoteClient framing beyond direct protocol and TLS loopback tests",
-    "Signing/install behavior and any App Store entitlement review for the new build"
+    "Signing/install behavior on the currently offline physical devices"
   ],
-  "summary": "The new deterministic script-transfer boundary is covered and the fresh 30-test, unsigned universal, signed Mac/iOS+embedded-Watch, and strict codesign checks pass. The slice remains BLOCKED because physical transfer, macOS Local Network consent/Bonjour, Mac remote, and Watch regression gates lack current physical evidence; the FileRepresentation and real server/client transport paths retain an integration-test gap."
+  "summary": "No implementation finding remains in the transfer delta: exact export creation, uppercase extension normalization, actual simulator ShareLink/Files/fileImporter integration, 31 tests, and all three Release builds pass. The task remains BLOCKED only because the frozen spec requires physical AirDrop/Files, real macOS Local Network consent and Bonjour pairing, physical iPhone-to-Mac controls, and physical Watch regression evidence."
 }
