@@ -30,6 +30,7 @@ struct WatchRemoteView: View {
                 } label: {
                     Image(systemName: session.snapshot.isPaused ? "play.fill" : "pause.fill")
                         .font(.title)
+                        .foregroundStyle(.black)
                         .frame(maxWidth: .infinity, minHeight: 48)
                 }
                 .buttonStyle(.borderedProminent)

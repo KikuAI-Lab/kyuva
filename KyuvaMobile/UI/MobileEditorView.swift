@@ -53,9 +53,11 @@ struct MobileEditorView: View {
                     } label: {
                         Label("Present", systemImage: "play.fill")
                             .font(.headline)
+                            .foregroundStyle(.black)
                             .frame(maxWidth: .infinity, minHeight: 48)
                     }
                     .buttonStyle(.borderedProminent)
+                    .tint(.cyan)
                     .disabled(scriptManager.scripts[index].lines.isEmpty)
                 } else {
                     ContentUnavailableView(

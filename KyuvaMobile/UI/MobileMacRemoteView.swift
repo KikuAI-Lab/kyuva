@@ -14,7 +14,7 @@ struct MobileMacRemoteView: View {
         Form {
             Section {
                 Label(client.state.statusText, systemImage: statusSymbol)
-                    .foregroundStyle(statusColor)
+                    .foregroundStyle(.primary)
                     .accessibilityIdentifier("iphoneMacRemoteStatus")
             }
 
@@ -141,7 +141,7 @@ struct MobileMacRemoteView: View {
                     .accessibilityValue("\(Int(client.snapshot.progress * 100)) percent")
                 Text(client.snapshot.isPromptActive ? "Ready" : "Show the teleprompter on your Mac")
                     .font(.caption)
-                    .foregroundStyle(client.snapshot.isPromptActive ? Color.secondary : Color.orange)
+                    .foregroundStyle(.secondary)
             }
         }
     }
@@ -203,13 +203,4 @@ struct MobileMacRemoteView: View {
         return "laptopcomputer.and.iphone"
     }
 
-    private var statusColor: Color {
-        if client.hasSecureConnection, client.snapshot.isPromptActive {
-            return .green
-        }
-        if case .failed = client.state {
-            return .orange
-        }
-        return .secondary
-    }
 }

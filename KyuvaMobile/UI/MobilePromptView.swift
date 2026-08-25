@@ -231,6 +231,7 @@ struct MobilePromptView: View {
                     } label: {
                         Image(systemName: scrollController.isPaused ? "play.fill" : "pause.fill")
                             .font(.title2)
+                            .foregroundStyle(.black)
                             .frame(width: 64, height: 52)
                             .background(.cyan, in: Capsule())
                     }
@@ -249,7 +250,9 @@ struct MobilePromptView: View {
 
                     Text(scrollController.paceControlLabel)
                         .font(.callout.monospacedDigit().bold())
-                        .frame(width: 40)
+                        .lineLimit(1)
+                        .frame(minWidth: 40)
+                        .layoutPriority(1)
                         .accessibilityLabel("Current pace")
                         .accessibilityValue(scrollController.paceControlLabel)
                 }

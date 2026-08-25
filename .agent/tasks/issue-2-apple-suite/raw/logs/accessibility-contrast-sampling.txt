@@ -1,0 +1,17 @@
+Accessibility contrast sampling — 2026-08-25
+
+Method: read the final lossless simulator PNG, select the dominant non-neutral
+accent color inside the button region, and calculate WCAG relative luminance
+against the rendered black foreground.
+
+ios-max-text-light-editor.png
+  accent RGB: 0, 126, 174
+  black-on-accent contrast: 4.60:1
+
+ios-max-text-prompt-controls.png
+  accent RGB: 0, 126, 174
+  black-on-accent contrast: 4.60:1
+
+watch-contrast-controls.png
+  accent RGB: 60, 211, 254
+  black-on-accent contrast: 11.94:1

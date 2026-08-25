@@ -28,12 +28,12 @@ struct MobilePromptSettingsView: View {
             }
 
             Section("Pace") {
-                Picker("Mode", selection: $paceMode) {
+                Picker("Pace mode", selection: $paceMode) {
                     Text("Fixed").tag(ScrollPaceMode.fixedSpeed.rawValue)
                     Text("Words/min").tag(ScrollPaceMode.wordsPerMinute.rawValue)
                     Text("Finish time").tag(ScrollPaceMode.targetDuration.rawValue)
                 }
-                .pickerStyle(.segmented)
+                .pickerStyle(.navigationLink)
 
                 switch ScrollPaceMode(rawValue: paceMode) ?? .fixedSpeed {
                 case .fixedSpeed:
@@ -61,6 +61,7 @@ struct MobilePromptSettingsView: View {
             }
         }
         .navigationTitle("Prompt Settings")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Done") { dismiss() }
