@@ -201,9 +201,9 @@ class OverlayWindowController: NSWindowController {
         let newX = screenFrame.midX - newWidth / 2
         let newY = screenFrame.maxY - newHeight // Always at the very top of monitor
         
-        // Animate the resize
+        // Respect the system's Reduce Motion setting for non-essential resizing.
         NSAnimationContext.runAnimationGroup { context in
-            context.duration = 0.2
+            context.duration = NSWorkspace.shared.accessibilityDisplayShouldReduceMotion ? 0 : 0.2
             window.animator().setFrame(
                 NSRect(x: newX, y: newY, width: newWidth, height: newHeight),
                 display: true
@@ -361,6 +361,7 @@ class OverlayWindow: NSWindow {
 
 /// SwiftUI content for the overlay
 struct OverlayContentView: View {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @ObservedObject var scriptManager: ScriptManager
     @ObservedObject var scrollController: ScrollController
     var onHover: (Bool) -> Void
@@ -611,7 +612,7 @@ struct OverlayContentView: View {
         }
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 16, bottomTrailingRadius: 16, topTrailingRadius: 0))
         .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.15)) {
+            withAnimation(reduceMotion ? nil : .easeInOut(duration: 0.15)) {
                 showControls = hovering
             }
             onHover(hovering)

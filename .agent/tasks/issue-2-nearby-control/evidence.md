@@ -83,3 +83,23 @@ dependency found” metadata skip; the targets do not define App Intents.
 - Task-created QA app copies were stopped and moved to Trash, so they remain
   recoverable. No user app data, provisioning profiles, archives, or device
   support files were removed.
+
+## Post-verdict accessibility delta
+
+After the independent verdict timestamp, the Mac source received two bounded
+accessibility fixes: non-essential hover and window-resize animations now honor
+Reduce Motion, and the one-time pairing code exposes its formatted value to the
+accessibility tree.
+
+- `swift test --disable-sandbox --scratch-path <scratch>/SwiftPM`
+  - PASS: 30 tests, 0 failures
+- `swift build -c release --scratch-path <scratch>/SwiftPMRelease`
+  - PASS
+- unsigned Xcode macOS Release build
+  - PASS: universal `x86_64 arm64`, `** BUILD SUCCEEDED **`
+- `git diff --check`
+  - PASS
+
+The verifier verdict was not reissued for this Mac-only accessibility delta.
+The physical transfer, Bonjour consent, iPhone remote, and Watch gates remain
+UNKNOWN/HOLD; App Store Connect was not changed.

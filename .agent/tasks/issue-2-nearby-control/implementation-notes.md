@@ -54,3 +54,14 @@ The final iPhone simulator build did discover a host-advertised
 connection timeout. Unit tests separately prove matching TLS-PSK succeeds and a
 mismatched PSK never reaches ready. These are supporting checks only; they do
 not replace the physical-device criteria.
+
+Post-verdict accessibility hardening stays deliberately small: AppKit window
+resizing and SwiftUI hover controls honor the system Reduce Motion preference,
+and the displayed pairing code provides an explicit accessibility value.
+
+A fresh read-only inspection of Teleprompter.com on Mac confirmed that its
+largest surface areas are speech-following with offline models and voice
+commands, remote-controller breadth, cloud collaboration, and recording tools.
+Kyuva's next differentiator should remain the narrow local-first path: after
+the v1 physical release gates close, prototype offline, stage-direction-aware
+speech following before considering cloud sync or a recording suite.

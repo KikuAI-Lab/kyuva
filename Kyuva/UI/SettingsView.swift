@@ -407,6 +407,7 @@ struct SettingsView: View {
                             .font(.system(.title2, design: .monospaced, weight: .semibold))
                             .textSelection(.enabled)
                             .accessibilityLabel("Pairing code")
+                            .accessibilityValue(LocalRemoteSecurity.formattedPairingCode(pairingCode))
                             .accessibilityIdentifier("macRemotePairingCode")
                         Spacer()
                         Button("Copy") {
