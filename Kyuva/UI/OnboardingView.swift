@@ -68,8 +68,8 @@ struct OnboardingView: View {
                         }
                         .padding(.horizontal, 20)
                         .padding(.vertical, 8)
-                        .background(Color.accentColor)
-                        .foregroundColor(.white)
+                        .background(Color.cyan)
+                        .foregroundColor(.black)
                         .cornerRadius(8)
                     }
                     .buttonStyle(.plain)
@@ -81,8 +81,8 @@ struct OnboardingView: View {
                         }
                         .padding(.horizontal, 20)
                         .padding(.vertical, 8)
-                        .background(Color.accentColor)
-                        .foregroundColor(.white)
+                        .background(Color.cyan)
+                        .foregroundColor(.black)
                         .cornerRadius(8)
                     }
                     .buttonStyle(.plain)
@@ -299,9 +299,9 @@ struct StepRow: View {
         HStack(alignment: .top, spacing: 16) {
             Text("\(number)")
                 .font(.headline)
-                .foregroundColor(.white)
+                .foregroundColor(.black)
                 .frame(width: 28, height: 28)
-                .background(Circle().fill(Color.accentColor))
+                .background(Circle().fill(Color.cyan))
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)

@@ -361,7 +361,9 @@ class OverlayWindow: NSWindow {
 
 /// SwiftUI content for the overlay
 struct OverlayContentView: View {
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     @ObservedObject var scriptManager: ScriptManager
     @ObservedObject var scrollController: ScrollController
     var onHover: (Bool) -> Void
@@ -431,11 +433,15 @@ struct OverlayContentView: View {
         default: return 1.0
         }
     }
+
+    private var requiresOpaqueBackground: Bool {
+        reduceTransparency || colorSchemeContrast == .increased
+    }
     
     // Create gradient mask for focus mode (dims edges, bright center)
     @ViewBuilder
     private func focusModeGradient(height: CGFloat) -> some View {
-        if focusModeIntensity == 0 {
+        if focusModeIntensity == 0 || colorSchemeContrast == .increased {
             Rectangle().fill(.white)
         } else {
             LinearGradient(
@@ -473,7 +479,7 @@ struct OverlayContentView: View {
                         bottomTrailingRadius: 16,
                         topTrailingRadius: 0
                     )
-                    .fill(.black.opacity(opacity))
+                    .fill(.black.opacity(requiresOpaqueBackground ? 1 : opacity))
                     
                     // Fixed-position container for the scrolling content
                     // This allows the mask to stay centered in the window
@@ -497,11 +503,14 @@ struct OverlayContentView: View {
                                         .fixedSize(horizontal: false, vertical: true)
                                         .padding(.vertical, 4)
                                         .padding(.horizontal, 4)
-                                        .background(
+                                        .overlay(
                                             RoundedRectangle(cornerRadius: 6)
-                                                .fill(scrollController.highlightedLine == promptLine.sourceIndex
-                                                      ? Color.yellow.opacity(0.4)
-                                                      : Color.clear)
+                                                .stroke(
+                                                    scrollController.highlightedLine == promptLine.sourceIndex
+                                                        ? Color.yellow
+                                                        : Color.clear,
+                                                    lineWidth: 2
+                                                )
                                         )
                                         .contentShape(Rectangle())
                                         .onTapGesture {
@@ -581,7 +590,7 @@ struct OverlayContentView: View {
                                 .foregroundColor(.white.opacity(0.7))
                                 .padding(.horizontal, 7)
                                 .padding(.vertical, 4)
-                                .background(.black.opacity(0.45))
+                                .background(.black.opacity(requiresOpaqueBackground ? 1 : 0.45))
                                 .clipShape(Capsule())
                         }
                         Spacer()
@@ -597,6 +606,7 @@ struct OverlayContentView: View {
                         VStack {
                             HStack(spacing: 8) {
                                 Image(systemName: scrollController.scrollOffset == 0 ? "play.circle.fill" : "pause.circle.fill")
+                                    .accessibilityHidden(true)
                                 Text(scrollController.scrollOffset == 0 ? "READY" : "PAUSED")
                                     .font(.system(.caption, design: .monospaced).bold())
                                 Spacer()
@@ -720,7 +730,7 @@ struct OverlayContentView: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
-        .background(.black.opacity(0.7))
+        .background(.black.opacity(requiresOpaqueBackground ? 1 : 0.7))
         .foregroundColor(.white)
     }
 

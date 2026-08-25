@@ -1,0 +1,46 @@
+Accessibility Mac contrast sampling — 2026-08-25
+
+Method
+
+- Resolve AppKit system colors separately under Aqua and Dark Aqua without
+  changing the host appearance.
+- Sample uniform 2-by-2 background regions from the final Computer Use
+  screenshots. The capture service supplied JPEGs; the checked-in PNGs are
+  lossless conversions of those rendered captures, so minor JPEG variation is
+  expected.
+- Calculate WCAG relative luminance against the rendered black foreground.
+
+Pre-fix reproduced samples
+
+- Onboarding accent RGB 0,128,254 with white text: 3.81:1.
+- Prominent-control blue RGB 3,120,254 with white text: 4.10:1.
+- A 50%-white stage direction over the former 40%-yellow highlight on black:
+  approximately 2.78:1.
+
+Final semantic system colors
+
+- NSColor.systemCyan under Aqua: RGB 0,192,232; black contrast 9.71:1.
+- NSColor.systemCyan under Dark Aqua: RGB 60,211,254; black contrast 11.94:1.
+- NSColor.labelColor / windowBackgroundColor under Aqua: black / white.
+- NSColor.labelColor / windowBackgroundColor under Dark Aqua: white /
+  RGB 30,30,30.
+
+Final rendered samples
+
+- macos-a11y-onboarding-dark.png: RGB 55,214,253; black contrast 12.20:1.
+- macos-a11y-getting-started-dark.png button: RGB 58,212,255; black contrast
+  12.04:1.
+- macos-a11y-getting-started-dark.png step number: RGB 62,212,255; black
+  contrast 12.07:1.
+- macos-a11y-remote-dark.png: RGB 61,211,254; black contrast 11.95:1.
+- macos-a11y-about-dark.png: RGB 66,209,255; black contrast 11.80:1.
+- macos-a11y-about-dark.png primary warning core / window background:
+  RGB 229,229,229 / RGB 27,27,27; contrast 13.67:1.
+
+Source math for the default translucent prompt
+
+- White at 50% over black is approximately 5.32:1.
+- Black at 85% over a white desktop leaves RGB 38,38,38; 50%-white content
+  over that background is approximately 4.89:1.
+- Increase Contrast or Reduce Transparency now forces the prompt, control bar,
+  and time badge backgrounds to opaque black and disables focus-edge dimming.

@@ -399,7 +399,8 @@ struct SettingsView: View {
             HStack(spacing: 12) {
                 Image(systemName: localRemote.state == .connected ? "checkmark.circle.fill" : "iphone.radiowaves.left.and.right")
                     .font(.system(size: 32))
-                    .foregroundStyle(localRemote.state == .connected ? Color.green : Color.accentColor)
+                    .foregroundStyle(.secondary)
+                    .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Control this Mac")
@@ -444,9 +445,11 @@ struct SettingsView: View {
                 }
             } label: {
                 Text(localRemote.state == .idle || isFailedRemoteState ? "Start Local Remote" : "Stop Remote")
+                    .foregroundColor(.black)
                     .frame(maxWidth: .infinity, minHeight: 32)
             }
             .buttonStyle(.borderedProminent)
+            .tint(.cyan)
             .accessibilityIdentifier("macRemoteStartStop")
 
             VStack(alignment: .leading, spacing: 8) {
@@ -478,6 +481,7 @@ struct SettingsView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 88, height: 88)
+                    .accessibilityHidden(true)
                 
                 Text("Kyuva")
                     .font(.largeTitle.bold())
@@ -493,7 +497,7 @@ struct SettingsView: View {
 
             Text("Capture visibility: The overlay may appear in screen shares or recordings. Verify the preview, or share a single app window that omits Kyuva.")
                 .font(.caption)
-                .foregroundColor(.orange)
+                .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
             
@@ -534,8 +538,10 @@ struct SettingsView: View {
                     Image(systemName: "sparkles")
                     Text("Show Welcome Guide")
                 }
+                .foregroundColor(.black)
             }
             .buttonStyle(.borderedProminent)
+            .tint(.cyan)
             
             Spacer()
             
