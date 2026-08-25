@@ -282,6 +282,47 @@ class OverlayWindowController: NSWindowController {
 
         MacOSWindowManager().moveToScreen(window, screen: nextScreen)
     }
+
+    func applyRemoteCommand(_ command: RemoteCommand) -> LocalRemoteCommandResult {
+        guard isOverlayVisible, let scrollController else {
+            return LocalRemoteCommandResult(result: .notPresenting, snapshot: remoteSnapshot)
+        }
+
+        switch command {
+        case .requestSnapshot:
+            break
+        case .togglePlayback:
+            scrollController.togglePause()
+        case .reset:
+            scrollController.reset()
+        case .faster:
+            scrollController.adjustPace(steps: 1)
+        case .slower:
+            scrollController.adjustPace(steps: -1)
+        }
+
+        return LocalRemoteCommandResult(result: .ok, snapshot: remoteSnapshot)
+    }
+
+    private var remoteSnapshot: PlaybackSnapshot {
+        guard isOverlayVisible, let scrollController else {
+            return PlaybackSnapshot(
+                isPromptActive: false,
+                isPaused: true,
+                scriptTitle: scriptManager?.selectedScript?.name ?? "Kyuva",
+                paceLabel: "—",
+                progress: 0
+            )
+        }
+
+        return PlaybackSnapshot(
+            isPromptActive: true,
+            isPaused: scrollController.isPaused,
+            scriptTitle: scriptManager?.selectedScript?.name ?? "Kyuva",
+            paceLabel: scrollController.paceControlLabel,
+            progress: scrollController.progress
+        )
+    }
     
     private var wasPlayingBeforeHover = false
     

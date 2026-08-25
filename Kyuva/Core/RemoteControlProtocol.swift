@@ -1,6 +1,6 @@
 import Foundation
 
-enum RemoteCommand: String, CaseIterable {
+enum RemoteCommand: String, CaseIterable, Codable {
     case requestSnapshot
     case togglePlayback
     case reset
@@ -19,7 +19,7 @@ enum RemoteCommand: String, CaseIterable {
     }
 }
 
-struct PlaybackSnapshot: Equatable {
+struct PlaybackSnapshot: Equatable, Codable {
     let isPromptActive: Bool
     let isPaused: Bool
     let scriptTitle: String

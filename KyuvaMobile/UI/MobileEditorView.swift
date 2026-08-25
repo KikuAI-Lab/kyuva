@@ -1,10 +1,14 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct MobileEditorView: View {
     @EnvironmentObject private var scriptManager: ScriptManager
     @State private var isPresenting = false
     @State private var isShowingSettings = false
     @State private var isConfirmingDelete = false
+    @State private var isImportingScript = false
+    @State private var isShowingMacRemote = false
+    @State private var importError: String?
 
     private var selectedIndex: Int? {
         guard let selectedId = scriptManager.selectedScriptId else { return nil }
@@ -64,6 +68,16 @@ struct MobileEditorView: View {
             .padding()
             .navigationTitle("Kyuva")
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        isShowingMacRemote = true
+                    } label: {
+                        Image(systemName: "laptopcomputer.and.iphone")
+                    }
+                    .accessibilityLabel("Control a Mac")
+                    .accessibilityIdentifier("openMacRemote")
+                }
+
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
                         scriptManager.createNewScript()
@@ -72,20 +86,40 @@ struct MobileEditorView: View {
                     }
                     .accessibilityLabel("New script")
 
-                    Button {
-                        isConfirmingDelete = true
-                    } label: {
-                        Image(systemName: "trash")
-                    }
-                    .disabled(scriptManager.scripts.count <= 1)
-                    .accessibilityLabel("Delete script")
+                    Menu {
+                        Button {
+                            isImportingScript = true
+                        } label: {
+                            Label("Import Text File", systemImage: "square.and.arrow.down")
+                        }
 
-                    Button {
-                        isShowingSettings = true
+                        if let script = scriptManager.selectedScript {
+                            ShareLink(
+                                item: ScriptTextTransfer(name: script.name, content: script.content),
+                                preview: SharePreview(script.name, image: Image(systemName: "doc.text"))
+                            ) {
+                                Label("Share Text File", systemImage: "square.and.arrow.up")
+                            }
+                        }
+
+                        Button {
+                            isShowingSettings = true
+                        } label: {
+                            Label("Prompt Settings", systemImage: "textformat.size")
+                        }
+
+                        Divider()
+
+                        Button(role: .destructive) {
+                            isConfirmingDelete = true
+                        } label: {
+                            Label("Delete Script", systemImage: "trash")
+                        }
+                        .disabled(scriptManager.scripts.count <= 1)
                     } label: {
-                        Image(systemName: "textformat.size")
+                        Image(systemName: "ellipsis.circle")
                     }
-                    .accessibilityLabel("Prompt settings")
+                    .accessibilityLabel("Script actions")
                 }
             }
         }
@@ -94,6 +128,23 @@ struct MobileEditorView: View {
                 MobilePromptSettingsView()
             }
             .presentationDetents([.medium, .large])
+        }
+        .sheet(isPresented: $isShowingMacRemote) {
+            NavigationStack {
+                MobileMacRemoteView()
+            }
+        }
+        .fileImporter(
+            isPresented: $isImportingScript,
+            allowedContentTypes: [.plainText, .text],
+            allowsMultipleSelection: false
+        ) { result in
+            do {
+                let imported = try ScriptTextTransfer.readImport(from: result.get())
+                scriptManager.importScript(name: imported.name, content: imported.content)
+            } catch {
+                importError = error.localizedDescription
+            }
         }
         .fullScreenCover(isPresented: $isPresenting) {
             if let script = scriptManager.selectedScript {
@@ -109,6 +160,11 @@ struct MobileEditorView: View {
             }
         } message: {
             Text("This cannot be undone.")
+        }
+        .alert("Couldn’t Import Script", isPresented: importErrorBinding) {
+            Button("OK", role: .cancel) { importError = nil }
+        } message: {
+            Text(importError ?? "Choose a UTF-8 plain-text file up to 1 MB.")
         }
     }
 
@@ -152,6 +208,17 @@ struct MobileEditorView: View {
         Binding(
             get: { scriptManager.scripts[index].content },
             set: { scriptManager.updateScriptContent(scriptManager.scripts[index].id, content: $0) }
+        )
+    }
+
+    private var importErrorBinding: Binding<Bool> {
+        Binding(
+            get: { importError != nil },
+            set: { isPresented in
+                if !isPresented {
+                    importError = nil
+                }
+            }
         )
     }
 }

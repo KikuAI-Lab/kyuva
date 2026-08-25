@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct SettingsView: View {
@@ -25,6 +26,7 @@ struct SettingsView: View {
     @AppStorage("endBehavior") private var endBehavior: Int = 0 // 0=Do Nothing, 1=Start Over, 2=Play Next
     
     @StateObject private var scriptManager = ScriptManager.shared
+    @StateObject private var localRemote = LocalRemoteServer.shared
     
     var body: some View {
         TabView {
@@ -50,6 +52,11 @@ struct SettingsView: View {
             hotkeysTab
                 .tabItem {
                     Label("Hotkeys", systemImage: "keyboard")
+                }
+
+            remoteTab
+                .tabItem {
+                    Label("Remote", systemImage: "iphone.and.arrow.forward")
                 }
             
             // About Tab
@@ -373,7 +380,80 @@ struct SettingsView: View {
     }
     
     // MARK: - About Tab
-    
+
+    private var remoteTab: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack(spacing: 12) {
+                Image(systemName: localRemote.state == .connected ? "checkmark.circle.fill" : "iphone.radiowaves.left.and.right")
+                    .font(.system(size: 32))
+                    .foregroundStyle(localRemote.state == .connected ? Color.green : Color.accentColor)
+
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Control this Mac")
+                        .font(.title2.bold())
+                    Text(localRemote.state.statusText)
+                        .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("macRemoteStatus")
+                }
+                Spacer()
+            }
+
+            if let pairingCode = localRemote.pairingCode {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Enter this one-time code on iPhone")
+                        .font(.headline)
+                    HStack {
+                        Text(LocalRemoteSecurity.formattedPairingCode(pairingCode))
+                            .font(.system(.title2, design: .monospaced, weight: .semibold))
+                            .textSelection(.enabled)
+                            .accessibilityLabel("Pairing code")
+                            .accessibilityIdentifier("macRemotePairingCode")
+                        Spacer()
+                        Button("Copy") {
+                            NSPasteboard.general.clearContents()
+                            NSPasteboard.general.setString(pairingCode, forType: .string)
+                        }
+                    }
+                    Text("The code expires when you stop or disconnect. Kyuva never sends it to a server.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+                .padding()
+                .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
+            }
+
+            Button {
+                if localRemote.state == .idle || isFailedRemoteState {
+                    localRemote.start()
+                } else {
+                    localRemote.stop()
+                }
+            } label: {
+                Text(localRemote.state == .idle || isFailedRemoteState ? "Start Local Remote" : "Stop Remote")
+                    .frame(maxWidth: .infinity, minHeight: 32)
+            }
+            .buttonStyle(.borderedProminent)
+            .accessibilityIdentifier("macRemoteStartStop")
+
+            VStack(alignment: .leading, spacing: 8) {
+                Label("Same local network", systemImage: "wifi")
+                Label("Encrypted with this one-time code", systemImage: "lock.fill")
+                Label("Controls only — scripts are never sent", systemImage: "doc.badge.ellipsis")
+            }
+            .font(.callout)
+
+            Spacer()
+        }
+        .padding()
+    }
+
+    private var isFailedRemoteState: Bool {
+        if case .failed = localRemote.state {
+            return true
+        }
+        return false
+    }
+
     private var aboutTab: some View {
         VStack(spacing: 20) {
             Spacer()

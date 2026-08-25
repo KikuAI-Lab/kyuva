@@ -15,6 +15,7 @@ struct KyuvaMobileApp: App {
                 .environmentObject(scriptManager)
                 .onChange(of: scenePhase) { _, phase in
                     if phase != .active {
+                        MacRemoteClient.shared.stop()
                         scriptManager.flushPendingSave()
                     }
                 }

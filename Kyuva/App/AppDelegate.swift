@@ -61,6 +61,18 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     
     private func setupOverlayWindow(isVisible: Bool) {
         overlayWindowController = OverlayWindowController()
+        LocalRemoteServer.shared.commandHandler = { [weak overlayWindowController] command in
+            overlayWindowController?.applyRemoteCommand(command) ?? LocalRemoteCommandResult(
+                result: .notPresenting,
+                snapshot: PlaybackSnapshot(
+                    isPromptActive: false,
+                    isPaused: true,
+                    scriptTitle: "Kyuva",
+                    paceLabel: "—",
+                    progress: 0
+                )
+            )
+        }
         if isVisible {
             overlayWindowController?.showOverlay()
         } else {
@@ -147,6 +159,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     func applicationWillTerminate(_ notification: Notification) {
+        LocalRemoteServer.shared.stop()
         ScriptManager.shared.flushPendingSave()
     }
 

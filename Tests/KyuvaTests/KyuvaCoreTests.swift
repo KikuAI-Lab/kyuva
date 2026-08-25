@@ -1,5 +1,45 @@
+import Network
 import XCTest
 @testable import Kyuva
+
+final class ScriptTextFileTests: XCTestCase {
+    func testExportNameIsSafeBoundedAndKeepsOneTextExtension() {
+        XCTAssertEqual(
+            ScriptTextFile.exportName(for: "  Scene/Take:One  .TXT"),
+            "Scene-Take-One.txt"
+        )
+        XCTAssertEqual(ScriptTextFile.exportName(for: "   "), "Kyuva Script.txt")
+
+        let longName = ScriptTextFile.exportName(for: String(repeating: "a", count: 120))
+        XCTAssertEqual(longName, String(repeating: "a", count: 80) + ".txt")
+    }
+
+    func testDecodeImportAcceptsTheExactByteLimit() throws {
+        let data = Data(repeating: 0x61, count: ScriptTextFile.maximumBytes)
+
+        let content = try ScriptTextFile.decodeImport(data)
+
+        XCTAssertEqual(content.utf8.count, ScriptTextFile.maximumBytes)
+    }
+
+    func testDecodeImportRejectsOneByteOverTheLimit() {
+        let data = Data(repeating: 0x61, count: ScriptTextFile.maximumBytes + 1)
+
+        XCTAssertThrowsError(try ScriptTextFile.decodeImport(data)) { error in
+            guard case ScriptTextImportError.fileTooLarge = error else {
+                return XCTFail("Expected fileTooLarge, got \(error)")
+            }
+        }
+    }
+
+    func testDecodeImportRejectsInvalidUTF8() {
+        XCTAssertThrowsError(try ScriptTextFile.decodeImport(Data([0xC3, 0x28]))) { error in
+            guard case ScriptTextImportError.notUTF8 = error else {
+                return XCTFail("Expected notUTF8, got \(error)")
+            }
+        }
+    }
+}
 
 final class ScriptTests: XCTestCase {
     func testReindexFiltersBlankLinesAndKeepsTokenLineIndexes() {
@@ -158,6 +198,30 @@ final class ScriptManagerPersistenceTests: XCTestCase {
         XCTAssertEqual(reloaded.first?.name, "Final name")
         XCTAssertEqual(reloaded.first?.content, "The final unslept edit")
     }
+
+    func testImportCreatesSelectsAndPersistsOneScript() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("KyuvaImportTests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let store = LocalStore(
+            directoryURL: directory,
+            saveQueue: DispatchQueue(label: "com.kyuva.tests.import-store")
+        )
+        let manager = ScriptManager(storage: store)
+
+        let imported = manager.importScript(name: "  AirDrop Notes  ", content: "First\nSecond")
+        manager.flushPendingSave()
+
+        XCTAssertEqual(imported.name, "AirDrop Notes")
+        XCTAssertEqual(manager.selectedScriptId, imported.id)
+        XCTAssertEqual(manager.scripts.last?.id, imported.id)
+        XCTAssertEqual(manager.scripts.last?.content, imported.content)
+        let reloaded = LocalStore(directoryURL: directory).loadScripts().last
+        XCTAssertEqual(reloaded?.id, imported.id)
+        XCTAssertEqual(reloaded?.content, imported.content)
+    }
 }
 
 final class ScrollControllerTests: XCTestCase {
@@ -315,5 +379,281 @@ final class RemoteControlProtocolTests: XCTestCase {
         XCTAssertEqual(snapshot.progress, 1)
         XCTAssertEqual(PlaybackSnapshot(message: snapshot.message), snapshot)
         XCTAssertNil(PlaybackSnapshot(message: ["isPaused": true] as [String: Any]))
+    }
+}
+
+final class LocalRemoteSecurityTests: XCTestCase {
+    func testPairingCodeUsesExactlyEightyBitsOfBase32Characters() throws {
+        let bytes = Array(UInt8(0)...UInt8(15))
+        let code = LocalRemoteSecurity.pairingCode(from: bytes)
+
+        XCTAssertEqual(code.count, 16)
+        XCTAssertEqual(code, "23456789ABCDEFGH")
+        XCTAssertTrue(code.allSatisfy(LocalRemoteSecurity.pairingAlphabet.contains))
+        XCTAssertEqual(
+            try LocalRemoteSecurity.normalizedPairingCode("2345-6789 abcd-efgh"),
+            code
+        )
+        XCTAssertEqual(LocalRemoteSecurity.formattedPairingCode(code), "2345-6789-ABCD-EFGH")
+    }
+
+    func testPairingCodeRejectsWrongLengthAndAmbiguousCharacters() {
+        XCTAssertThrowsError(try LocalRemoteSecurity.normalizedPairingCode("2345"))
+        XCTAssertThrowsError(try LocalRemoteSecurity.normalizedPairingCode("2345-6789-ABCD-EFGI"))
+        XCTAssertThrowsError(try LocalRemoteSecurity.normalizedPairingCode("2345-6789-ABCD-EFG0"))
+    }
+
+    func testKeyDerivationIsStableAndCodeSpecific() throws {
+        let first = try LocalRemoteSecurity.derivedKey(for: "2345-6789-ABCD-EFGH")
+        let normalized = try LocalRemoteSecurity.derivedKey(for: "23456789abcdefgh")
+        let second = try LocalRemoteSecurity.derivedKey(for: "3456-789A-BCDE-FGHJ")
+
+        XCTAssertEqual(first.count, 32)
+        XCTAssertEqual(first, normalized)
+        XCTAssertNotEqual(first, second)
+        XCTAssertNoThrow(try LocalRemoteSecurity.parameters(pairingCode: "23456789ABCDEFGH"))
+    }
+
+    func testMatchingTLSPSKCompletesLoopbackHandshake() throws {
+        let serverParameters = try LocalRemoteSecurity.parameters(
+            pairingCode: "23456789ABCDEFGH"
+        )
+        let clientParameters = try LocalRemoteSecurity.parameters(
+            pairingCode: "23456789ABCDEFGH"
+        )
+        let listener = try NWListener(using: serverParameters, on: .any)
+        let queue = DispatchQueue(label: "com.kyuva.tests.tls-matching")
+        let listenerReady = expectation(description: "listener ready")
+        let serverConnectionReady = expectation(description: "server TLS ready")
+        let clientConnectionReady = expectation(description: "client TLS ready")
+        var serverConnection: NWConnection?
+        var clientConnection: NWConnection?
+
+        listener.newConnectionHandler = { connection in
+            serverConnection = connection
+            connection.stateUpdateHandler = { state in
+                if case .ready = state {
+                    serverConnectionReady.fulfill()
+                }
+            }
+            connection.start(queue: queue)
+        }
+        listener.stateUpdateHandler = { state in
+            guard case .ready = state, let port = listener.port else { return }
+            listenerReady.fulfill()
+            let connection = NWConnection(
+                host: .ipv4(IPv4Address.loopback),
+                port: port,
+                using: clientParameters
+            )
+            clientConnection = connection
+            connection.stateUpdateHandler = { state in
+                if case .ready = state {
+                    clientConnectionReady.fulfill()
+                }
+            }
+            connection.start(queue: queue)
+        }
+        listener.start(queue: queue)
+
+        wait(
+            for: [listenerReady, serverConnectionReady, clientConnectionReady],
+            timeout: 5,
+            enforceOrder: false
+        )
+        clientConnection?.cancel()
+        serverConnection?.cancel()
+        listener.cancel()
+    }
+
+    func testMismatchedTLSPSKCannotCompleteLoopbackHandshake() throws {
+        let serverParameters = try LocalRemoteSecurity.parameters(
+            pairingCode: "23456789ABCDEFGH"
+        )
+        let clientParameters = try LocalRemoteSecurity.parameters(
+            pairingCode: "3456789ABCDEFGHJ"
+        )
+        let listener = try NWListener(using: serverParameters, on: .any)
+        let queue = DispatchQueue(label: "com.kyuva.tests.tls-mismatch")
+        let unexpectedReady = expectation(description: "mismatched TLS never ready")
+        unexpectedReady.isInverted = true
+        var serverConnection: NWConnection?
+        var clientConnection: NWConnection?
+
+        listener.newConnectionHandler = { connection in
+            serverConnection = connection
+            connection.stateUpdateHandler = { state in
+                switch state {
+                case .ready:
+                    unexpectedReady.fulfill()
+                default:
+                    break
+                }
+            }
+            connection.start(queue: queue)
+        }
+        listener.stateUpdateHandler = { state in
+            guard case .ready = state, let port = listener.port else { return }
+            let connection = NWConnection(
+                host: .ipv4(IPv4Address.loopback),
+                port: port,
+                using: clientParameters
+            )
+            clientConnection = connection
+            connection.stateUpdateHandler = { state in
+                switch state {
+                case .ready:
+                    unexpectedReady.fulfill()
+                default:
+                    break
+                }
+            }
+            connection.start(queue: queue)
+        }
+        listener.start(queue: queue)
+
+        wait(for: [unexpectedReady], timeout: 1, enforceOrder: false)
+        clientConnection?.cancel()
+        serverConnection?.cancel()
+        listener.cancel()
+    }
+}
+
+final class LocalRemoteProtocolTests: XCTestCase {
+    private let snapshot = PlaybackSnapshot(
+        isPromptActive: true,
+        isPaused: false,
+        scriptTitle: "Launch notes",
+        paceLabel: "150w",
+        progress: 0.42
+    )
+
+    func testEveryCommandRoundTripsWithVersionAndSequence() throws {
+        for (index, command) in RemoteCommand.allCases.enumerated() {
+            let request = LocalRemoteRequest(sequence: UInt64(index + 1), command: command)
+            let data = try LocalRemoteProtocol.encode(request)
+
+            XCTAssertLessThanOrEqual(data.count, LocalRemoteProtocol.maximumMessageBytes)
+            XCTAssertEqual(
+                try LocalRemoteProtocol.decodeRequest(data, after: UInt64(index)),
+                request
+            )
+        }
+    }
+
+    func testRequestRejectsUnknownWrongVersionAndReplay() throws {
+        let valid = LocalRemoteRequest(sequence: 2, command: .togglePlayback)
+        let validData = try LocalRemoteProtocol.encode(valid)
+        let unknownField = Data(
+            "{\"command\":\"togglePlayback\",\"extra\":true,\"sequence\":2,\"version\":1}".utf8
+        )
+        let unknownCommand = Data(
+            "{\"command\":\"deleteScript\",\"sequence\":2,\"version\":1}".utf8
+        )
+        let wrongVersion = Data(
+            "{\"command\":\"togglePlayback\",\"sequence\":2,\"version\":99}".utf8
+        )
+
+        XCTAssertThrowsError(try LocalRemoteProtocol.decodeRequest(unknownField, after: 0)) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .unknownField)
+        }
+        XCTAssertThrowsError(try LocalRemoteProtocol.decodeRequest(unknownCommand, after: 0)) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .malformedMessage)
+        }
+        XCTAssertThrowsError(try LocalRemoteProtocol.decodeRequest(wrongVersion, after: 0)) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .unsupportedVersion)
+        }
+        XCTAssertThrowsError(try LocalRemoteProtocol.decodeRequest(validData, after: 2)) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .replayedSequence)
+        }
+    }
+
+    func testResponseRoundTripsAndRejectsMismatchOrNestedUnknownField() throws {
+        let response = LocalRemoteResponse(sequence: 7, result: .ok, snapshot: snapshot)
+        let data = try LocalRemoteProtocol.encode(response)
+
+        XCTAssertEqual(
+            try LocalRemoteProtocol.decodeResponse(data, expectedSequence: 7),
+            response
+        )
+        XCTAssertThrowsError(try LocalRemoteProtocol.decodeResponse(data, expectedSequence: 8)) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .mismatchedResponse)
+        }
+
+        var object = try XCTUnwrap(
+            JSONSerialization.jsonObject(with: data) as? [String: Any]
+        )
+        var nested = try XCTUnwrap(object["snapshot"] as? [String: Any])
+        nested["scriptContent"] = "must never travel"
+        object["snapshot"] = nested
+        let contaminated = try JSONSerialization.data(withJSONObject: object)
+
+        XCTAssertThrowsError(
+            try LocalRemoteProtocol.decodeResponse(contaminated, expectedSequence: 7)
+        ) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .unknownField)
+        }
+    }
+
+    func testResponseRejectsProgressBeforePlaybackSnapshotCanClampIt() throws {
+        let outOfRange = Data(
+            "{\"result\":\"ok\",\"sequence\":7,\"snapshot\":{\"isPaused\":false,\"isPromptActive\":true,\"paceLabel\":\"150w\",\"progress\":1.5,\"scriptTitle\":\"Launch notes\"},\"version\":1}".utf8
+        )
+        let booleanProgress = Data(
+            "{\"result\":\"ok\",\"sequence\":7,\"snapshot\":{\"isPaused\":false,\"isPromptActive\":true,\"paceLabel\":\"150w\",\"progress\":true,\"scriptTitle\":\"Launch notes\"},\"version\":1}".utf8
+        )
+
+        for data in [outOfRange, booleanProgress] {
+            XCTAssertThrowsError(
+                try LocalRemoteProtocol.decodeResponse(data, expectedSequence: 7)
+            ) {
+                XCTAssertEqual($0 as? LocalRemoteProtocolError, .invalidSnapshot)
+            }
+        }
+    }
+
+    func testFramingRejectsEmptyAndOversizedMessages() throws {
+        let message = Data("{}".utf8)
+        let framed = try LocalRemoteProtocol.frame(message)
+
+        XCTAssertEqual(framed.count, message.count + 4)
+        XCTAssertEqual(
+            try LocalRemoteProtocol.messageLength(from: framed.prefix(4)),
+            message.count
+        )
+
+        XCTAssertThrowsError(try LocalRemoteProtocol.frame(Data())) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .emptyMessage)
+        }
+        XCTAssertThrowsError(
+            try LocalRemoteProtocol.frame(Data(repeating: 0, count: 4_097))
+        ) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .messageTooLarge)
+        }
+
+        var excessiveLength = UInt32(4_097).bigEndian
+        let excessiveHeader = Data(bytes: &excessiveLength, count: 4)
+        XCTAssertThrowsError(try LocalRemoteProtocol.messageLength(from: excessiveHeader)) {
+            XCTAssertEqual($0 as? LocalRemoteProtocolError, .messageTooLarge)
+        }
+    }
+
+    func testNetworkSnapshotBoundsPrivateSurface() throws {
+        let oversized = PlaybackSnapshot(
+            isPromptActive: true,
+            isPaused: true,
+            scriptTitle: String(repeating: "A", count: 500),
+            paceLabel: String(repeating: "B", count: 100),
+            progress: 0.5
+        )
+        let safe = LocalRemoteProtocol.networkSafeSnapshot(oversized)
+
+        XCTAssertEqual(safe.scriptTitle.count, LocalRemoteProtocol.maximumTitleCharacters)
+        XCTAssertEqual(safe.paceLabel.count, LocalRemoteProtocol.maximumPaceLabelCharacters)
+        XCTAssertNoThrow(
+            try LocalRemoteProtocol.encode(
+                LocalRemoteResponse(sequence: 1, result: .ok, snapshot: safe)
+            )
+        )
     }
 }

@@ -1,0 +1,20 @@
+inspection-date: 2026-08-25
+swift-tests: PASS, 30 tests, 0 failures
+macos-release: PASS, x86_64 arm64, com.kikuai.kyuva, 1.0 (2)
+ios-release: PASS, com.kikuai.kyuva, 1.0 (2)
+watchos-release: PASS, com.kikuai.kyuva.watchkitapp, 1.0 (2)
+macos-signed-release: PASS, strict deep signature verification
+ios-signed-release: PASS, strict deep signature verification
+embedded-watch-signature: PASS, strict deep signature verification
+embedded-watch: present
+app-store-icon: 1024x1024, alpha-free
+compiled-product-icons: alpha-free
+privacy-manifest-macos: present
+privacy-manifest-ios: present
+privacy-manifest-watchos: present
+bonjour-service-macos: _kyuva._tcp
+bonjour-service-ios: _kyuva._tcp
+xcode-packages: none
+forbidden-runtime-capabilities: none
+forbidden-entitlements: none
+app-store-source-upload: not performed

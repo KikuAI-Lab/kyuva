@@ -127,6 +127,19 @@ class ScriptManager: ObservableObject {
     
     // MARK: - Import/Export
 
+    @discardableResult
+    func importScript(name: String, content: String) -> Script {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        let script = Script(
+            name: trimmedName.isEmpty ? "Imported Script" : trimmedName,
+            content: content
+        )
+        scripts.append(script)
+        selectedScriptId = script.id
+        saveScripts()
+        return script
+    }
+
 #if os(macOS)
     func importScript() {
         let panel = NSOpenPanel()
@@ -137,10 +150,7 @@ class ScriptManager: ObservableObject {
             do {
                 let content = try String(contentsOf: url, encoding: .utf8)
                 let name = url.deletingPathExtension().lastPathComponent
-                let script = Script(name: name, content: content)
-                scripts.append(script)
-                selectedScriptId = script.id
-                saveScripts()
+                importScript(name: name, content: content)
             } catch {
                 NSApp.presentError(error)
             }

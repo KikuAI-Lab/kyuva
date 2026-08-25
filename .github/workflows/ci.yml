@@ -45,9 +45,43 @@ jobs:
           lipo "$KYUVA_APP/Contents/MacOS/Kyuva" -verify_arch "${{ matrix.arch }}"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$KYUVA_APP/Contents/Info.plist")" = "com.kikuai.kyuva"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$KYUVA_APP/Contents/Info.plist")" = "1.0"
-          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_APP/Contents/Info.plist")" = "1"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_APP/Contents/Info.plist")" = "2"
           test "$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$KYUVA_APP/Contents/Info.plist")" = "13.0"
           test "$(/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' "$KYUVA_APP/Contents/Info.plist")" = "false"
           test "$(/usr/libexec/PlistBuddy -c 'Print :NSHumanReadableCopyright' "$KYUVA_APP/Contents/Info.plist")" = "© 2026 Mykyta Dudnichenko. All rights reserved."
           ! /usr/libexec/PlistBuddy -c 'Print :NSMicrophoneUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :NSSpeechRecognitionUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
+
+  mobile:
+    name: iPhone and Apple Watch
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: iOS release build
+        run: >-
+          xcodebuild -project Kyuva.xcodeproj -scheme 'Kyuva iOS' -configuration Release
+          -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO
+          -derivedDataPath "$RUNNER_TEMP/KyuvaMobileDerivedData" build
+
+      - name: watchOS release build
+        run: >-
+          xcodebuild -project Kyuva.xcodeproj -scheme 'Kyuva Watch App' -configuration Release
+          -destination 'generic/platform=watchOS' CODE_SIGNING_ALLOWED=NO
+          -derivedDataPath "$RUNNER_TEMP/KyuvaWatchDerivedData" build
+
+      - name: Validate mobile bundles
+        run: |
+          KYUVA_IOS_APP="$RUNNER_TEMP/KyuvaMobileDerivedData/Build/Products/Release-iphoneos/Kyuva iOS.app"
+          KYUVA_WATCH_APP="$KYUVA_IOS_APP/Watch/Kyuva Watch App.app"
+          test -f "$KYUVA_IOS_APP/PrivacyInfo.xcprivacy"
+          test -f "$KYUVA_WATCH_APP/PrivacyInfo.xcprivacy"
+          plutil -lint "$KYUVA_IOS_APP/PrivacyInfo.xcprivacy"
+          plutil -lint "$KYUVA_WATCH_APP/PrivacyInfo.xcprivacy"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$KYUVA_IOS_APP/Info.plist")" = "com.kikuai.kyuva"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_IOS_APP/Info.plist")" = "2"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$KYUVA_WATCH_APP/Info.plist")" = "com.kikuai.kyuva.watchkitapp"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_WATCH_APP/Info.plist")" = "2"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :WKApplication' "$KYUVA_WATCH_APP/Info.plist")" = "true"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :WKCompanionAppBundleIdentifier' "$KYUVA_WATCH_APP/Info.plist")" = "com.kikuai.kyuva"

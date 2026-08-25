@@ -41,6 +41,16 @@
 		046 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
 		047 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
 		048 /* Kyuva Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 128 /* Kyuva Watch App.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		049 /* LocalRemoteProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138 /* LocalRemoteProtocol.swift */; };
+		050 /* LocalRemoteProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138 /* LocalRemoteProtocol.swift */; };
+		051 /* LocalRemoteSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139 /* LocalRemoteSecurity.swift */; };
+		052 /* LocalRemoteSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139 /* LocalRemoteSecurity.swift */; };
+		053 /* LocalRemoteServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140 /* LocalRemoteServer.swift */; };
+		054 /* MacRemoteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141 /* MacRemoteClient.swift */; };
+		055 /* MobileMacRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142 /* MobileMacRemoteView.swift */; };
+		056 /* ScriptTextTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143 /* ScriptTextTransfer.swift */; };
+		057 /* ScriptTextFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145 /* ScriptTextFile.swift */; };
+		058 /* ScriptTextFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145 /* ScriptTextFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,6 +106,14 @@
 		135 /* KyuvaWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KyuvaWatchApp.swift; sourceTree = "<group>"; };
 		136 /* WatchSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionController.swift; sourceTree = "<group>"; };
 		137 /* WatchRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRemoteView.swift; sourceTree = "<group>"; };
+		138 /* LocalRemoteProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRemoteProtocol.swift; sourceTree = "<group>"; };
+		139 /* LocalRemoteSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRemoteSecurity.swift; sourceTree = "<group>"; };
+		140 /* LocalRemoteServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRemoteServer.swift; sourceTree = "<group>"; };
+		141 /* MacRemoteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRemoteClient.swift; sourceTree = "<group>"; };
+		142 /* MobileMacRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileMacRemoteView.swift; sourceTree = "<group>"; };
+		143 /* ScriptTextTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptTextTransfer.swift; sourceTree = "<group>"; };
+		144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		145 /* ScriptTextFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptTextFile.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -157,6 +175,9 @@
 				105 /* ScriptManager.swift */,
 				106 /* ScrollController.swift */,
 				126 /* RemoteControlProtocol.swift */,
+				138 /* LocalRemoteProtocol.swift */,
+				139 /* LocalRemoteSecurity.swift */,
+				145 /* ScriptTextFile.swift */,
 				107 /* HotkeyManager.swift */,
 				215 /* Storage */,
 			);
@@ -167,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				112 /* WindowManager.swift */,
+				140 /* LocalRemoteServer.swift */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -197,6 +219,8 @@
 				217 /* App */,
 				218 /* Connectivity */,
 				219 /* UI */,
+				224 /* Transfer */,
+				225 /* Resources */,
 			);
 			path = KyuvaMobile;
 			sourceTree = "<group>";
@@ -213,6 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				131 /* PhoneWatchSession.swift */,
+				141 /* MacRemoteClient.swift */,
 			);
 			path = Connectivity;
 			sourceTree = "<group>";
@@ -223,6 +248,7 @@
 				132 /* MobileEditorView.swift */,
 				134 /* MobilePromptView.swift */,
 				133 /* MobilePromptSettingsView.swift */,
+				142 /* MobileMacRemoteView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -259,6 +285,22 @@
 				137 /* WatchRemoteView.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		224 /* Transfer */ = {
+			isa = PBXGroup;
+			children = (
+				143 /* ScriptTextTransfer.swift */,
+			);
+			path = Transfer;
+			sourceTree = "<group>";
+		};
+		225 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				144 /* Info.plist */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -371,9 +413,13 @@
 				020 /* ScriptModels.swift in Sources */,
 				006 /* ScrollController.swift in Sources */,
 				021 /* RemoteControlProtocol.swift in Sources */,
+				049 /* LocalRemoteProtocol.swift in Sources */,
+				051 /* LocalRemoteSecurity.swift in Sources */,
+				057 /* ScriptTextFile.swift in Sources */,
 				007 /* HotkeyManager.swift in Sources */,
 				009 /* LocalStore.swift in Sources */,
 				012 /* WindowManager.swift in Sources */,
+				053 /* LocalRemoteServer.swift in Sources */,
 				015 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,13 +430,19 @@
 			files = (
 				030 /* KyuvaMobileApp.swift in Sources */,
 				031 /* PhoneWatchSession.swift in Sources */,
+				054 /* MacRemoteClient.swift in Sources */,
 				032 /* MobileEditorView.swift in Sources */,
 				033 /* MobilePromptSettingsView.swift in Sources */,
 				034 /* MobilePromptView.swift in Sources */,
+				055 /* MobileMacRemoteView.swift in Sources */,
+				056 /* ScriptTextTransfer.swift in Sources */,
 				035 /* ScriptModels.swift in Sources */,
 				036 /* ScriptManager.swift in Sources */,
 				037 /* ScrollController.swift in Sources */,
 				038 /* RemoteControlProtocol.swift in Sources */,
+				050 /* LocalRemoteProtocol.swift in Sources */,
+				052 /* LocalRemoteSecurity.swift in Sources */,
+				058 /* ScriptTextFile.swift in Sources */,
 				039 /* LocalStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -595,7 +647,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kyuva/Resources/Kyuva.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -622,7 +674,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kyuva/Resources/Kyuva.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -647,9 +699,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KyuvaMobile/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -680,9 +733,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = KyuvaMobile/Resources/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
@@ -713,7 +767,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
@@ -742,7 +796,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;

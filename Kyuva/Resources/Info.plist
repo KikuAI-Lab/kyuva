@@ -9,7 +9,7 @@
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
     <key>CFBundleIdentifier</key>
-    <string>com.kikuai.kyuva</string>
+    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
     <key>CFBundleInfoDictionaryVersion</key>
     <string>6.0</string>
     <key>CFBundleName</key>
@@ -19,7 +19,7 @@
     <key>CFBundleShortVersionString</key>
     <string>1.0</string>
     <key>CFBundleVersion</key>
-    <string>1</string>
+    <string>2</string>
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.productivity</string>
     <key>LSMinimumSystemVersion</key>
@@ -28,6 +28,12 @@
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>NSBonjourServices</key>
+    <array>
+        <string>_kyuva._tcp</string>
+    </array>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Kyuva accepts controls from an iPhone you explicitly pair on your local network.</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>NSHumanReadableCopyright</key>
