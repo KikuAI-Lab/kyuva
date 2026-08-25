@@ -5,16 +5,16 @@
 <h1 align="center">Kyuva</h1>
 
 <p align="center">
-  <strong>Local-first macOS teleprompter with a camera-side overlay</strong>
+  <strong>Local-first teleprompter for Mac, iPhone, and Apple Watch</strong>
 </p>
 
 <p align="center">
-  <em>Local-first prompting near the laptop camera, with straightforward scroll controls</em>
+  <em>Write on your device, present without an account, control the prompt from your wrist</em>
 </p>
 
 ## About
 
-Kyuva is an open-source macOS teleprompter focused on keeping the script near the camera while you present.
+Kyuva is an open-source Apple teleprompter. The Mac app keeps a compact overlay near the camera, the iPhone app provides a full-screen prompting surface, and the dependent Apple Watch app acts as a short-interaction remote.
 
 ### Capture visibility
 
@@ -22,19 +22,21 @@ The overlay is a normal macOS window and may appear in screen shares or recordin
 
 ## Release Status
 
-Kyuva is preparing a free first Mac App Store release for the 27 European Union storefronts. The first release has no purchases, subscriptions, advertising, account, analytics, or required backend. App Store availability is not claimed until the signed build, listing, and storefront state are verified.
+Kyuva is preparing a free first Mac App Store release for the 27 European Union storefronts. macOS version `1.0` build `1`, five screenshots, the `Data Not Collected` privacy answer, and reviewer contact are prepared in App Store Connect, but the version has not been added to App Review or submitted. The iPhone and Apple Watch targets are implemented and verified locally; no mobile upload or store availability is claimed yet.
+
+The first releases have no purchases, subscriptions, advertising, account, analytics, or required backend.
 
 The binary attached to the historical `v1.0.0` GitHub release is a development build, not a verified App Store distribution artifact. Build the current source until a signed and verified replacement is published.
 
 ## Feature Snapshot
 
-- Camera-side overlay with adjustable size and appearance
-- Menu command and `⌃⌥D` shortcut for cycling the overlay across connected displays
+- Mac camera-side overlay with adjustable size, appearance, multi-display cycling, and global shortcuts
+- iPhone script editor with local persistence and a distraction-free full-screen prompt
 - Fixed-speed, words-per-minute, and target-duration scrolling
 - Centered reading cue with progress and remaining-time feedback
 - Bracketed stage-direction controls plus text-only mirroring for beam-splitter rigs
-- Manual wheel/trackpad control and global shortcuts that do not request Accessibility permission
-- Recoverable local script storage with import and export support
+- Apple Watch play/pause, start-over, slower, and faster controls through WatchConnectivity
+- Recoverable local script storage; Mac builds also support text import and export
 - No account, no analytics, and no required network service
 
 ## Build From Source
@@ -54,7 +56,10 @@ swift build
 Requirements:
 
 - macOS 13.0+
-- Xcode 15+ or a compatible Swift 5.9 toolchain
+- iOS 17.0+ for the iPhone target
+- watchOS 10.0+ for the dependent Watch target
+- Xcode 26.6+ for all Apple targets, including the shared Liquid Glass icon
+- A compatible Swift 5.9+ toolchain for package tests
 
 Kyuva is under active release hardening. Follow [Issue #2](https://github.com/kiku-jw/kyuva/issues/2) for the macOS, iPhone, and Apple Watch delivery gates.
 
@@ -63,7 +68,8 @@ Kyuva is under active release hardening. Follow [Issue #2](https://github.com/ki
 Kyuva keeps its core behavior local:
 
 - prompting and script editing happen locally
-- scripts are stored on your Mac
+- scripts are stored in the Mac or iPhone app container
+- the Watch exchanges only current prompt state and control commands with the paired iPhone
 - no account is required
 - no analytics or tracking are built in
 
@@ -85,7 +91,7 @@ This repository is released under [AGPL-3.0](LICENSE).
 
 ## Forking
 
-Forks are welcome under the project license. Kyuva's narrow focus is camera-side prompting on macOS.
+Forks are welcome under the project license. Kyuva's narrow focus is simple, local-first prompting across Apple devices.
 
 <!-- author-links:start -->
 <p align="center">

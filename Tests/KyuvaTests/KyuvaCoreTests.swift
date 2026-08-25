@@ -107,6 +107,35 @@ final class LocalStoreTests: XCTestCase {
 }
 
 final class ScriptManagerPersistenceTests: XCTestCase {
+    func testCreateAndDeleteKeepAValidSelectionAndPersist() throws {
+        let directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("KyuvaCRUDTests-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: directory) }
+
+        let store = LocalStore(
+            directoryURL: directory,
+            saveQueue: DispatchQueue(label: "com.kyuva.tests.crud-store")
+        )
+        let manager = ScriptManager(storage: store)
+        let originalId = try XCTUnwrap(manager.selectedScriptId)
+
+        manager.createNewScript()
+        let createdId = try XCTUnwrap(manager.selectedScriptId)
+        XCTAssertNotEqual(createdId, originalId)
+        XCTAssertEqual(manager.scripts.count, 2)
+
+        let createdIndex = try XCTUnwrap(
+            manager.scripts.firstIndex(where: { $0.id == createdId })
+        )
+        manager.deleteScripts(at: IndexSet(integer: createdIndex))
+        manager.flushPendingSave()
+
+        XCTAssertEqual(manager.scripts.map(\.id), [originalId])
+        XCTAssertEqual(manager.selectedScriptId, originalId)
+        XCTAssertEqual(LocalStore(directoryURL: directory).loadScripts().map(\.id), [originalId])
+    }
+
     func testFlushPendingSavePersistsTheLatestDebouncedEdit() throws {
         let directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("KyuvaManagerTests-\(UUID().uuidString)", isDirectory: true)
@@ -261,5 +290,30 @@ final class WindowDragTrackerTests: XCTestCase {
             translation: CGPoint(x: 5, y: 5)
         )
         XCTAssertEqual(nextGesture, CGPoint(x: 125, y: 185))
+    }
+}
+
+final class RemoteControlProtocolTests: XCTestCase {
+    func testCommandsRoundTripThroughPropertyListMessage() {
+        for command in RemoteCommand.allCases {
+            XCTAssertEqual(RemoteCommand(message: command.message), command)
+        }
+
+        XCTAssertNil(RemoteCommand(message: [:]))
+        XCTAssertNil(RemoteCommand(message: ["command": "unknown"] as [String: Any]))
+    }
+
+    func testPlaybackSnapshotRoundTripsAndClampsProgress() throws {
+        let snapshot = PlaybackSnapshot(
+            isPromptActive: true,
+            isPaused: false,
+            scriptTitle: "Keynote",
+            paceLabel: "150w",
+            progress: 1.4
+        )
+
+        XCTAssertEqual(snapshot.progress, 1)
+        XCTAssertEqual(PlaybackSnapshot(message: snapshot.message), snapshot)
+        XCTAssertNil(PlaybackSnapshot(message: ["isPaused": true] as [String: Any]))
     }
 }

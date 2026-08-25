@@ -20,7 +20,52 @@
 		017 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 115 /* Assets.xcassets */; };
 		018 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
 		019 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
+		020 /* ScriptModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125 /* ScriptModels.swift */; };
+		021 /* RemoteControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126 /* RemoteControlProtocol.swift */; };
+		030 /* KyuvaMobileApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130 /* KyuvaMobileApp.swift */; };
+		031 /* PhoneWatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131 /* PhoneWatchSession.swift */; };
+		032 /* MobileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132 /* MobileEditorView.swift */; };
+		033 /* MobilePromptSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 133 /* MobilePromptSettingsView.swift */; };
+		034 /* MobilePromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134 /* MobilePromptView.swift */; };
+		035 /* ScriptModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125 /* ScriptModels.swift */; };
+		036 /* ScriptManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 105 /* ScriptManager.swift */; };
+		037 /* ScrollController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106 /* ScrollController.swift */; };
+		038 /* RemoteControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126 /* RemoteControlProtocol.swift */; };
+		039 /* LocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109 /* LocalStore.swift */; };
+		040 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
+		041 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
+		042 /* KyuvaWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135 /* KyuvaWatchApp.swift */; };
+		043 /* WatchSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136 /* WatchSessionController.swift */; };
+		044 /* WatchRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 137 /* WatchRemoteView.swift */; };
+		045 /* RemoteControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126 /* RemoteControlProtocol.swift */; };
+		046 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
+		047 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
+		048 /* Kyuva Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 128 /* Kyuva Watch App.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		322 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 500 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 320;
+			remoteInfo = "Kyuva Watch App";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		313 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				048 /* Kyuva Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		100 /* Kyuva.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kyuva.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -39,6 +84,18 @@
 		122 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		123 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		124 /* AppIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = AppIcon.icon; sourceTree = "<group>"; };
+		125 /* ScriptModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptModels.swift; sourceTree = "<group>"; };
+		126 /* RemoteControlProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteControlProtocol.swift; sourceTree = "<group>"; };
+		127 /* Kyuva iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kyuva iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		128 /* Kyuva Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kyuva Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		130 /* KyuvaMobileApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KyuvaMobileApp.swift; sourceTree = "<group>"; };
+		131 /* PhoneWatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneWatchSession.swift; sourceTree = "<group>"; };
+		132 /* MobileEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileEditorView.swift; sourceTree = "<group>"; };
+		133 /* MobilePromptSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilePromptSettingsView.swift; sourceTree = "<group>"; };
+		134 /* MobilePromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobilePromptView.swift; sourceTree = "<group>"; };
+		135 /* KyuvaWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KyuvaWatchApp.swift; sourceTree = "<group>"; };
+		136 /* WatchSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionController.swift; sourceTree = "<group>"; };
+		137 /* WatchRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRemoteView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -46,6 +103,8 @@
 			isa = PBXGroup;
 			children = (
 				201 /* Kyuva */,
+				216 /* KyuvaMobile */,
+				220 /* KyuvaWatch */,
 				202 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -66,6 +125,8 @@
 			isa = PBXGroup;
 			children = (
 				100 /* Kyuva.app */,
+				127 /* Kyuva iOS.app */,
+				128 /* Kyuva Watch App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -92,8 +153,10 @@
 		212 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				125 /* ScriptModels.swift */,
 				105 /* ScriptManager.swift */,
 				106 /* ScrollController.swift */,
+				126 /* RemoteControlProtocol.swift */,
 				107 /* HotkeyManager.swift */,
 				215 /* Storage */,
 			);
@@ -128,6 +191,76 @@
 			path = Storage;
 			sourceTree = "<group>";
 		};
+		216 /* KyuvaMobile */ = {
+			isa = PBXGroup;
+			children = (
+				217 /* App */,
+				218 /* Connectivity */,
+				219 /* UI */,
+			);
+			path = KyuvaMobile;
+			sourceTree = "<group>";
+		};
+		217 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				130 /* KyuvaMobileApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		218 /* Connectivity */ = {
+			isa = PBXGroup;
+			children = (
+				131 /* PhoneWatchSession.swift */,
+			);
+			path = Connectivity;
+			sourceTree = "<group>";
+		};
+		219 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				132 /* MobileEditorView.swift */,
+				134 /* MobilePromptView.swift */,
+				133 /* MobilePromptSettingsView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		220 /* KyuvaWatch */ = {
+			isa = PBXGroup;
+			children = (
+				221 /* App */,
+				222 /* Connectivity */,
+				223 /* UI */,
+			);
+			path = KyuvaWatch;
+			sourceTree = "<group>";
+		};
+		221 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				135 /* KyuvaWatchApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		222 /* Connectivity */ = {
+			isa = PBXGroup;
+			children = (
+				136 /* WatchSessionController.swift */,
+			);
+			path = Connectivity;
+			sourceTree = "<group>";
+		};
+		223 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				137 /* WatchRemoteView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -148,6 +281,42 @@
 			productReference = 100 /* Kyuva.app */;
 			productType = "com.apple.product-type.application";
 		};
+		310 /* Kyuva iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 410 /* Build configuration list for PBXNativeTarget "Kyuva iOS" */;
+			buildPhases = (
+				311 /* Sources */,
+				312 /* Frameworks */,
+				314 /* Resources */,
+				313 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				321 /* PBXTargetDependency */,
+			);
+			name = "Kyuva iOS";
+			productName = Kyuva;
+			productReference = 127 /* Kyuva iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		320 /* Kyuva Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 420 /* Build configuration list for PBXNativeTarget "Kyuva Watch App" */;
+			buildPhases = (
+				323 /* Sources */,
+				324 /* Frameworks */,
+				325 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Kyuva Watch App";
+			productName = "Kyuva Watch App";
+			productReference = 128 /* Kyuva Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -160,6 +329,12 @@
 				TargetAttributes = {
 					300 = {
 						CreatedOnToolsVersion = 15.0;
+					};
+					310 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					320 = {
+						CreatedOnToolsVersion = 26.6;
 					};
 				};
 			};
@@ -177,6 +352,8 @@
 			projectRoot = "";
 			targets = (
 				300 /* Kyuva */,
+				310 /* Kyuva iOS */,
+				320 /* Kyuva Watch App */,
 			);
 		};
 /* End PBXProject section */
@@ -191,7 +368,9 @@
 				003 /* OverlayWindowController.swift in Sources */,
 				004 /* SettingsView.swift in Sources */,
 				005 /* ScriptManager.swift in Sources */,
+				020 /* ScriptModels.swift in Sources */,
 				006 /* ScrollController.swift in Sources */,
+				021 /* RemoteControlProtocol.swift in Sources */,
 				007 /* HotkeyManager.swift in Sources */,
 				009 /* LocalStore.swift in Sources */,
 				012 /* WindowManager.swift in Sources */,
@@ -199,10 +378,52 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		311 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				030 /* KyuvaMobileApp.swift in Sources */,
+				031 /* PhoneWatchSession.swift in Sources */,
+				032 /* MobileEditorView.swift in Sources */,
+				033 /* MobilePromptSettingsView.swift in Sources */,
+				034 /* MobilePromptView.swift in Sources */,
+				035 /* ScriptModels.swift in Sources */,
+				036 /* ScriptManager.swift in Sources */,
+				037 /* ScrollController.swift in Sources */,
+				038 /* RemoteControlProtocol.swift in Sources */,
+				039 /* LocalStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		323 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				042 /* KyuvaWatchApp.swift in Sources */,
+				043 /* WatchSessionController.swift in Sources */,
+				044 /* WatchRemoteView.swift in Sources */,
+				045 /* RemoteControlProtocol.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		302 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		312 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		324 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -222,7 +443,33 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		314 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				040 /* AppIcon.icon in Resources */,
+				041 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		325 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				046 /* AppIcon.icon in Resources */,
+				047 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		321 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 320 /* Kyuva Watch App */;
+			targetProxy = 322 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		600 /* Debug */ = {
@@ -395,6 +642,131 @@
 			};
 			name = Release;
 		};
+		604 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 956F3UPBRX;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Mykyta Dudnichenko. All rights reserved.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kikuai.kyuva;
+				PRODUCT_NAME = "Kyuva iOS";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		605 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 956F3UPBRX;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 Mykyta Dudnichenko. All rights reserved.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kikuai.kyuva;
+				PRODUCT_NAME = "Kyuva iOS";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		606 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 956F3UPBRX;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kikuai.kyuva;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kikuai.kyuva.watchkitapp;
+				PRODUCT_NAME = "Kyuva Watch App";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Debug;
+		};
+		607 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 956F3UPBRX;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Kyuva;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.kikuai.kyuva;
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kikuai.kyuva.watchkitapp;
+				PRODUCT_NAME = "Kyuva Watch App";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "watchos watchsimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 10.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -403,6 +775,24 @@
 			buildConfigurations = (
 				602 /* Debug */,
 				603 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		410 /* Build configuration list for PBXNativeTarget "Kyuva iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				604 /* Debug */,
+				605 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		420 /* Build configuration list for PBXNativeTarget "Kyuva Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				606 /* Debug */,
+				607 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

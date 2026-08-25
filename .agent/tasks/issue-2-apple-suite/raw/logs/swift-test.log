@@ -1,0 +1,94 @@
+Building for debugging...
+[0/15] <scratch>/swiftpm/arm64-apple-macosx/debug/KyuvaPackageTests.derived/runner.swift
+[1/15] Copying icon.json
+[2/15] Write sources
+[4/15] Copying KyuvaTeleprompter.png
+[4/15] Write sources
+[4/15] Copying PrivacyInfo.xcprivacy
+[7/15] Write Kyuva-entitlement.plist
+[8/15] Copying Assets.xcassets
+[9/15] Write swift-version--58304C5D6DBC2206.txt
+[11/28] Compiling Kyuva SettingsView.swift
+[12/28] Compiling Kyuva HotkeyManager.swift
+[13/28] Compiling Kyuva RemoteControlProtocol.swift
+[14/28] Compiling Kyuva ScrollController.swift
+[15/28] Compiling Kyuva LocalStore.swift
+[16/28] Compiling Kyuva OverlayWindowController.swift
+[17/28] Compiling Kyuva WindowManager.swift
+[18/28] Compiling Kyuva OnboardingView.swift
+[19/28] Compiling Kyuva AppDelegate.swift
+[20/28] Compiling Kyuva KyuvaApp.swift
+[21/28] Emitting module Kyuva
+[22/28] Compiling Kyuva ScriptManager.swift
+[23/28] Compiling Kyuva ScriptModels.swift
+[24/29] Compiling Kyuva resource_bundle_accessor.swift
+[24/29] Write Objects.LinkFileList
+[25/29] Linking Kyuva
+[26/29] Applying Kyuva
+[28/31] Compiling KyuvaTests KyuvaCoreTests.swift
+[29/31] Emitting module KyuvaTests
+[30/33] Compiling KyuvaPackageTests runner.swift
+[31/33] Emitting module KyuvaPackageTests
+[31/33] Write Objects.LinkFileList
+[32/33] Linking KyuvaPackageTests
+Build complete! (15.22s)
+Test Suite 'All tests' started at 2026-08-25 17:03:27.219.
+Test Suite 'KyuvaPackageTests.xctest' started at 2026-08-25 17:03:27.221.
+Test Suite 'HotkeyDefinitionTests' started at 2026-08-25 17:03:27.221.
+Test Case '-[KyuvaTests.HotkeyDefinitionTests testFixedHotkeysHaveUniqueSystemDefinitions]' started.
+Test Case '-[KyuvaTests.HotkeyDefinitionTests testFixedHotkeysHaveUniqueSystemDefinitions]' passed (0.002 seconds).
+Test Suite 'HotkeyDefinitionTests' passed at 2026-08-25 17:03:27.224.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'LocalStoreTests' started at 2026-08-25 17:03:27.224.
+Test Case '-[KyuvaTests.LocalStoreTests testCorruptPrimaryRecoversLastKnownGoodBackupAndPreservesEvidence]' started.
+Test Case '-[KyuvaTests.LocalStoreTests testCorruptPrimaryRecoversLastKnownGoodBackupAndPreservesEvidence]' passed (0.005 seconds).
+Test Case '-[KyuvaTests.LocalStoreTests testScriptsRoundTripThroughInjectedDirectory]' started.
+Test Case '-[KyuvaTests.LocalStoreTests testScriptsRoundTripThroughInjectedDirectory]' passed (0.001 seconds).
+Test Suite 'LocalStoreTests' passed at 2026-08-25 17:03:27.229.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.006 (0.006) seconds
+Test Suite 'RemoteControlProtocolTests' started at 2026-08-25 17:03:27.230.
+Test Case '-[KyuvaTests.RemoteControlProtocolTests testCommandsRoundTripThroughPropertyListMessage]' started.
+Test Case '-[KyuvaTests.RemoteControlProtocolTests testCommandsRoundTripThroughPropertyListMessage]' passed (0.000 seconds).
+Test Case '-[KyuvaTests.RemoteControlProtocolTests testPlaybackSnapshotRoundTripsAndClampsProgress]' started.
+Test Case '-[KyuvaTests.RemoteControlProtocolTests testPlaybackSnapshotRoundTripsAndClampsProgress]' passed (0.000 seconds).
+Test Suite 'RemoteControlProtocolTests' passed at 2026-08-25 17:03:27.230.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Test Suite 'ScriptManagerPersistenceTests' started at 2026-08-25 17:03:27.230.
+Test Case '-[KyuvaTests.ScriptManagerPersistenceTests testCreateAndDeleteKeepAValidSelectionAndPersist]' started.
+Test Case '-[KyuvaTests.ScriptManagerPersistenceTests testCreateAndDeleteKeepAValidSelectionAndPersist]' passed (0.003 seconds).
+Test Case '-[KyuvaTests.ScriptManagerPersistenceTests testFlushPendingSavePersistsTheLatestDebouncedEdit]' started.
+Test Case '-[KyuvaTests.ScriptManagerPersistenceTests testFlushPendingSavePersistsTheLatestDebouncedEdit]' passed (0.001 seconds).
+Test Suite 'ScriptManagerPersistenceTests' passed at 2026-08-25 17:03:27.234.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.004 (0.005) seconds
+Test Suite 'ScriptTests' started at 2026-08-25 17:03:27.234.
+Test Case '-[KyuvaTests.ScriptTests testPromptLinesRecognizeOnlyCompleteBracketedDirections]' started.
+Test Case '-[KyuvaTests.ScriptTests testPromptLinesRecognizeOnlyCompleteBracketedDirections]' passed (0.000 seconds).
+Test Case '-[KyuvaTests.ScriptTests testReindexFiltersBlankLinesAndKeepsTokenLineIndexes]' started.
+Test Case '-[KyuvaTests.ScriptTests testReindexFiltersBlankLinesAndKeepsTokenLineIndexes]' passed (0.000 seconds).
+Test Suite 'ScriptTests' passed at 2026-08-25 17:03:27.235.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Test Suite 'ScrollControllerTests' started at 2026-08-25 17:03:27.235.
+Test Case '-[KyuvaTests.ScrollControllerTests testApplyingDefaultsSwitchesPaceModeWithoutMovingTheScript]' started.
+Test Case '-[KyuvaTests.ScrollControllerTests testApplyingDefaultsSwitchesPaceModeWithoutMovingTheScript]' passed (0.002 seconds).
+Test Case '-[KyuvaTests.ScrollControllerTests testSavedScrollSpeedAppliesAtStartupAndWhenDefaultsChange]' started.
+Test Case '-[KyuvaTests.ScrollControllerTests testSavedScrollSpeedAppliesAtStartupAndWhenDefaultsChange]' passed (0.001 seconds).
+Test Case '-[KyuvaTests.ScrollControllerTests testTargetDurationDerivesSpeedAndFasterControlShortensDuration]' started.
+Test Case '-[KyuvaTests.ScrollControllerTests testTargetDurationDerivesSpeedAndFasterControlShortensDuration]' passed (0.001 seconds).
+Test Case '-[KyuvaTests.ScrollControllerTests testWordsPerMinuteDerivesSpeedProgressAndRemainingTime]' started.
+Test Case '-[KyuvaTests.ScrollControllerTests testWordsPerMinuteDerivesSpeedProgressAndRemainingTime]' passed (0.001 seconds).
+Test Suite 'ScrollControllerTests' passed at 2026-08-25 17:03:27.240.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.005) seconds
+Test Suite 'WindowDragTrackerTests' started at 2026-08-25 17:03:27.240.
+Test Case '-[KyuvaTests.WindowDragTrackerTests testCumulativeGestureTranslationUsesTheOriginalWindowOrigin]' started.
+Test Case '-[KyuvaTests.WindowDragTrackerTests testCumulativeGestureTranslationUsesTheOriginalWindowOrigin]' passed (0.000 seconds).
+Test Suite 'WindowDragTrackerTests' passed at 2026-08-25 17:03:27.240.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.000 (0.000) seconds
+Test Suite 'KyuvaPackageTests.xctest' passed at 2026-08-25 17:03:27.241.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.018 (0.019) seconds
+Test Suite 'All tests' passed at 2026-08-25 17:03:27.241.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.018 (0.021) seconds
+[Kyuva] Recovered scripts from the last known-good backup. Corrupt data preserved at <temporary>
+◇ Test run started.
+↳ Testing Library Version: 1902
+↳ Target Platform: arm64e-apple-macos14.0
+✔ Test run with 0 tests in 0 suites passed after 0.001 seconds.

@@ -1,22 +1,23 @@
 # Privacy Policy for Kyuva
 
 **Effective Date:** January 5, 2026  
-**Last Updated:** August 24, 2026
+**Last Updated:** August 25, 2026
 
 ## Overview
 
-Kyuva ("the App") is a macOS teleprompter published by Mykyta Dudnichenko. Its source is public. This policy explains how the application handles data.
+Kyuva ("the App") is a teleprompter for Mac and iPhone with a dependent Apple Watch remote, published by Mykyta Dudnichenko. Its source is public. This policy explains how the applications handle data.
 
 ## Data Collection
 
 ### What We Collect
-**Nothing.** The developer does not receive or transmit your scripts, settings, or other personal data. The app stores the content you create only on your Mac.
+**Nothing.** The developer does not receive your scripts, settings, or other personal data. Script content stays in the local app container on the Mac or iPhone where it was created.
 
 ### Local Data Only
-- **Scripts:** Your scripts and a last known-good backup are stored in Kyuva's local Application Support directory. App Store builds use Kyuva's sandbox container.
+- **Scripts:** Your scripts and a last known-good backup are stored in Kyuva's local Application Support directory. App Store builds use Kyuva's sandbox container on each device.
 - **Recovery:** If the main scripts file cannot be decoded, Kyuva preserves the corrupt file and attempts to load the last known-good local backup.
-- **Settings:** Your preferences are stored locally using macOS UserDefaults.
-- **No Cloud Sync:** We do not sync any data to external servers
+- **Settings:** Your preferences are stored locally using Apple UserDefaults.
+- **Watch remote:** The paired Watch receives the current script title, play/pause state, pace label, and progress from the iPhone and sends control commands back through Apple's WatchConnectivity framework. Kyuva does not send this information to the developer or to a Kyuva server.
+- **No Cloud Sync:** We do not sync scripts or settings to external servers.
 
 ### Audio and Speech
 - Kyuva's current release does not request microphone or speech-recognition access
@@ -24,7 +25,7 @@ Kyuva ("the App") is a macOS teleprompter published by Mykyta Dudnichenko. Its s
 
 ## Capture Visibility
 
-The teleprompter overlay is a normal macOS window and may appear in screen shares or recordings. Verify the preview before presenting, or share a single app window that omits Kyuva. Kyuva does not promise capture exclusion.
+Kyuva uses normal app windows and screens. Its prompt may appear in screen shares or recordings. Verify the preview before presenting; Kyuva does not promise capture exclusion.
 
 ## Third-Party Services
 
@@ -38,10 +39,10 @@ We do not share any data with third parties because we do not collect any data.
 
 ## Data Security
 
-Since all data remains on your device:
-- Your scripts are as secure as your Mac
-- No network transmission means no interception risk
-- Removing the app may leave its local scripts and settings on your Mac so that an accidental uninstall does not destroy them
+Since script data remains in local app containers:
+- Your scripts are protected by the security of your Apple device and operating system.
+- Kyuva has no developer-operated script backend.
+- Mac removal may leave local support data behind; deleting the iPhone app normally removes its local app container according to iOS behavior.
 
 ## Children's Privacy
 
@@ -50,9 +51,9 @@ Kyuva does not knowingly collect data from children. Since we collect no data at
 ## Your Rights
 
 You have complete control over your data:
-- **Access:** Direct builds use `~/Library/Application Support/Kyuva/`; App Store builds use the app's sandboxed Application Support container.
-- **Delete:** Quit Kyuva, then remove its Application Support data and preferences to delete local scripts and settings.
-- **Export:** Use the built-in export feature to save scripts
+- **Access:** Direct Mac builds use `~/Library/Application Support/Kyuva/`; App Store builds use sandboxed Application Support containers.
+- **Delete:** On Mac, quit Kyuva and remove its Application Support data and preferences. On iPhone, delete individual scripts in Kyuva or remove the app and its local data through iOS.
+- **Export:** The Mac app includes text export. The first iPhone app keeps editing intentionally local and simple.
 
 ## Changes to This Policy
 
@@ -67,4 +68,4 @@ Repository:
 
 ---
 
-**Summary:** Kyuva is a privacy-first app. We collect nothing. Everything stays on your Mac.
+**Summary:** Kyuva is a privacy-first app. We collect nothing. Scripts stay on your device, and the Watch communicates only with its paired iPhone.

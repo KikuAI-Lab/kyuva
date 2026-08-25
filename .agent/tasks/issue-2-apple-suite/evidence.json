@@ -1,0 +1,84 @@
+{
+  "status": "PASS",
+  "collectedAt": "2026-08-25T14:11:10Z",
+  "acceptanceCriteria": [
+    {
+      "id": "AC1",
+      "status": "PASS",
+      "summary": "14 tests pass and the macOS Release product is universal arm64/x86_64.",
+      "artifacts": [
+        "raw/logs/swift-test.log",
+        "raw/logs/macos-release.log",
+        "raw/logs/product-inspection.log"
+      ]
+    },
+    {
+      "id": "AC2",
+      "status": "PASS",
+      "summary": "The accessible iPhone editor supports CRUD and lifecycle-flushed persistence.",
+      "artifacts": [
+        "raw/logs/swift-test.log",
+        "raw/screenshots/ios-editor-launch.png"
+      ]
+    },
+    {
+      "id": "AC3",
+      "status": "PASS",
+      "summary": "The iPhone prompt exposes the required controls, pace modes, display options, progress, remaining time, and idle-sleep handling.",
+      "artifacts": [
+        "raw/logs/swift-test.log",
+        "raw/screenshots/ios-prompt-controls.png"
+      ]
+    },
+    {
+      "id": "AC4",
+      "status": "PASS",
+      "summary": "The dependent Watch remote builds, is embedded, uses tested property-list messages, and controls the paired simulator live.",
+      "artifacts": [
+        "raw/logs/watch-release.log",
+        "raw/logs/ios-release.log",
+        "raw/logs/simulator-pair-state.log",
+        "raw/screenshots/watch-connected-final.png",
+        "raw/screenshots/watch-play-command.png",
+        "raw/screenshots/ios-watch-controlled.png"
+      ]
+    },
+    {
+      "id": "AC5",
+      "status": "PASS",
+      "summary": "Team, signing style, versions, bundle relationships, device families, icon, privacy manifests, and encryption declaration match the frozen spec.",
+      "artifacts": [
+        "raw/logs/config-summary.json",
+        "raw/logs/product-inspection.log"
+      ]
+    },
+    {
+      "id": "AC6",
+      "status": "PASS",
+      "summary": "No account, monetization, analytics, backend, third-party dependency, or unrelated protected capability was added.",
+      "artifacts": [
+        "raw/logs/privacy-dependency-scan.log"
+      ]
+    },
+    {
+      "id": "AC7",
+      "status": "PASS",
+      "summary": "Fresh macOS, iOS, watchOS, simulator build, launch, product, and visual receipts are present.",
+      "artifacts": [
+        "raw/logs/project-list.json",
+        "raw/logs/ios-simulator-debug.log",
+        "raw/logs/ios-simulator-launch.log",
+        "raw/screenshots/ios-editor-launch.png"
+      ]
+    },
+    {
+      "id": "AC8",
+      "status": "PASS",
+      "summary": "Physical-device and all mobile upload/submission/release states remain explicit owner gates and are not claimed.",
+      "unknowns": [
+        "Physical iPhone and Apple Watch WatchConnectivity behavior",
+        "iPhone and Watch App Store upload, review, submission, release, and public availability"
+      ]
+    }
+  ]
+}

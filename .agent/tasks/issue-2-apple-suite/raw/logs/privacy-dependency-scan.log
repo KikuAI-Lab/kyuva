@@ -1,0 +1,57 @@
+source-imports:
+Kyuva/App/AppDelegate.swift:1:import AppKit
+Kyuva/App/AppDelegate.swift:2:import SwiftUI
+Kyuva/App/KyuvaApp.swift:1:import SwiftUI
+Kyuva/Core/HotkeyManager.swift:1:import Carbon
+Kyuva/Core/HotkeyManager.swift:2:import Foundation
+Kyuva/Core/RemoteControlProtocol.swift:1:import Foundation
+Kyuva/Core/ScriptManager.swift:1:import Foundation
+Kyuva/Core/ScriptManager.swift:3:import AppKit
+Kyuva/Core/ScriptManager.swift:4:import UniformTypeIdentifiers
+Kyuva/Core/ScriptManager.swift:6:import Combine
+Kyuva/Core/ScriptModels.swift:1:import Foundation
+Kyuva/Core/ScrollController.swift:1:import Foundation
+Kyuva/Core/ScrollController.swift:2:import Combine
+Kyuva/Core/ScrollController.swift:3:import SwiftUI
+Kyuva/Core/Storage/LocalStore.swift:1:import Foundation
+Kyuva/Platform/WindowManager.swift:1:import AppKit
+Kyuva/UI/OnboardingView.swift:1:import SwiftUI
+Kyuva/UI/OverlayWindowController.swift:1:import AppKit
+Kyuva/UI/OverlayWindowController.swift:2:import SwiftUI
+Kyuva/UI/OverlayWindowController.swift:3:import Combine
+Kyuva/UI/SettingsView.swift:1:import SwiftUI
+KyuvaMobile/App/KyuvaMobileApp.swift:1:import SwiftUI
+KyuvaMobile/Connectivity/PhoneWatchSession.swift:1:import Foundation
+KyuvaMobile/Connectivity/PhoneWatchSession.swift:2:import WatchConnectivity
+KyuvaMobile/UI/MobileEditorView.swift:1:import SwiftUI
+KyuvaMobile/UI/MobilePromptSettingsView.swift:1:import SwiftUI
+KyuvaMobile/UI/MobilePromptView.swift:1:import SwiftUI
+KyuvaMobile/UI/MobilePromptView.swift:2:import UIKit
+KyuvaWatch/App/KyuvaWatchApp.swift:1:import SwiftUI
+KyuvaWatch/Connectivity/WatchSessionController.swift:1:import Combine
+KyuvaWatch/Connectivity/WatchSessionController.swift:2:import Foundation
+KyuvaWatch/Connectivity/WatchSessionController.swift:3:import WatchConnectivity
+KyuvaWatch/UI/WatchRemoteView.swift:1:import SwiftUI
+Tests/KyuvaTests/KyuvaCoreTests.swift:1:import XCTest
+forbidden-runtime-capability-scan:
+none
+usage-description-scan:
+none
+source-privacy-manifest:
+{
+  "NSPrivacyAccessedAPITypes" => [
+    0 => {
+      "NSPrivacyAccessedAPIType" => "NSPrivacyAccessedAPICategoryUserDefaults"
+      "NSPrivacyAccessedAPITypeReasons" => [
+        0 => "CA92.1"
+      ]
+    }
+  ]
+}
+package-dependencies:
+[]
+entitlements:
+{
+  "com.apple.security.app-sandbox" => true
+  "com.apple.security.files.user-selected.read-write" => true
+}

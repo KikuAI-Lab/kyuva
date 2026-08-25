@@ -1,0 +1,852 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project Kyuva.xcodeproj -scheme "Kyuva iOS" -configuration Release -destination generic/platform=iOS -derivedDataPath <scratch>/dd-ios CODE_SIGNING_ALLOWED=NO build
+
+Build settings from command line:
+    CODE_SIGNING_ALLOWED = NO
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (2 targets)
+    Target 'Kyuva iOS' in project 'Kyuva'
+        ➜ Explicit dependency on target 'Kyuva Watch App' in project 'Kyuva'
+    Target 'Kyuva Watch App' in project 'Kyuva' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 <repo>/Kyuva/Resources/AppIcon.icon
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --print-asset-tag-combinations --output-format xml1 <repo>/Kyuva/Resources/AppIcon.icon
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: f67db19c3fddf1ddf0d6778a46bc4d75
+Build description path: <scratch>/dd-ios/Build/Intermediates.noindex/XCBuildData/f67db19c3fddf1ddf0d6778a46bc4d75.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache
+    cd <repo>/Kyuva.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -o <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk <scratch>/dd-ios/SDKStatCaches.noindex/iphoneos26.5-23F81a-32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache
+    cd <repo>/Kyuva.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -o <scratch>/dd-ios/SDKStatCaches.noindex/iphoneos26.5-23F81a-32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Intermediates.noindex
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Intermediates.noindex
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Products
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Products
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-watchos
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-watchos
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva-da42002eb95e4562ec869f2de98206b8-VFS-watchos/all-product-headers.yaml
+    cd <repo>/Kyuva.xcodeproj
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva-da42002eb95e4562ec869f2de98206b8-VFS-watchos/all-product-headers.yaml
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva-da42002eb95e4562ec869f2de98206b8-VFS-iphoneos/all-product-headers.yaml
+    cd <repo>/Kyuva.xcodeproj
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva-da42002eb95e4562ec869f2de98206b8-VFS-iphoneos/all-product-headers.yaml
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Products/Release-watchos
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Products/Release-watchos
+
+CreateBuildDirectory <scratch>/dd-ios/Build/Products/Release-iphoneos
+    cd <repo>/Kyuva.xcodeproj
+    builtin-create-build-directory <scratch>/dd-ios/Build/Products/Release-iphoneos
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/empty-Kyuva\ Watch\ App.plist (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/empty-Kyuva\ Watch\ App.plist
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.LinkFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.LinkFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_const_extract_protocols.json (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_const_extract_protocols.json
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App-OutputFileMap.json (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App-OutputFileMap.json
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.LinkFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.LinkFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_const_extract_protocols.json (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_const_extract_protocols.json
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftConstValuesFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftConstValuesFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftConstValuesFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftConstValuesFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App-OutputFileMap.json (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App-OutputFileMap.json
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.hmap (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.DependencyStaticMetadataFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.DependencyMetadataFileList (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.DependencyMetadataFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-non-framework-target-headers.hmap (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-non-framework-target-headers.hmap
+
+MkDir <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /bin/mkdir -p <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/empty-Kyuva\ iOS.plist (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/empty-Kyuva\ iOS.plist
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftConstValuesFileList (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftConstValuesFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftFileList (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.LinkFileList (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.LinkFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_const_extract_protocols.json (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_const_extract_protocols.json
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS-OutputFileMap.json (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS-OutputFileMap.json
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.hmap (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyStaticMetadataFileList (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyMetadataFileList (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyMetadataFileList
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-project-headers.hmap (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-project-headers.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-own-target-headers.hmap (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-own-target-headers.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-generated-files.hmap (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-generated-files.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-target-headers.hmap (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-target-headers.hmap
+
+WriteAuxiliaryFile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-non-framework-target-headers.hmap (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    write-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-non-framework-target-headers.hmap
+
+MkDir <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /bin/mkdir -p <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app
+
+MkDir <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/thinned (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /bin/mkdir -p <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/thinned
+
+MkDir <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/unthinned (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /bin/mkdir -p <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/unthinned
+
+CpResource <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/PrivacyInfo.xcprivacy <repo>/Kyuva/Resources/PrivacyInfo.xcprivacy (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks <repo>/Kyuva/Resources/PrivacyInfo.xcprivacy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app
+
+GenerateAssetSymbols <repo>/Kyuva/Resources/AppIcon.icon (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool <repo>/Kyuva/Resources/AppIcon.icon --compile <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app --output-format human-readable-text --notices --warnings --export-dependency-info <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_dependencies --output-partial-info-plist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device watch --minimum-deployment-target 10.0 --platform watchos --bundle-identifier com.kikuai.kyuva.watchkitapp --generate-swift-asset-symbols <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva Watch App.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva Watch App.build/DerivedSources/GeneratedAssetSymbols.h
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva Watch App.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CompileAssetCatalogVariant thinned <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app <repo>/Kyuva/Resources/AppIcon.icon (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool <repo>/Kyuva/Resources/AppIcon.icon --compile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_dependencies_thinned --output-partial-info-plist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device watch --minimum-deployment-target 10.0 --platform watchos
+/* com.apple.actool.compilation-results */
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva Watch App.build/assetcatalog_generated_info.plist_thinned
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva Watch App.build/assetcatalog_output/thinned/Assets.car
+
+
+SwiftDriver Kyuva\ Watch\ App normal arm64_32 com.apple.xcode.tools.swift.compiler (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_Watch_App -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -target arm64_32-apple-watchos10.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-watchos -F <scratch>/dd-ios/Build/Products/Release-watchos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-watchos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources-normal/arm64_32 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/arm64_32 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftDriver Kyuva\ Watch\ App normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_Watch_App -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -target arm64-apple-watchos10.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-watchos -F <scratch>/dd-ios/Build/Products/Release-watchos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-watchos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources-normal/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftDriver\ Compilation Kyuva\ Watch\ App normal arm64_32 com.apple.xcode.tools.swift.compiler (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_Watch_App -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -target arm64_32-apple-watchos10.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-watchos -F <scratch>/dd-ios/Build/Products/Release-watchos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-watchos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources-normal/arm64_32 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/arm64_32 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_SwiftConcurrencyShims-A784P6N6A15Y8MOSRWV1TON68.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_float-7Z5ULHY0OHMPIKNQF7UMTPRGX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_AvailabilityInternal-4DE2VZY3COKCSFWOLV6WUEXHS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/ptrauth-7HH8QBP1Q8WXODHGXA9OM3B7X.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/ptrcheck-60C1PB9MC2G3W0VC5ZQS0JHLM.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdbool-CM69G645IAGL7OEIQ2JUEB0SX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/SwiftShims-BMXBECO2PM2HDXHNWW0BIXCNY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdarg-4PVG9YXIZ4BS0RRKGFCVKKM06.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_float-DLEXJ43ENWA1E8YH07L2P6RN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_AvailabilityInternal-6EUA0CFWZ2L3HHB6I1ZM96GNR.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ptrcheck-BPXUY2T51C8HC2R5IMIF98MD8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SwiftShims-70R6WFKEJ64EF0D4SIDS0RMHZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_SwiftConcurrencyShims-5X55L50NKSCQ913WOWABB4LHQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ptrauth-CW5J2OMDI3SKDGN5T2HD12LOI.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stddef-751UR3TF0QDD2ZA0ZCMN18FW9.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation1-LJK2L6VQU31F6IDU7QJVL29N.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdarg-8AD3JZXSR4I8ARHOXO10NPKSF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stddef-8UNU0APLUMZ1A3KXZV681L84Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdbool-A9IZ97Y7LZCXJ5I3VWISMXCOF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/DeveloperToolsSupport-6TV2L8XGZ102IX5MUH0TVY19O.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation1-F362RWUVRZFNG6K1EYS5WPSIV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/DeveloperToolsSupport-DE626GTQ65OB2M1LHO8E4YCR0.pcm
+
+SwiftDriver\ Compilation Kyuva\ Watch\ App normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_Watch_App -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -target arm64-apple-watchos10.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-watchos -F <scratch>/dd-ios/Build/Products/Release-watchos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-watchos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources-normal/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_limits-E74IV3R4V0YIM9NX35W319P78.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation2-F43US57TV493MA8XOYWSSVX7M.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_limits-72ENK0O6WHM74M0UXTA1N4BS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation2-8SL24M74Q1VOJ4YNEGWV4L0CV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_tgmath-AOZ97Q8L7B02SC701ZQXH7WHV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdint-98B836WZD976303HKJTQ6NPAF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/sys_types-8B4P7S88CA2J1AEWVK8LIKIRE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_tgmath-11YQCJR9RPW8CNZ7JNSSTE7TO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdint-9YUQ2XQCDT9GL0E31RWG0274Q.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/sys_types-3J2EXGMBFBKII89FPK7B9JKBJ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_intrinsics-7784N6GP5QE2X9JIIDT8E58WX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdatomic-BVW8VVQ9IHCQHAEMP2NZQXWON.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation3-BH85LO8JTKLZU4TA46N7DIZDT.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdatomic-9TNVQS28FLQWCZPWMWZADGGA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_intrinsics-9BVB8LA5QLTXQIRI7NU5PUNXZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation3-7BSZDVV5A7GP9N56CFH9A3OW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_inttypes-7EFM4UX0JRN4M6TUQZWAVVXD1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_inttypes-CFRFE8ZGJ7H72Z1WYKRYMNMB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Darwin-4RV5N9XHZNMV85IX3SBV5BHP6.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Darwin-F0SMM7V7K7713QDZJ4RWDU76Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/simd-73MC08ZAG767DN97K1RDW3ANE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/simd-4W1YY976JFSE8PHASFVX156H7.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/MachO-AZQUOMIVMQJ08BZ3FZYB3MLBS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ObjectiveC-51245N7SHUAF97VXOXM3GQFQO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/ObjectiveC-3BKU9RF7FVEECZY8OLJA4CK04.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/MachO-C7B3R597OKZTQXESAUBOGAK2R.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/os_object-67UAJ3DLBTG06Y9MWIBUCOAT6.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/os_object-9TYTNIXFMLJW9MK45WCC3CC1Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/os_workgroup-30G95L7C5ZQ0LFTDBD51Q1536.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/os_workgroup-B5YRPC5QE333ERO6QWNEXRTD2.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Dispatch-93O9WRHM16UZCR3O0RB87IKTB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Dispatch-283QKNRDZUKDV1JN289ATI7FE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Spatial-BU20O8YC86K1AVDLS2UTRLVC2.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Spatial-7831JRT94Z7EHBH3WZMUC50T5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreFoundation-3ZO381BSKMPJW89H0GKCLTWQE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/XPC-229PSHOC4IZ3GWYAGVML9E8HP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/XPC-8M9Q5C6DF3N5QDIX5IOSYU82T.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreFoundation-7Q9FN418JARLD5SF66MROZF7X.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/os-WJ8KKEFFPZ2H0T9SVX4D5XMJ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/os-DITNACOI3TZ4E2FXVGGV8PMCG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreGraphics-5ZLSAQ4102Q29GGPSPMH1GCIX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Security-3ZOXMGQUD2T8I3BDC76Y76Y78.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreGraphics-46EWVS4JPDABRX3UYK9O2CQOS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Security-84ZICWKRZ0YI5SVDIJ9AN9K5K.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Foundation-5CYNRWT3MJ90JNG8Q0VEFPLV5.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Foundation-3JEUFRBGFHC01FM7OFFOK14WH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreText-C8XKVEI2Z45B6ARIF8HG6GTZW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreVideo-4DVICFRH5J9KLHAWKWMI76DFZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreVideo-3XSV0KVWNB03Q7072Q8IXAI3L.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreText-AHW68B4HPZUS4M3XRCCITD8B0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UniformTypeIdentifiers-AZ2FZMY1W7N0464FL3Q3T1M5G.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/QuartzCore-DUI4RE9SPKICDBBMCZA27NJPS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_LocationEssentials-AFUCC0TOSXLXGLHIHO4E88RVG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UIUtilities-928E63FAA9PCCTZHMAY67S7JI.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Accessibility-CNC6N1UCZN5AVV7N60ANMHH1G.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreData-XQE0FKNI8NWO982C8WBWZLV1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UserNotifications-22ENJ97VMED5JUVGBVGE4RD4Y.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/SceneKit-5EWVMSTIND023RNE9HWOR0ABP.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Accessibility-95K76ITQQDJ7D5RWSC4QH147N.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/UniformTypeIdentifiers-9YHBUK87SZ07AHBZNZQYM3CT0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/DataDetection-5CV0XURI2L98A4U5NL61ESNBJ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/WatchConnectivity-ECAL078N9ZRD6FEEZRUTA9WKF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreData-EDX5YP07YBR96T2GNLT396WIA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/_LocationEssentials-7AXDRF5R2AKKWYEK2ZTGEI8FY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/UserNotifications-DHAJ4J9ZKC6O5IXFVRDT9IFLW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreLocation-COY4N6GMFHBY55DJXE8M4M0ZO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Symbols-7I65XWHZAS2QDEIAWN805B24W.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/Symbols-5K8QWJLX1I9B2M5HEI1SWUXGT.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/WatchConnectivity-8EX1XITNVHFHH45VPSHSWF7MO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/QuartzCore-4XQIZYCDG5331OGOXZMY5ZV9J.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreTransferable-472M32O6EYH6BQ20J4F2XW8FN.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/UIUtilities-5NTO0V2EZR34HPR93QWDKOCBQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UIKit-17VKTPOACI0EPS7SMSJ74LWEA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreTransferable-2KD2D7RVHBMF9QQH6TCGVLQZS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/OSLog-EHF4J5AT9QCO77J2FN55I5U7Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SceneKit-5GDWSZ3NMAZ0FMBTSI9GTCZFC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SwiftUICore-EI03LUUK29BQWY2K0IK7TLU1E.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/OSLog-2OSHGHYI6Z0XXF494VLK9Q9LC.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/CoreLocation-79VJ2GT627GK95G9OLDJGUDJZ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/UIKit-EG2MJSCIJZ36Z21WIGD2CQH1O.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/SwiftUICore-E07EB2VMHIAUL5258SZCMH190.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/DataDetection-1K7LV4YFNQYN981FUV8TNDHXV.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/MapKit-E20YF652RH5LPH3P9J9DYQ2C4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/HomeKit-AIBSRP8KCIC75D2NR47T3DPER.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/MapKit-45NEX8UHTC8THN65BBDOFZHVH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/HomeKit-7KJY3J6GAN3AL0XLJGYX6ZX0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/WatchKit-4LVSW18UHKOKASK2EWHKH6520.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/WatchKit-716VQX1MQIWI7I2D786R99IQH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SwiftUI-5HYVE95O8EAFMNWX3UOLAFZEI.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64_32 <scratch>/dd-ios/ModuleCache.noindex/SwiftUI-D08884MTNYX4MUEUX1RXTQWDX.pcm
+
+SwiftCompile normal arm64 Compiling\ KyuvaWatchApp.swift,\ WatchSessionController.swift,\ WatchRemoteView.swift,\ RemoteControlProtocol.swift,\ GeneratedAssetSymbols.swift <repo>/KyuvaWatch/App/KyuvaWatchApp.swift <repo>/KyuvaWatch/Connectivity/WatchSessionController.swift <repo>/KyuvaWatch/UI/WatchRemoteView.swift <repo>/Kyuva/Core/RemoteControlProtocol.swift <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/GeneratedAssetSymbols.swift /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Swift.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/HomeKit.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/SwiftUI.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Spatial.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreTransferable.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/MapKit.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/WatchKit.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Darwin.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_Builtin_float.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/UIKit.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/simd.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Observation.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Combine.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/ObjectiveC.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/DeveloperToolsSupport.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Symbols.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/QuartzCore.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/XPC.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreFoundation.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreLocation.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreData.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/System.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreVideo.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/OSLog.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreText.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/os.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/GeoToolbox.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_StringProcessing.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/UniformTypeIdentifiers.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/DataDetection.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Accessibility.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreGraphics.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/SceneKit.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_DarwinFoundation1.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Dispatch.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_DarwinFoundation3.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Foundation.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/SwiftUICore.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_DarwinFoundation2.swiftmodule/arm64e-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_Concurrency.swiftmodule/arm64e-apple-watchos.swiftmodule <scratch>/dd-ios/ModuleCache.noindex/_Builtin_inttypes-CFRFE8ZGJ7H72Z1WYKRYMNMB.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation1-F362RWUVRZFNG6K1EYS5WPSIV.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stddef-8UNU0APLUMZ1A3KXZV681L84Z.pcm <scratch>/dd-ios/ModuleCache.noindex/ObjectiveC-51245N7SHUAF97VXOXM3GQFQO.pcm <scratch>/dd-ios/ModuleCache.noindex/Accessibility-CNC6N1UCZN5AVV7N60ANMHH1G.pcm <scratch>/dd-ios/ModuleCache.noindex/UniformTypeIdentifiers-AZ2FZMY1W7N0464FL3Q3T1M5G.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreData-XQE0FKNI8NWO982C8WBWZLV1.pcm <scratch>/dd-ios/ModuleCache.noindex/Symbols-7I65XWHZAS2QDEIAWN805B24W.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdarg-4PVG9YXIZ4BS0RRKGFCVKKM06.pcm <scratch>/dd-ios/ModuleCache.noindex/WatchKit-4LVSW18UHKOKASK2EWHKH6520.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreGraphics-5ZLSAQ4102Q29GGPSPMH1GCIX.pcm <scratch>/dd-ios/ModuleCache.noindex/HomeKit-AIBSRP8KCIC75D2NR47T3DPER.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftUI-5HYVE95O8EAFMNWX3UOLAFZEI.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreVideo-3XSV0KVWNB03Q7072Q8IXAI3L.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation2-8SL24M74Q1VOJ4YNEGWV4L0CV.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdbool-A9IZ97Y7LZCXJ5I3VWISMXCOF.pcm <scratch>/dd-ios/ModuleCache.noindex/DataDetection-1K7LV4YFNQYN981FUV8TNDHXV.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreFoundation-7Q9FN418JARLD5SF66MROZF7X.pcm <scratch>/dd-ios/ModuleCache.noindex/UIUtilities-928E63FAA9PCCTZHMAY67S7JI.pcm <scratch>/dd-ios/ModuleCache.noindex/_LocationEssentials-AFUCC0TOSXLXGLHIHO4E88RVG.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreTransferable-472M32O6EYH6BQ20J4F2XW8FN.pcm <scratch>/dd-ios/ModuleCache.noindex/MachO-AZQUOMIVMQJ08BZ3FZYB3MLBS.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftUICore-EI03LUUK29BQWY2K0IK7TLU1E.pcm <scratch>/dd-ios/ModuleCache.noindex/Spatial-BU20O8YC86K1AVDLS2UTRLVC2.pcm <scratch>/dd-ios/ModuleCache.noindex/Foundation-5CYNRWT3MJ90JNG8Q0VEFPLV5.pcm <scratch>/dd-ios/ModuleCache.noindex/ptrcheck-BPXUY2T51C8HC2R5IMIF98MD8.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_intrinsics-9BVB8LA5QLTXQIRI7NU5PUNXZ.pcm <scratch>/dd-ios/ModuleCache.noindex/XPC-8M9Q5C6DF3N5QDIX5IOSYU82T.pcm <scratch>/dd-ios/ModuleCache.noindex/Dispatch-93O9WRHM16UZCR3O0RB87IKTB.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreText-AHW68B4HPZUS4M3XRCCITD8B0.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation3-7BSZDVV5A7GP9N56CFH9A3OW.pcm <scratch>/dd-ios/ModuleCache.noindex/_SwiftConcurrencyShims-5X55L50NKSCQ913WOWABB4LHQ.pcm <scratch>/dd-ios/ModuleCache.noindex/QuartzCore-DUI4RE9SPKICDBBMCZA27NJPS.pcm <scratch>/dd-ios/ModuleCache.noindex/UIKit-17VKTPOACI0EPS7SMSJ74LWEA.pcm <scratch>/dd-ios/ModuleCache.noindex/WatchConnectivity-ECAL078N9ZRD6FEEZRUTA9WKF.pcm <scratch>/dd-ios/ModuleCache.noindex/os_workgroup-B5YRPC5QE333ERO6QWNEXRTD2.pcm <scratch>/dd-ios/ModuleCache.noindex/MapKit-E20YF652RH5LPH3P9J9DYQ2C4.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_limits-72ENK0O6WHM74M0UXTA1N4BS.pcm <scratch>/dd-ios/ModuleCache.noindex/_AvailabilityInternal-6EUA0CFWZ2L3HHB6I1ZM96GNR.pcm <scratch>/dd-ios/ModuleCache.noindex/simd-4W1YY976JFSE8PHASFVX156H7.pcm <scratch>/dd-ios/ModuleCache.noindex/UserNotifications-22ENJ97VMED5JUVGBVGE4RD4Y.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreLocation-COY4N6GMFHBY55DJXE8M4M0ZO.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_float-DLEXJ43ENWA1E8YH07L2P6RN.pcm <scratch>/dd-ios/ModuleCache.noindex/DeveloperToolsSupport-6TV2L8XGZ102IX5MUH0TVY19O.pcm <scratch>/dd-ios/ModuleCache.noindex/sys_types-3J2EXGMBFBKII89FPK7B9JKBJ.pcm <scratch>/dd-ios/ModuleCache.noindex/ptrauth-CW5J2OMDI3SKDGN5T2HD12LOI.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdint-9YUQ2XQCDT9GL0E31RWG0274Q.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftShims-70R6WFKEJ64EF0D4SIDS0RMHZ.pcm <scratch>/dd-ios/ModuleCache.noindex/SceneKit-5GDWSZ3NMAZ0FMBTSI9GTCZFC.pcm <scratch>/dd-ios/ModuleCache.noindex/Security-3ZOXMGQUD2T8I3BDC76Y76Y78.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdatomic-9TNVQS28FLQWCZPWMWZADGGA.pcm <scratch>/dd-ios/ModuleCache.noindex/Darwin-F0SMM7V7K7713QDZJ4RWDU76Z.pcm <scratch>/dd-ios/ModuleCache.noindex/os-DITNACOI3TZ4E2FXVGGV8PMCG.pcm <scratch>/dd-ios/ModuleCache.noindex/os_object-67UAJ3DLBTG06Y9MWIBUCOAT6.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_tgmath-11YQCJR9RPW8CNZ7JNSSTE7TO.pcm <scratch>/dd-ios/ModuleCache.noindex/OSLog-EHF4J5AT9QCO77J2FN55I5U7Z.pcm <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-dependencies-1.json (in target 'Kyuva Watch App' from project 'Kyuva')
+
+CompileSwift normal arm64 (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+
+
+SwiftCompile normal arm64_32 Compiling\ KyuvaWatchApp.swift,\ WatchSessionController.swift,\ WatchRemoteView.swift,\ RemoteControlProtocol.swift,\ GeneratedAssetSymbols.swift <repo>/KyuvaWatch/App/KyuvaWatchApp.swift <repo>/KyuvaWatch/Connectivity/WatchSessionController.swift <repo>/KyuvaWatch/UI/WatchRemoteView.swift <repo>/Kyuva/Core/RemoteControlProtocol.swift <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/GeneratedAssetSymbols.swift /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Foundation.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Spatial.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_DarwinFoundation1.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/ObjectiveC.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/XPC.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreGraphics.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_Concurrency.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreFoundation.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_StringProcessing.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/simd.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/System.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/GeoToolbox.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Observation.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/WatchKit.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/OSLog.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/HomeKit.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/QuartzCore.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/DataDetection.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/UIKit.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Combine.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreData.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_DarwinFoundation2.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/SceneKit.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreTransferable.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/os.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreText.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/UniformTypeIdentifiers.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_DarwinFoundation3.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/MapKit.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/_Builtin_float.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Symbols.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Dispatch.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Swift.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreLocation.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/CoreVideo.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/DeveloperToolsSupport.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Accessibility.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/SwiftUI.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/SwiftUICore.swiftmodule/arm64_32-apple-watchos.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos/prebuilt-modules/26.5/Darwin.swiftmodule/arm64_32-apple-watchos.swiftmodule <scratch>/dd-ios/ModuleCache.noindex/WatchKit-716VQX1MQIWI7I2D786R99IQH.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreLocation-79VJ2GT627GK95G9OLDJGUDJZ.pcm <scratch>/dd-ios/ModuleCache.noindex/os-WJ8KKEFFPZ2H0T9SVX4D5XMJ.pcm <scratch>/dd-ios/ModuleCache.noindex/ptrauth-7HH8QBP1Q8WXODHGXA9OM3B7X.pcm <scratch>/dd-ios/ModuleCache.noindex/MachO-C7B3R597OKZTQXESAUBOGAK2R.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftUI-D08884MTNYX4MUEUX1RXTQWDX.pcm <scratch>/dd-ios/ModuleCache.noindex/DeveloperToolsSupport-DE626GTQ65OB2M1LHO8E4YCR0.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreTransferable-2KD2D7RVHBMF9QQH6TCGVLQZS.pcm <scratch>/dd-ios/ModuleCache.noindex/UniformTypeIdentifiers-9YHBUK87SZ07AHBZNZQYM3CT0.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation3-BH85LO8JTKLZU4TA46N7DIZDT.pcm <scratch>/dd-ios/ModuleCache.noindex/os_workgroup-30G95L7C5ZQ0LFTDBD51Q1536.pcm <scratch>/dd-ios/ModuleCache.noindex/ptrcheck-60C1PB9MC2G3W0VC5ZQS0JHLM.pcm <scratch>/dd-ios/ModuleCache.noindex/UIKit-EG2MJSCIJZ36Z21WIGD2CQH1O.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_inttypes-7EFM4UX0JRN4M6TUQZWAVVXD1.pcm <scratch>/dd-ios/ModuleCache.noindex/_AvailabilityInternal-4DE2VZY3COKCSFWOLV6WUEXHS.pcm <scratch>/dd-ios/ModuleCache.noindex/OSLog-2OSHGHYI6Z0XXF494VLK9Q9LC.pcm <scratch>/dd-ios/ModuleCache.noindex/MapKit-45NEX8UHTC8THN65BBDOFZHVH.pcm <scratch>/dd-ios/ModuleCache.noindex/sys_types-8B4P7S88CA2J1AEWVK8LIKIRE.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_limits-E74IV3R4V0YIM9NX35W319P78.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation2-F43US57TV493MA8XOYWSSVX7M.pcm <scratch>/dd-ios/ModuleCache.noindex/Foundation-3JEUFRBGFHC01FM7OFFOK14WH.pcm <scratch>/dd-ios/ModuleCache.noindex/UIUtilities-5NTO0V2EZR34HPR93QWDKOCBQ.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdbool-CM69G645IAGL7OEIQ2JUEB0SX.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftUICore-E07EB2VMHIAUL5258SZCMH190.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stddef-751UR3TF0QDD2ZA0ZCMN18FW9.pcm <scratch>/dd-ios/ModuleCache.noindex/HomeKit-7KJY3J6GAN3AL0XLJGYX6ZX0.pcm <scratch>/dd-ios/ModuleCache.noindex/XPC-229PSHOC4IZ3GWYAGVML9E8HP.pcm <scratch>/dd-ios/ModuleCache.noindex/Dispatch-283QKNRDZUKDV1JN289ATI7FE.pcm <scratch>/dd-ios/ModuleCache.noindex/_LocationEssentials-7AXDRF5R2AKKWYEK2ZTGEI8FY.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftShims-BMXBECO2PM2HDXHNWW0BIXCNY.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation1-LJK2L6VQU31F6IDU7QJVL29N.pcm <scratch>/dd-ios/ModuleCache.noindex/Spatial-7831JRT94Z7EHBH3WZMUC50T5.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_float-7Z5ULHY0OHMPIKNQF7UMTPRGX.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_tgmath-AOZ97Q8L7B02SC701ZQXH7WHV.pcm <scratch>/dd-ios/ModuleCache.noindex/DataDetection-5CV0XURI2L98A4U5NL61ESNBJ.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdatomic-BVW8VVQ9IHCQHAEMP2NZQXWON.pcm <scratch>/dd-ios/ModuleCache.noindex/ObjectiveC-3BKU9RF7FVEECZY8OLJA4CK04.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreData-EDX5YP07YBR96T2GNLT396WIA.pcm <scratch>/dd-ios/ModuleCache.noindex/os_object-9TYTNIXFMLJW9MK45WCC3CC1Z.pcm <scratch>/dd-ios/ModuleCache.noindex/simd-73MC08ZAG767DN97K1RDW3ANE.pcm <scratch>/dd-ios/ModuleCache.noindex/QuartzCore-4XQIZYCDG5331OGOXZMY5ZV9J.pcm <scratch>/dd-ios/ModuleCache.noindex/UserNotifications-DHAJ4J9ZKC6O5IXFVRDT9IFLW.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreText-C8XKVEI2Z45B6ARIF8HG6GTZW.pcm <scratch>/dd-ios/ModuleCache.noindex/Security-84ZICWKRZ0YI5SVDIJ9AN9K5K.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdarg-8AD3JZXSR4I8ARHOXO10NPKSF.pcm <scratch>/dd-ios/ModuleCache.noindex/_SwiftConcurrencyShims-A784P6N6A15Y8MOSRWV1TON68.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreFoundation-3ZO381BSKMPJW89H0GKCLTWQE.pcm <scratch>/dd-ios/ModuleCache.noindex/WatchConnectivity-8EX1XITNVHFHH45VPSHSWF7MO.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdint-98B836WZD976303HKJTQ6NPAF.pcm <scratch>/dd-ios/ModuleCache.noindex/Accessibility-95K76ITQQDJ7D5RWSC4QH147N.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreGraphics-46EWVS4JPDABRX3UYK9O2CQOS.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_intrinsics-7784N6GP5QE2X9JIIDT8E58WX.pcm <scratch>/dd-ios/ModuleCache.noindex/SceneKit-5EWVMSTIND023RNE9HWOR0ABP.pcm <scratch>/dd-ios/ModuleCache.noindex/Symbols-5K8QWJLX1I9B2M5HEI1SWUXGT.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreVideo-4DVICFRH5J9KLHAWKWMI76DFZ.pcm <scratch>/dd-ios/ModuleCache.noindex/Darwin-4RV5N9XHZNMV85IX3SBV5BHP6.pcm <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-dependencies-2.json (in target 'Kyuva Watch App' from project 'Kyuva')
+
+CompileSwift normal arm64_32 (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+
+
+SwiftDriverJobDiscovery normal arm64 Compiling KyuvaWatchApp.swift, WatchSessionController.swift, WatchRemoteView.swift, RemoteControlProtocol.swift, GeneratedAssetSymbols.swift (in target 'Kyuva Watch App' from project 'Kyuva')
+
+SwiftDriver\ Compilation\ Requirements Kyuva\ Watch\ App normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_Watch_App -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -target arm64-apple-watchos10.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-watchos -F <scratch>/dd-ios/Build/Products/Release-watchos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-watchos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources-normal/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64-apple-watchos.swiftdoc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftdoc (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftdoc <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64-apple-watchos.swiftdoc
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64-apple-watchos.abi.json <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.abi.json (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.abi.json <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64-apple-watchos.abi.json
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64-apple-watchos.swiftmodule <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftmodule (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftmodule <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64-apple-watchos.swiftmodule
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/Project/arm64-apple-watchos.swiftsourceinfo <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftsourceinfo (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftsourceinfo <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/Project/arm64-apple-watchos.swiftsourceinfo
+
+SwiftDriverJobDiscovery normal arm64_32 Compiling KyuvaWatchApp.swift, WatchSessionController.swift, WatchRemoteView.swift, RemoteControlProtocol.swift, GeneratedAssetSymbols.swift (in target 'Kyuva Watch App' from project 'Kyuva')
+
+SwiftDriver\ Compilation\ Requirements Kyuva\ Watch\ App normal arm64_32 com.apple.xcode.tools.swift.compiler (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_Watch_App -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -target arm64_32-apple-watchos10.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-watchos -F <scratch>/dd-ios/Build/Products/Release-watchos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/watchos26.5-23T570-6c525d28bb7368d9e3b927c5b9753508.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-watchos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources-normal/arm64_32 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/arm64_32 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftMergeGeneratedHeaders <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/Kyuva_Watch_App-Swift.h <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-Swift.h <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-Swift.h (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-swiftHeaderTool -arch arm64 <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-Swift.h -arch arm64_32 <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-Swift.h -o <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/DerivedSources/Kyuva_Watch_App-Swift.h
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64_32-apple-watchos.swiftmodule <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftmodule (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftmodule <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64_32-apple-watchos.swiftmodule
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64_32-apple-watchos.swiftdoc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftdoc (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftdoc <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64_32-apple-watchos.swiftdoc
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64_32-apple-watchos.abi.json <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.abi.json (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.abi.json <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/arm64_32-apple-watchos.abi.json
+
+Copy <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/Project/arm64_32-apple-watchos.swiftsourceinfo <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftsourceinfo (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftsourceinfo <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva_Watch_App.swiftmodule/Project/arm64_32-apple-watchos.swiftsourceinfo
+
+Ld <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Binary/Kyuva\ Watch\ App normal arm64_32 (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64_32-apple-watchos10.0 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -Os -L<scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-watchos -L<scratch>/dd-ios/Build/Products/Release-watchos -F<scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-watchos -F<scratch>/dd-ios/Build/Products/Release-watchos -filelist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.LinkFileList -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_lto.o -Xlinker -dependency_info -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App.swiftmodule @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva_Watch_App-linker-args.resp -o <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Binary/Kyuva\ Watch\ App
+
+Ld <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Binary/Kyuva\ Watch\ App normal arm64 (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-watchos10.0 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk -Os -L<scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-watchos -L<scratch>/dd-ios/Build/Products/Release-watchos -F<scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-watchos -F<scratch>/dd-ios/Build/Products/Release-watchos -filelist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.LinkFileList -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_lto.o -Xlinker -dependency_info -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/watchos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App.swiftmodule @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva_Watch_App-linker-args.resp -o <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Binary/Kyuva\ Watch\ App
+
+MkDir <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/thinned (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /bin/mkdir -p <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/thinned
+
+MkDir <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/unthinned (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /bin/mkdir -p <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/unthinned
+
+GenerateAssetSymbols <repo>/Kyuva/Resources/AppIcon.icon (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool <repo>/Kyuva/Resources/AppIcon.icon --compile <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app --output-format human-readable-text --notices --warnings --export-dependency-info <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_dependencies --output-partial-info-plist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_generated_info.plist --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --minimum-deployment-target 17.0 --platform iphoneos --bundle-identifier com.kikuai.kyuva --generate-swift-asset-symbols <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/DerivedSources/GeneratedAssetSymbols.h
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CompileAssetCatalogVariant thinned <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app <repo>/Kyuva/Resources/AppIcon.icon (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool <repo>/Kyuva/Resources/AppIcon.icon --compile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_dependencies_thinned --output-partial-info-plist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --compress-pngs --enable-on-demand-resources YES --development-region en --target-device iphone --minimum-deployment-target 17.0 --platform iphoneos
+2026-08-25 17:04:36.577 AssetCatalogSimulatorAgent[29470:10758973] The filter 'CIPortraitEffectSpillCorrection' is not implemented in the bundle at /Library/Developer/CoreSimulator/Volumes/iOS_23F77/Library/Developer/CoreSimulator/Profiles/Runtimes/iOS 26.5.simruntime/Contents/Resources/RuntimeRoot/System/Library/CoreImage/PortraitFilters.cifilter.
+/* com.apple.actool.compilation-results */
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/assetcatalog_generated_info.plist_thinned
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/assetcatalog_output/thinned/AppIcon60x60@2x.png
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/assetcatalog_output/thinned/AppIcon76x76@2x~ipad.png
+<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva iOS.build/assetcatalog_output/thinned/Assets.car
+
+
+CreateUniversalBinary <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Kyuva\ Watch\ App normal arm64\ arm64_32 (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -create <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Binary/Kyuva\ Watch\ App <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Binary/Kyuva\ Watch\ App -output <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Kyuva\ Watch\ App
+
+LinkAssetCatalog <repo>/Kyuva/Resources/AppIcon.icon (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-linkAssetCatalog --thinned <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/thinned --thinned-dependencies <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_dependencies_thinned --thinned-info-plist-content <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_generated_info.plist_thinned --unthinned <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_output/unthinned --unthinned-dependencies <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_generated_info.plist_unthinned --output <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app --plist-output <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_generated_info.plist
+note: Emplaced <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva Watch App.app/Assets.car (in target 'Kyuva Watch App' from project 'Kyuva')
+
+ProcessInfoPlistFile <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Info.plist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/empty-Kyuva\ Watch\ App.plist (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-infoPlistUtility <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/empty-Kyuva\ Watch\ App.plist -producttype com.apple.product-type.application -genpkginfo <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/PkgInfo -expandbuildsettings -format binary -platform watchos -additionalcontentfile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/assetcatalog_generated_info.plist -o <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Info.plist
+
+ExtractAppIntentsMetadata (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name Kyuva_Watch_App --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/WatchOS.platform/Developer/SDKs/WatchOS26.5.sdk --xcode-version 17F113 --platform-family watchOS --deployment-target 10.0 --bundle-identifier com.kikuai.kyuva.watchkitapp --output <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app --target-triple arm64-apple-watchos10.0 --target-triple arm64_32-apple-watchos10.0 --binary-file <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Kyuva\ Watch\ App --dependency-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App_dependency_info.dat --dependency-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App_dependency_info.dat --stringsdata-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --stringsdata-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/ExtractedAppShortcutsMetadata.stringsdata --source-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftFileList --source-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftFileList --metadata-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.DependencyMetadataFileList --static-metadata-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Kyuva\ Watch\ App.DependencyStaticMetadataFileList --swift-const-vals-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64/Kyuva\ Watch\ App.SwiftConstValuesFileList --swift-const-vals-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/Objects-normal/arm64_32/Kyuva\ Watch\ App.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-08-25 17:04:33.544 appintentsmetadataprocessor[29474:10758690] Starting appintentsmetadataprocessor export
+2026-08-25 17:04:33.550 appintentsmetadataprocessor[29474:10758690] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+CopySwiftLibs <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-swiftStdLibTool --copy --verbose --scan-executable <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Kyuva\ Watch\ App --scan-folder <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Frameworks --scan-folder <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/PlugIns --scan-folder <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/SystemExtensions --scan-folder <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Extensions --platform watchos --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-watchos/Kyuva\ Watch\ App.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os --back-deploy-swift-span
+Ignoring --strip-bitcode because --sign was not passed
+
+GenerateDSYMFile <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app.dSYM <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Kyuva\ Watch\ App (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app/Kyuva\ Watch\ App -o <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app.dSYM
+
+RegisterExecutionPolicyException <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-RegisterExecutionPolicyException <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app
+
+Validate <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    builtin-validationUtility <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app -validate-for-store -shallow-bundle -infoplist-subpath Info.plist
+
+Touch <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app (in target 'Kyuva Watch App' from project 'Kyuva')
+    cd <repo>
+    /usr/bin/touch -c <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app
+
+CpResource <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/PrivacyInfo.xcprivacy <repo>/Kyuva/Resources/PrivacyInfo.xcprivacy (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks <repo>/Kyuva/Resources/PrivacyInfo.xcprivacy <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app
+
+SwiftDriver Kyuva\ iOS normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_iOS -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios17.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-iphoneos -F <scratch>/dd-ios/Build/Products/Release-iphoneos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/iphoneos26.5-23F81a-32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-iphoneos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources-normal/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftDriver\ Compilation Kyuva\ iOS normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_iOS -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios17.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-iphoneos -F <scratch>/dd-ios/Build/Products/Release-iphoneos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/iphoneos26.5-23F81a-32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-iphoneos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources-normal/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdarg-1ECU9WELLEDX2OHGL7E8OBME1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ptrcheck-5CLIFRC776JTRLX34IEOMRO1C.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_SwiftConcurrencyShims-35BIU2853SO4K4DRO91W5K1FL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/DeveloperToolsSupport-EIH2141RL7FJCTJZQHQLGEDTU.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_float-4UQG9K0U0U72JZRJ37C90GOZS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ptrauth-EE1WJKLF378HL1ZMEPZBDB4Z0.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_AvailabilityInternal-C77AV450ISDBSV8LC9X3XARHW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SwiftShims-A81W2ABI8UZGFMX3EKKN69WBJ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stddef-CE5XW52FHD5L4TC6VVW6JCK1E.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdbool-2GTQL03SY1T89OLDALWHRS52D.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation1-24VXHP4K1CGSWSXLT1DMZT41S.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation2-90M1M8M4Z27FBF0CKAG9H1KB8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_limits-DKPJKXTZHGTVWC7TYMHL7P5VH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/sys_types-DIQAT3ZS61PY29AHH8U4CXQ5Z.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdint-7R9PIUWJPEQOKV75L0BVIDBWK.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_tgmath-DGQYH6IOTNF930I9TMJMOV1MF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation3-7FI3TO425WY0JAWIZN939GLIX.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_intrinsics-2UJJHP2VTNLC76C3LOPXO436O.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdatomic-9FCT1KUAR9QNZ4VH0UFIOJ4ZH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/_Builtin_inttypes-5EWP4MXMJ3UVK4MFA8IE49AOS.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Darwin-7JXZ4LV7B0K04WI86DOWWOYKB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/simd-8H1E2JBITYJS6NWFP3M38FTTA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ObjectiveC-9K0VW23K0Q8PVHSE2BEAZUWZG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/MachO-ATXDQ2OHCB67T0L74HSZ5DMQU.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/os_object-EDY1A6VE62JD55F0I7KTJE87F.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/os_workgroup-91MGA7FMCQYBHQO5XCTBCR7DE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Spatial-21GLNEINF30ROXSXGM6UM8CWG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Dispatch-4WS2KF9X4MPF4B0MD3TQY2HTR.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreFoundation-2URC1C9QLL9ODDEUK411CVL7S.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/XPC-BQ5SSDWBTM4FGC97NUOAXXDS3.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/os-8V2PGAZMT1K5KQA5BVXX5LTJ1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Security-A2Q2C0P6NVN9X002HD1TX6BLG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CFNetwork-C3ND5YS7JPLFMWWUKN0L28RH.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreGraphics-B52PZL8FUD4LO787ISGXGNX00.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Foundation-11X8QW4UDXD6CEDT43R8IMTCL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreText-4ROXU5D6RGZ2HDRZOC33RZHJ7.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/ImageIO-7KRRX6CLTSDVRX9JDCGBP03UB.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreTransferable-393JXRSWHHTPK0SHV37EO5JX1.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreData-PMNJQ36FKN5ACNIHZ0CTCOTO.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Symbols-6G3Q95H9Q15DSWKX24DDG91VG.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UIUtilities-67BALCBOIX55DNPBNLLU4LCPE.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UserNotifications-8D1QQR9C7OBLB1JG3JNCCKOIW.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Accessibility-5GEV8JUY83H8HNAV4QZ4MGMZY.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/OSLog-5GNI10TTPPSLN7OSVDQ6YAUSF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/WatchConnectivity-6SLD24HEVVJV9OVH7GSC5JGNT.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/IOSurface-EE43OOSS76A62HO1WUY0X4RAM.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/FileProvider-44NZTCMEHVRD5QI1RQIQHN1B8.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/DataDetection-9RHU455GL0CY3L5FJSW95P2V4.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UniformTypeIdentifiers-AJIK370UXFYDIR6IWR8OHBG2K.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/Metal-LF1QJFXBABJAPHHTTTU4KDNQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/OpenGLES-C7NMSD4IMROQ12I92ZN4YA4IL.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreVideo-74E08YYB6UQ084CRCF2QNLLLQ.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/QuartzCore-DA67LPJLLJGU5VEKJEMW1EDEF.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/CoreImage-98G4UZFYG8Z63HXT38TY82QPA.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SwiftUICore-EMHKVTJSMXRVQ791X3HMTSLLM.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/UIKit-YZP6VN6KZSXGVD3XR5SF1826.pcm
+
+SwiftExplicitDependencyGeneratePcm arm64 <scratch>/dd-ios/ModuleCache.noindex/SwiftUI-5UZ2WJ02J4TTDEB7KAUBWRA4D.pcm
+
+SwiftCompile normal arm64 Compiling\ KyuvaMobileApp.swift,\ PhoneWatchSession.swift,\ MobileEditorView.swift,\ MobilePromptSettingsView.swift,\ MobilePromptView.swift,\ ScriptModels.swift,\ ScriptManager.swift,\ ScrollController.swift,\ RemoteControlProtocol.swift,\ LocalStore.swift,\ GeneratedAssetSymbols.swift <repo>/KyuvaMobile/App/KyuvaMobileApp.swift <repo>/KyuvaMobile/Connectivity/PhoneWatchSession.swift <repo>/KyuvaMobile/UI/MobileEditorView.swift <repo>/KyuvaMobile/UI/MobilePromptSettingsView.swift <repo>/KyuvaMobile/UI/MobilePromptView.swift <repo>/Kyuva/Core/ScriptModels.swift <repo>/Kyuva/Core/ScriptManager.swift <repo>/Kyuva/Core/ScrollController.swift <repo>/Kyuva/Core/RemoteControlProtocol.swift <repo>/Kyuva/Core/Storage/LocalStore.swift <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/GeneratedAssetSymbols.swift /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Combine.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/QuartzCore.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/UniformTypeIdentifiers.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/DataDetection.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreTransferable.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/ObjectiveC.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/SwiftUI.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Symbols.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/UIKit.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Dispatch.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_Concurrency.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreFoundation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_DarwinFoundation1.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/System.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/DeveloperToolsSupport.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/simd.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/OSLog.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Darwin.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreImage.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Spatial.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/FileProvider.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_DarwinFoundation2.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreData.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_StringProcessing.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/os.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/SwiftUICore.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/XPC.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreText.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreVideo.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/CoreGraphics.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_Builtin_float.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/_DarwinFoundation3.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Metal.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Foundation.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Swift.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Accessibility.swiftmodule/arm64e-apple-ios.swiftmodule /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos/prebuilt-modules/26.5/Observation.swiftmodule/arm64e-apple-ios.swiftmodule <scratch>/dd-ios/ModuleCache.noindex/FileProvider-44NZTCMEHVRD5QI1RQIQHN1B8.pcm <scratch>/dd-ios/ModuleCache.noindex/sys_types-DIQAT3ZS61PY29AHH8U4CXQ5Z.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdatomic-9FCT1KUAR9QNZ4VH0UFIOJ4ZH.pcm <scratch>/dd-ios/ModuleCache.noindex/Accessibility-5GEV8JUY83H8HNAV4QZ4MGMZY.pcm <scratch>/dd-ios/ModuleCache.noindex/Metal-LF1QJFXBABJAPHHTTTU4KDNQ.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreVideo-74E08YYB6UQ084CRCF2QNLLLQ.pcm <scratch>/dd-ios/ModuleCache.noindex/CFNetwork-C3ND5YS7JPLFMWWUKN0L28RH.pcm <scratch>/dd-ios/ModuleCache.noindex/WatchConnectivity-6SLD24HEVVJV9OVH7GSC5JGNT.pcm <scratch>/dd-ios/ModuleCache.noindex/UIKit-YZP6VN6KZSXGVD3XR5SF1826.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftShims-A81W2ABI8UZGFMX3EKKN69WBJ.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreFoundation-2URC1C9QLL9ODDEUK411CVL7S.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdint-7R9PIUWJPEQOKV75L0BVIDBWK.pcm <scratch>/dd-ios/ModuleCache.noindex/UserNotifications-8D1QQR9C7OBLB1JG3JNCCKOIW.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stddef-CE5XW52FHD5L4TC6VVW6JCK1E.pcm <scratch>/dd-ios/ModuleCache.noindex/ImageIO-7KRRX6CLTSDVRX9JDCGBP03UB.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreImage-98G4UZFYG8Z63HXT38TY82QPA.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdarg-1ECU9WELLEDX2OHGL7E8OBME1.pcm <scratch>/dd-ios/ModuleCache.noindex/QuartzCore-DA67LPJLLJGU5VEKJEMW1EDEF.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation3-7FI3TO425WY0JAWIZN939GLIX.pcm <scratch>/dd-ios/ModuleCache.noindex/os-8V2PGAZMT1K5KQA5BVXX5LTJ1.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreText-4ROXU5D6RGZ2HDRZOC33RZHJ7.pcm <scratch>/dd-ios/ModuleCache.noindex/os_object-EDY1A6VE62JD55F0I7KTJE87F.pcm <scratch>/dd-ios/ModuleCache.noindex/DeveloperToolsSupport-EIH2141RL7FJCTJZQHQLGEDTU.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_stdbool-2GTQL03SY1T89OLDALWHRS52D.pcm <scratch>/dd-ios/ModuleCache.noindex/OpenGLES-C7NMSD4IMROQ12I92ZN4YA4IL.pcm <scratch>/dd-ios/ModuleCache.noindex/_SwiftConcurrencyShims-35BIU2853SO4K4DRO91W5K1FL.pcm <scratch>/dd-ios/ModuleCache.noindex/UniformTypeIdentifiers-AJIK370UXFYDIR6IWR8OHBG2K.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_inttypes-5EWP4MXMJ3UVK4MFA8IE49AOS.pcm <scratch>/dd-ios/ModuleCache.noindex/ObjectiveC-9K0VW23K0Q8PVHSE2BEAZUWZG.pcm <scratch>/dd-ios/ModuleCache.noindex/os_workgroup-91MGA7FMCQYBHQO5XCTBCR7DE.pcm <scratch>/dd-ios/ModuleCache.noindex/simd-8H1E2JBITYJS6NWFP3M38FTTA.pcm <scratch>/dd-ios/ModuleCache.noindex/IOSurface-EE43OOSS76A62HO1WUY0X4RAM.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftUICore-EMHKVTJSMXRVQ791X3HMTSLLM.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation2-90M1M8M4Z27FBF0CKAG9H1KB8.pcm <scratch>/dd-ios/ModuleCache.noindex/_DarwinFoundation1-24VXHP4K1CGSWSXLT1DMZT41S.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreGraphics-B52PZL8FUD4LO787ISGXGNX00.pcm <scratch>/dd-ios/ModuleCache.noindex/UIUtilities-67BALCBOIX55DNPBNLLU4LCPE.pcm <scratch>/dd-ios/ModuleCache.noindex/MachO-ATXDQ2OHCB67T0L74HSZ5DMQU.pcm <scratch>/dd-ios/ModuleCache.noindex/Symbols-6G3Q95H9Q15DSWKX24DDG91VG.pcm <scratch>/dd-ios/ModuleCache.noindex/ptrauth-EE1WJKLF378HL1ZMEPZBDB4Z0.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_limits-DKPJKXTZHGTVWC7TYMHL7P5VH.pcm <scratch>/dd-ios/ModuleCache.noindex/ptrcheck-5CLIFRC776JTRLX34IEOMRO1C.pcm <scratch>/dd-ios/ModuleCache.noindex/Spatial-21GLNEINF30ROXSXGM6UM8CWG.pcm <scratch>/dd-ios/ModuleCache.noindex/Dispatch-4WS2KF9X4MPF4B0MD3TQY2HTR.pcm <scratch>/dd-ios/ModuleCache.noindex/Foundation-11X8QW4UDXD6CEDT43R8IMTCL.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreData-PMNJQ36FKN5ACNIHZ0CTCOTO.pcm <scratch>/dd-ios/ModuleCache.noindex/XPC-BQ5SSDWBTM4FGC97NUOAXXDS3.pcm <scratch>/dd-ios/ModuleCache.noindex/_AvailabilityInternal-C77AV450ISDBSV8LC9X3XARHW.pcm <scratch>/dd-ios/ModuleCache.noindex/DataDetection-9RHU455GL0CY3L5FJSW95P2V4.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_float-4UQG9K0U0U72JZRJ37C90GOZS.pcm <scratch>/dd-ios/ModuleCache.noindex/Darwin-7JXZ4LV7B0K04WI86DOWWOYKB.pcm <scratch>/dd-ios/ModuleCache.noindex/SwiftUI-5UZ2WJ02J4TTDEB7KAUBWRA4D.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_intrinsics-2UJJHP2VTNLC76C3LOPXO436O.pcm <scratch>/dd-ios/ModuleCache.noindex/CoreTransferable-393JXRSWHHTPK0SHV37EO5JX1.pcm <scratch>/dd-ios/ModuleCache.noindex/Security-A2Q2C0P6NVN9X002HD1TX6BLG.pcm <scratch>/dd-ios/ModuleCache.noindex/_Builtin_tgmath-DGQYH6IOTNF930I9TMJMOV1MF.pcm <scratch>/dd-ios/ModuleCache.noindex/OSLog-5GNI10TTPPSLN7OSVDQ6YAUSF.pcm <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-dependencies-1.json (in target 'Kyuva iOS' from project 'Kyuva')
+
+CompileSwift normal arm64 (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+
+
+SwiftDriverJobDiscovery normal arm64 Compiling KyuvaMobileApp.swift, PhoneWatchSession.swift, MobileEditorView.swift, MobilePromptSettingsView.swift, MobilePromptView.swift, ScriptModels.swift, ScriptManager.swift, ScrollController.swift, RemoteControlProtocol.swift, LocalStore.swift, GeneratedAssetSymbols.swift (in target 'Kyuva iOS' from project 'Kyuva')
+
+SwiftDriver\ Compilation\ Requirements Kyuva\ iOS normal arm64 com.apple.xcode.tools.swift.compiler (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name Kyuva_iOS -O -whole-module-optimization @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftFileList -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -target arm64-apple-ios17.0 -g -module-cache-path <scratch>/dd-ios/ModuleCache.noindex -Xfrontend -serialize-debugging-options -swift-version 5 -I <scratch>/dd-ios/Build/Products/Release-iphoneos -F <scratch>/dd-ios/Build/Products/Release-iphoneos -emit-localized-strings -emit-localized-strings-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64 -c -num-threads 8 -Xcc -ivfsstatcache -Xcc <scratch>/dd-ios/SDKStatCaches.noindex/iphoneos26.5-23F81a-32daed1954a7d5dd0789fcaf2a9bb78b.sdkstatcache -output-file-map <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path <scratch>/dd-ios/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -sdk-module-cache-path <scratch>/dd-ios/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftmodule -validate-clang-modules-once -clang-build-session-file <scratch>/dd-ios/ModuleCache.noindex/Session.modulevalidation -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_const_extract_protocols.json -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-generated-files.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-own-target-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-all-target-headers.hmap -Xcc -iquote -Xcc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS-project-headers.hmap -Xcc -I<scratch>/dd-ios/Build/Products/Release-iphoneos/include -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources-normal/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/arm64 -Xcc -I<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources -emit-objc-header -emit-objc-header-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-Swift.h -working-directory <repo> -no-emit-module-separately-wmo
+
+SwiftMergeGeneratedHeaders <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/Kyuva_iOS-Swift.h <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-Swift.h (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-swiftHeaderTool -arch arm64 <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-Swift.h -o <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/DerivedSources/Kyuva_iOS-Swift.h
+
+Copy <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/arm64-apple-ios.abi.json <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.abi.json (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.abi.json <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/arm64-apple-ios.abi.json
+
+Copy <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/arm64-apple-ios.swiftdoc <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftdoc (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftdoc <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/arm64-apple-ios.swiftdoc
+
+Copy <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/arm64-apple-ios.swiftmodule <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftmodule (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftmodule <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/arm64-apple-ios.swiftmodule
+
+Copy <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftsourceinfo (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftsourceinfo <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva_iOS.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo
+
+Ld <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Kyuva\ iOS normal (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios17.0 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk -Os -L<scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos -L<scratch>/dd-ios/Build/Products/Release-iphoneos -F<scratch>/dd-ios/Build/Intermediates.noindex/EagerLinkingTBDs/Release-iphoneos -F<scratch>/dd-ios/Build/Products/Release-iphoneos -filelist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.LinkFileList -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/Frameworks -Xlinker -dead_strip -Xlinker -object_path_lto -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_lto.o -Xlinker -dependency_info -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphoneos -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS.swiftmodule @<scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva_iOS-linker-args.resp -o <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Kyuva\ iOS
+
+LinkAssetCatalog <repo>/Kyuva/Resources/AppIcon.icon (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-linkAssetCatalog --thinned <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/thinned --thinned-dependencies <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_dependencies_thinned --thinned-info-plist-content <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_generated_info.plist_thinned --unthinned <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_output/unthinned --unthinned-dependencies <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_generated_info.plist_unthinned --output <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app --plist-output <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_generated_info.plist
+note: Emplaced <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva iOS.app/Assets.car (in target 'Kyuva iOS' from project 'Kyuva')
+note: Emplaced <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva iOS.app/AppIcon76x76@2x~ipad.png (in target 'Kyuva iOS' from project 'Kyuva')
+note: Emplaced <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva iOS.app/AppIcon60x60@2x.png (in target 'Kyuva iOS' from project 'Kyuva')
+
+Copy <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Watch/Kyuva\ Watch\ App.app <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -remove-static-executable <scratch>/dd-ios/Build/Products/Release-watchos/Kyuva\ Watch\ App.app <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Watch
+
+ProcessInfoPlistFile <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Info.plist <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/empty-Kyuva\ iOS.plist (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-infoPlistUtility <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/empty-Kyuva\ iOS.plist -producttype com.apple.product-type.application -genpkginfo <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/PkgInfo -expandbuildsettings -format binary -platform iphoneos -additionalcontentfile <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/assetcatalog_generated_info.plist -scanforprivacyfile <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Watch/Kyuva\ Watch\ App.app -requiredArchitecture arm64 -o <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Info.plist
+
+CopySwiftLibs <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-swiftStdLibTool --copy --verbose --scan-executable <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Kyuva\ iOS --scan-folder <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Frameworks --scan-folder <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/PlugIns --scan-folder <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/SystemExtensions --scan-folder <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Extensions --platform iphoneos --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os --back-deploy-swift-span
+Ignoring --strip-bitcode because --sign was not passed
+
+ExtractAppIntentsMetadata (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name Kyuva_iOS --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.5.sdk --xcode-version 17F113 --platform-family iOS --deployment-target 17.0 --bundle-identifier com.kikuai.kyuva --output <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app --target-triple arm64-apple-ios17.0 --binary-file <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Kyuva\ iOS --dependency-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS_dependency_info.dat --stringsdata-file <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftFileList --metadata-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyMetadataFileList --static-metadata-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyStaticMetadataFileList --swift-const-vals-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Objects-normal/arm64/Kyuva\ iOS.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-08-25 17:04:39.151 appintentsmetadataprocessor[29561:10759059] Starting appintentsmetadataprocessor export
+2026-08-25 17:04:39.153 appintentsmetadataprocessor[29561:10759059] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+ValidateEmbeddedBinary <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Watch/Kyuva\ Watch\ App.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/usr/bin/embeddedBinaryValidationUtility <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Watch/Kyuva\ Watch\ App.app -info-plist-path <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Info.plist
+
+GenerateDSYMFile <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app.dSYM <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Kyuva\ iOS (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/dsymutil <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Kyuva\ iOS -o <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app.dSYM
+
+AppIntentsSSUTraining (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsnltrainingprocessor --infoplist-path <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Info.plist --temp-dir-path <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/ssu --bundle-id com.kikuai.kyuva --product-path <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app --extracted-metadata-path <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Metadata.appintents --metadata-file-list <scratch>/dd-ios/Build/Intermediates.noindex/Kyuva.build/Release-iphoneos/Kyuva\ iOS.build/Kyuva\ iOS.DependencyMetadataFileList --source-file <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app/Info.plist --archive-ssu-assets
+2026-08-25 17:04:39.179 appintentsnltrainingprocessor[29564:10759064] Parsing options for appintentsnltrainingprocessor
+2026-08-25 17:04:39.180 appintentsnltrainingprocessor[29564:10759064] Starting AppIntents SSU YAML Generation
+2026-08-25 17:04:39.182 appintentsnltrainingprocessor[29564:10759064] No AppShortcuts found - Skipping.
+
+RegisterExecutionPolicyException <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-RegisterExecutionPolicyException <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app
+
+Validate <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    builtin-validationUtility <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app -shallow-bundle -infoplist-subpath Info.plist
+
+Touch <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app (in target 'Kyuva iOS' from project 'Kyuva')
+    cd <repo>
+    /usr/bin/touch -c <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva\ iOS.app
+
+** BUILD SUCCEEDED **

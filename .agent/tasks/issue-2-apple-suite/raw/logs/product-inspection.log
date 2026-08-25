@@ -1,0 +1,41 @@
+mac-binary: <scratch>/dd-macos/Build/Products/Release/Kyuva.app/Contents/MacOS/Kyuva: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64]
+<scratch>/dd-macos/Build/Products/Release/Kyuva.app/Contents/MacOS/Kyuva (for architecture x86_64):	Mach-O 64-bit executable x86_64
+<scratch>/dd-macos/Build/Products/Release/Kyuva.app/Contents/MacOS/Kyuva (for architecture arm64):	Mach-O 64-bit executable arm64
+mac-architectures: x86_64 arm64
+ios-watch-embedded: yes
+ios-assets-car: yes
+watch-assets-car: yes
+mac-privacy: <scratch>/dd-macos/Build/Products/Release/Kyuva.app/Contents/Resources/PrivacyInfo.xcprivacy: OK
+ios-privacy: <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva iOS.app/PrivacyInfo.xcprivacy: OK
+watch-privacy: <scratch>/dd-ios/Build/Products/Release-iphoneos/Kyuva iOS.app/Watch/Kyuva Watch App.app/PrivacyInfo.xcprivacy: OK
+mac-info:
+  "CFBundleIdentifier" => "com.kikuai.kyuva"
+  "CFBundleShortVersionString" => "1.0"
+  "CFBundleVersion" => "1"
+  "ITSAppUsesNonExemptEncryption" => false
+  "LSMinimumSystemVersion" => "13.0"
+ios-info:
+  "CFBundleIdentifier" => "com.kikuai.kyuva"
+  "CFBundleShortVersionString" => "1.0"
+  "CFBundleVersion" => "1"
+  "ITSAppUsesNonExemptEncryption" => false
+  "MinimumOSVersion" => "17.0"
+  "UIDeviceFamily" => [
+watch-info:
+  "CFBundleIdentifier" => "com.kikuai.kyuva.watchkitapp"
+  "CFBundleShortVersionString" => "1.0"
+  "CFBundleVersion" => "1"
+  "ITSAppUsesNonExemptEncryption" => false
+  "MinimumOSVersion" => "10.0"
+  "MinimumOSVersion~ipad" => "9.0"
+  "UIDeviceFamily" => [
+  "WKCompanionAppBundleIdentifier" => "com.kikuai.kyuva"
+ios-device-family:
+Array {
+    1
+}
+watch-device-family:
+Array {
+    4
+}
+watch-application: true

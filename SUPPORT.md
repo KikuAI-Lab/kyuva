@@ -4,17 +4,19 @@ This file is Kyuva's public support contract. Update it whenever the supported r
 
 ## Before reporting a problem
 
-- Finish the Welcome Tour on first launch. The teleprompter appears after the tour closes.
-- Use the Kyuva menu-bar icon to show or hide the teleprompter, open Settings, reopen the tour, or quit.
-- Review the listed shortcuts in Settings > Hotkeys. Kyuva does not require Accessibility or Input Monitoring permission.
-- Remember that the overlay is a normal macOS window and may appear in screen shares or recordings. Check the preview before presenting.
+- **Mac:** Finish the Welcome Tour, then use the menu-bar icon to show or hide the overlay, open Settings, reopen the tour, or quit. Review Settings > Hotkeys; Kyuva does not require Accessibility or Input Monitoring permission.
+- **iPhone:** Select or create a script, edit it locally, and tap Present. Tap the prompt or the large play button to pause and resume; use AA for font, pace, mirroring, and stage-direction options.
+- **Apple Watch:** Open a prompt on the paired iPhone, then open Kyuva on the Watch. The remote enables when both apps report a live connection.
+- Kyuva uses normal app windows and screens and may appear in screen shares or recordings. Check the preview before presenting.
+
+The Mac release is being prepared for the App Store. iPhone and Apple Watch builds are currently source-build surfaces; public mobile availability is not claimed until an App Store release is verified.
 
 ## Report a problem
 
 Open a [GitHub issue](https://github.com/kiku-jw/kyuva/issues) and include:
 
 - the Kyuva version;
-- the macOS version and Mac model;
+- the affected platform, operating-system version, and device model;
 - the steps that reproduce the problem;
 - what you expected and what happened instead.
 

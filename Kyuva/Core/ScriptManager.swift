@@ -1,6 +1,8 @@
 import Foundation
+#if os(macOS)
 import AppKit
 import UniformTypeIdentifiers
+#endif
 import Combine
 
 /// Manages scripts: CRUD, tokenization, import/export
@@ -59,7 +61,9 @@ class ScriptManager: ObservableObject {
     }
     
     func deleteScripts(at indexSet: IndexSet) {
-        scripts.remove(atOffsets: indexSet)
+        for index in indexSet.sorted(by: >) where scripts.indices.contains(index) {
+            scripts.remove(at: index)
+        }
         if !scripts.contains(where: { $0.id == selectedScriptId }) {
             selectedScriptId = scripts.first?.id
         }
@@ -122,7 +126,8 @@ class ScriptManager: ObservableObject {
     }
     
     // MARK: - Import/Export
-    
+
+#if os(macOS)
     func importScript() {
         let panel = NSOpenPanel()
         panel.allowedContentTypes = [.plainText, .text]
@@ -141,7 +146,9 @@ class ScriptManager: ObservableObject {
             }
         }
     }
+#endif
     
+#if os(macOS)
     func exportScript(_ script: Script) {
         let panel = NSSavePanel()
         panel.allowedContentTypes = [.plainText]
@@ -155,6 +162,7 @@ class ScriptManager: ObservableObject {
             }
         }
     }
+#endif
     
     // MARK: - Persistence
     
@@ -169,6 +177,23 @@ class ScriptManager: ObservableObject {
     // MARK: - Default Content
     
     private var defaultScriptContent: String {
+#if os(iOS)
+        """
+        Welcome to Kyuva 👋
+
+        Paste or write your script here,
+        then tap Present to start prompting.
+
+        • Tap the prompt to pause or resume
+        • Use the large controls to change pace
+        • Turn the phone sideways for a wider reading line
+
+        Keep phrases short.
+        One thought per line reads best.
+
+        Your script stays on this iPhone.
+        """
+#else
         """
         Welcome to Kyuva 👋
         
@@ -188,91 +213,6 @@ class ScriptManager: ObservableObject {
         You're ready to sound confident
         and look like you're not reading. ✨
         """
-    }
-}
-
-// MARK: - Models
-
-struct Script: Identifiable, Codable {
-    let id: UUID
-    var name: String
-    var content: String
-    var createdAt: Date
-    var updatedAt: Date
-    
-    // Non-persisted, computed on load
-    var lines: [String] = []
-    var tokens: [Token] = []
-    
-    enum CodingKeys: String, CodingKey {
-        case id, name, content, createdAt, updatedAt
-    }
-    
-    init(name: String, content: String) {
-        self.id = UUID()
-        self.name = name
-        self.content = content
-        self.createdAt = Date()
-        self.updatedAt = Date()
-        reindex()
-    }
-    
-    mutating func reindex() {
-        // Split into lines
-        lines = content
-            .components(separatedBy: .newlines)
-            .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
-        
-        // Tokenize for voice-sync
-        tokens = []
-        for (lineIndex, line) in lines.enumerated() {
-            let words = line
-                .lowercased()
-                .components(separatedBy: .alphanumerics.inverted)
-                .filter { !$0.isEmpty }
-            
-            for word in words {
-                tokens.append(Token(
-                    word: word,
-                    lineIndex: lineIndex,
-                    isAnchor: word.count > 6 // Longer words are anchors
-                ))
-            }
-        }
-    }
-}
-
-struct Token: Codable {
-    let word: String
-    let lineIndex: Int
-    let isAnchor: Bool
-}
-
-struct PromptLine: Identifiable, Equatable {
-    let sourceIndex: Int
-    let text: String
-
-    var id: Int { sourceIndex }
-
-    var isStageDirection: Bool {
-        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard let first = trimmed.first, let last = trimmed.last else { return false }
-        return (first == "[" && last == "]") || (first == "(" && last == ")")
-    }
-}
-
-extension Script {
-    var promptLines: [PromptLine] {
-        lines.enumerated().map { index, text in
-            PromptLine(sourceIndex: index, text: text)
-        }
-    }
-
-    func wordCount(excludingStageDirections: Bool) -> Int {
-        promptLines
-            .filter { !excludingStageDirections || !$0.isStageDirection }
-            .reduce(0) { count, line in
-                count + line.text.split(whereSeparator: \.isWhitespace).count
-            }
+#endif
     }
 }

@@ -1,0 +1,19 @@
+{
+  "project" : {
+    "configurations" : [
+      "Debug",
+      "Release"
+    ],
+    "name" : "Kyuva",
+    "schemes" : [
+      "Kyuva",
+      "Kyuva iOS",
+      "Kyuva Watch App"
+    ],
+    "targets" : [
+      "Kyuva",
+      "Kyuva iOS",
+      "Kyuva Watch App"
+    ]
+  }
+}

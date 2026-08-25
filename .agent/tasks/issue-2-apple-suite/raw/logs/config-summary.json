@@ -1,0 +1,33 @@
+{
+  "targets": [
+    {
+      "target": "Kyuva",
+      "bundleIdentifier": "com.kikuai.kyuva",
+      "developmentTeam": "956F3UPBRX",
+      "marketingVersion": "1.0",
+      "buildNumber": "1",
+      "deploymentTarget": "13.0",
+      "codeSignStyle": "Automatic"
+    },
+    {
+      "target": "Kyuva iOS",
+      "bundleIdentifier": "com.kikuai.kyuva",
+      "developmentTeam": "956F3UPBRX",
+      "marketingVersion": "1.0",
+      "buildNumber": "1",
+      "deploymentTarget": "17.0",
+      "targetedDeviceFamily": "1",
+      "codeSignStyle": "Automatic"
+    },
+    {
+      "target": "Kyuva Watch App",
+      "bundleIdentifier": "com.kikuai.kyuva.watchkitapp",
+      "developmentTeam": "956F3UPBRX",
+      "marketingVersion": "1.0",
+      "buildNumber": "1",
+      "deploymentTarget": "10.0",
+      "targetedDeviceFamily": "4",
+      "codeSignStyle": "Automatic"
+    }
+  ]
+}
