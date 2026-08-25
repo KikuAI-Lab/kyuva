@@ -1,0 +1,16 @@
+Authenticated App Store Connect readback
+Observed: 2026-08-25T23:07:16+03:00
+App: Kyuva
+Platform: macOS
+Version: 1.0
+
+TestFlight build table:
+- Build 2 — Готово к отправке
+- Build 1 — Готово к отправке
+
+Version page:
+- Selected build: 1.0 (1)
+- Screenshots: 5 of 10
+- Release mode: manual
+- Add for Review: not used
+- Submission: not performed

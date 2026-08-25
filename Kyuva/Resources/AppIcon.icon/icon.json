@@ -1,7 +1,5 @@
 {
-  "fill" : {
-    "automatic-gradient" : "extended-srgb:0.07843,0.10588,0.25882,1.00000"
-  },
+  "fill" : "system-dark",
   "groups" : [
     {
       "blur-material" : 0.5,

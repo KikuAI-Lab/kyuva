@@ -106,3 +106,18 @@ build `1` selected, five screenshots persisted, `Data Not Collected` published,
 and reviewer contact saved for Mykyta Dudnichenko. The enabled `Add for Review`
 action was not used. The exact five uploaded screenshot assets are retained as
 `raw/screenshots/macos-store-01.png` through `macos-store-05.png`.
+
+## Post-acceptance release update — 2026-08-25
+
+This immutable update supersedes only the App Store build state recorded above;
+the earlier acceptance evidence remains a historical snapshot.
+
+- `raw/logs/macos-upload-build-2.log` records the authorized macOS `1.0 (2)`
+  package reaching `Upload succeeded` and `EXPORT SUCCEEDED`.
+- `raw/logs/app-store-build-2-readback.txt` records the authenticated App Store
+  Connect readback after processing: builds `2` and `1` were both `Готово к
+  отправке`, while build `1` remained selected on the version page.
+- The version was not added to App Review, submitted, or released.
+- Source subsequently advanced to `1.0 (3)` for the refined System Dark Liquid
+  Glass icon. Build `3` remains a local candidate until a separately authorized
+  upload.

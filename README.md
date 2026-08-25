@@ -22,7 +22,7 @@ The overlay is a normal macOS window and may appear in screen shares or recordin
 
 ## Release Status
 
-Kyuva is preparing a free first Mac App Store release for the 27 European Union storefronts. macOS version `1.0` build `1`, five screenshots, the `Data Not Collected` privacy answer, and reviewer contact are prepared in App Store Connect, but the version has not been added to App Review or submitted. Current source has advanced to build `2` for local transfer and remote testing; that newer build has not been uploaded. The iPhone and Apple Watch targets are implemented and verified locally; no mobile upload or store availability is claimed yet.
+Kyuva is preparing a free first Mac App Store release for the 27 European Union storefronts. macOS version `1.0` build `2` was uploaded to App Store Connect on 25 August 2026 and finished processing as `Ready to Submit`; build `1` remains selected on the version page. Five screenshots, the published `Data Not Collected` privacy answer, and reviewer contact are prepared, but the version has not been added to App Review or submitted. Current source has advanced to build `3` with the refined shared Liquid Glass icon; build `3` has not been uploaded. The iPhone and Apple Watch targets are implemented and verified locally; no mobile upload or store availability is claimed yet.
 
 The first releases have no purchases, subscriptions, advertising, account, analytics, or required backend.
 

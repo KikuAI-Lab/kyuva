@@ -10,7 +10,7 @@
 - Bundle ID: `com.kikuai.kyuva`
 - SKU: `kyuva-macos-1`
 - Version: `1.0`
-- Build: `1`
+- Build: `3`
 - Publisher: `Mykyta Dudnichenko`
 - Primary language: English (U.S.)
 - Platform: macOS 13 or later, Apple silicon and Intel
