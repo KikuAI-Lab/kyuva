@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Kyuva/Resources/Assets.xcassets/AppIcon.appiconset/icon_v2_1024.png" width="128" height="128" alt="Kyuva Icon">
+  <img src="AppStore/Icon/Kyuva-AppIcon-1024.png" width="128" height="128" alt="Kyuva Icon">
 </p>
 
 <h1 align="center">Kyuva</h1>
