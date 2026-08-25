@@ -54,6 +54,9 @@ struct OnboardingView: View {
                             .frame(width: 8, height: 8)
                     }
                 }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Page \(currentPage + 1) of \(totalPages)")
+                .accessibilityAddTraits(.isStaticText)
                 
                 Spacer()
                 
@@ -109,6 +112,7 @@ struct WelcomePage: View {
             Image(systemName: "text.alignleft")
                 .font(.system(size: 60))
                 .foregroundColor(.accentColor)
+                .accessibilityHidden(true)
                 .padding()
                 .background(
                     Circle()
@@ -137,6 +141,7 @@ struct WelcomePage: View {
                 Image(systemName: "arrow.up")
                     .font(.title2)
                     .foregroundColor(.accentColor)
+                    .accessibilityHidden(true)
                     .padding(12)
                     .background(Circle().fill(Color.accentColor.opacity(0.15)))
                 
@@ -166,6 +171,7 @@ struct FeaturesPage: View {
             Image(systemName: "eye")
                 .font(.system(size: 40))
                 .foregroundColor(.green)
+                .accessibilityHidden(true)
                 .padding(10)
                 .background(
                     Circle()
@@ -227,6 +233,7 @@ struct FeatureCard: View {
             Image(systemName: icon)
                 .font(.title2)
                 .foregroundColor(iconColor)
+                .accessibilityHidden(true)
                 .padding(8)
                 .background(RoundedRectangle(cornerRadius: 8).fill(iconColor.opacity(0.15)))
             
@@ -254,6 +261,7 @@ struct GettingStartedPage: View {
             Image(systemName: "gearshape.fill")
                 .font(.system(size: 50))
                 .foregroundColor(.blue)
+                .accessibilityHidden(true)
                 .padding()
                 .background(
                     Circle()

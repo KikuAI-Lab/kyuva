@@ -16,6 +16,7 @@ struct MobilePromptSettingsView: View {
                 LabeledContent("Text size", value: "\(Int(fontSize)) pt")
                 Slider(value: $fontSize, in: 22...72, step: 1)
                     .accessibilityLabel("Text size")
+                    .accessibilityValue("\(Int(fontSize)) points")
 
                 Toggle("Mirror for teleprompter glass", isOn: $mirrorText)
 
@@ -38,12 +39,18 @@ struct MobilePromptSettingsView: View {
                 case .fixedSpeed:
                     LabeledContent("Speed", value: "\(Int(fixedSpeed))")
                     Slider(value: $fixedSpeed, in: 10...200, step: 5)
+                        .accessibilityLabel("Scroll speed")
+                        .accessibilityValue("\(Int(fixedSpeed)) pixels per second")
                 case .wordsPerMinute:
                     LabeledContent("Words per minute", value: "\(Int(wordsPerMinute))")
                     Slider(value: $wordsPerMinute, in: 60...240, step: 5)
+                        .accessibilityLabel("Reading pace")
+                        .accessibilityValue("\(Int(wordsPerMinute)) words per minute")
                 case .targetDuration:
                     LabeledContent("Finish in", value: durationLabel)
                     Slider(value: $targetDuration, in: 30...3_600, step: 30)
+                        .accessibilityLabel("Finish time")
+                        .accessibilityValue(durationLabel)
                 }
             }
 

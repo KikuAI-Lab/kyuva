@@ -93,23 +93,27 @@ struct SettingsView: View {
                     }
                     .buttonStyle(.plain)
                     .help("Delete selected script")
+                    .accessibilityLabel("Delete selected script")
                 }
                 
                 Button(action: { scriptManager.createNewScript() }) {
                     Image(systemName: "plus")
                 }
                 .help("New script")
+                .accessibilityLabel("New script")
                 
                 Button(action: { scriptManager.importScript() }) {
                     Image(systemName: "square.and.arrow.down")
                 }
                 .help("Import from file")
+                .accessibilityLabel("Import from file")
                 
                 if let script = scriptManager.selectedScript {
                     Button(action: { scriptManager.exportScript(script) }) {
                         Image(systemName: "square.and.arrow.up")
                     }
                     .help("Export to file")
+                    .accessibilityLabel("Export selected script")
                 }
             }
             
@@ -167,6 +171,7 @@ struct SettingsView: View {
                 // Content editor - direct binding, live updates
                 TextEditor(text: $scriptManager.scripts[index].content)
                     .font(.system(size: 13, design: .monospaced))
+                    .accessibilityLabel("Script text")
                     .frame(minHeight: 120)
                     .cornerRadius(6)
                     .overlay(
@@ -206,6 +211,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Width")
                     Slider(value: $overlayWidth, in: 200...600, step: 10)
+                        .accessibilityLabel("Overlay width")
+                        .accessibilityValue("\(Int(overlayWidth)) pixels")
                     Text("\(Int(overlayWidth))px")
                         .foregroundColor(.secondary)
                         .frame(width: 50)
@@ -214,6 +221,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Height")
                     Slider(value: $overlayHeight, in: 80...400, step: 10)
+                        .accessibilityLabel("Overlay height")
+                        .accessibilityValue("\(Int(overlayHeight)) pixels")
                     Text("\(Int(overlayHeight))px")
                         .foregroundColor(.secondary)
                         .frame(width: 50)
@@ -222,6 +231,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Opacity")
                     Slider(value: $opacity, in: 0.3...1.0)
+                        .accessibilityLabel("Overlay opacity")
+                        .accessibilityValue("\(Int(opacity * 100)) percent")
                     Text("\(Int(opacity * 100))%")
                         .foregroundColor(.secondary)
                         .frame(width: 50)
@@ -239,6 +250,8 @@ struct SettingsView: View {
                 HStack {
                     Text("Font Size")
                     Slider(value: $fontSize, in: 12...36)
+                        .accessibilityLabel("Font size")
+                        .accessibilityValue("\(Int(fontSize)) points")
                     Text("\(Int(fontSize)) pt")
                         .foregroundColor(.secondary)
                         .frame(width: 50)

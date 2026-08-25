@@ -49,6 +49,7 @@ struct WatchRemoteView: View {
                         .font(.caption.monospacedDigit().bold())
                         .frame(minWidth: 36)
                         .accessibilityLabel("Current pace")
+                        .accessibilityValue(session.snapshot.paceLabel)
 
                     Button {
                         session.send(.faster)

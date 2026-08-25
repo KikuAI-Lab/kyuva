@@ -113,7 +113,7 @@ struct MobilePromptView: View {
                     .multilineTextAlignment(.center)
                     .foregroundStyle(
                         .white.opacity(
-                            line.isStageDirection && stageDirectionStyle == 1 ? 0.45 : 1
+                            line.isStageDirection && stageDirectionStyle == 1 ? 0.5 : 1
                         )
                     )
                     .frame(maxWidth: .infinity)
@@ -251,6 +251,7 @@ struct MobilePromptView: View {
                         .font(.callout.monospacedDigit().bold())
                         .frame(width: 40)
                         .accessibilityLabel("Current pace")
+                        .accessibilityValue(scrollController.paceControlLabel)
                 }
             }
             .padding(.horizontal)
