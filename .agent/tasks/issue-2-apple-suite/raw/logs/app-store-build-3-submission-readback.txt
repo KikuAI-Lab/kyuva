@@ -1,0 +1,19 @@
+Authenticated App Store Connect readback — 2026-08-26
+
+Product: Kyuva
+Platform: macOS
+Version/build: 1.0 (3)
+Build processing: Ready to Submit
+Version status after submission: Waiting for Review
+Review submission: 1 object submitted; 0 drafts
+Release mode: Automatically release after App Review approval
+Mac screenshots: 5
+Privacy: Published; Data Not Collected
+Price: Free
+Distribution: Public
+Availability: 27 storefronts
+
+Boundary: this proves upload, processing, build attachment, submission, and the
+configured automatic-release mode. It does not prove App Review approval or
+public App Store availability. No iPhone or Apple Watch build was uploaded or
+submitted.

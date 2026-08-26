@@ -121,3 +121,22 @@ the earlier acceptance evidence remains a historical snapshot.
 - Source subsequently advanced to `1.0 (3)` for the refined System Dark Liquid
   Glass icon. Build `3` remains a local candidate until a separately authorized
   upload.
+
+## Post-acceptance release update — 2026-08-26
+
+This update supersedes only the release state above; the original acceptance
+evidence and build `2` handoff remain historical snapshots.
+
+- `raw/logs/macos-upload-build-3.log` records the authorized macOS `1.0 (3)`
+  package reaching `Upload succeeded`, `Uploaded Kyuva`, and
+  `EXPORT SUCCEEDED`.
+- `raw/logs/app-store-build-3-submission-readback.txt` records authenticated
+  server readbacks after processing and submission: build `3` is attached to
+  macOS version `1.0`, the version is `Waiting for Review`, one object was
+  submitted with no remaining draft, and automatic release after approval is
+  selected.
+- The same readback confirms five Mac screenshots, a published `Data Not
+  Collected` privacy answer, a free price, public distribution, and availability
+  in 27 storefronts.
+- App Review approval and public App Store availability are not yet claimed.
+- No iPhone or Apple Watch build was uploaded or submitted.
