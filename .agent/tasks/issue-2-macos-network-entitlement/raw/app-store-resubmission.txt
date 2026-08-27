@@ -1,0 +1,40 @@
+Kyuva macOS 1.0 (4) App Store resubmission receipt
+Collected: 2026-08-27T11:38:06Z
+
+Authorization boundary
+- owner explicitly authorized uploading build 4, replacing build 3, sending
+  the prepared reviewer response, updating App Review Information, resubmitting,
+  and automatic release after approval
+- no new legal terms, authentication challenge, identity check, or secret input
+  appeared
+
+Upload and build selection
+- xcodebuild -exportArchive upload: Upload succeeded; EXPORT SUCCEEDED
+- uploaded package SHA-256:
+  dc1079f96c819511d37d7b06a270ab956e72ba936cf2600d475716cababe85c0
+- App Store Connect processing result: build 1.0 (4), Ready to Submit
+- rejected build 1.0 (3) detached; build 1.0 (4) selected and saved
+
+Reviewer communication
+- factual build 4 entitlement-removal reply sent to App Review
+- App Review Information saved with offline operation and reviewer UI steps
+- both the reply and notes were confirmed by fresh readback
+
+Submission state
+- review submission: 37419fc0-376d-425b-abed-26a6ce532b0d
+- resubmitted: 2026-08-27 14:33 EEST
+- platform/version/build: macOS 1.0 (4)
+- fresh status: Waiting for Review
+- automatic release after approval: selected
+- screenshots: 5
+
+Listing state
+- App Privacy: published; Data Not Collected
+- current price: free (0.00 in all displayed currencies)
+- distribution method: public
+- available storefronts: exactly the 27 European Union countries
+
+Unproven and untouched
+- Apple approval: not proven
+- public App Store availability: not proven
+- iPhone or Apple Watch upload/submission: not performed

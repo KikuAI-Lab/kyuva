@@ -97,5 +97,10 @@ Use the account owner's current App Review contact details in App Store Connect.
 ## Release
 
 - Version release: Automatically release after approval.
-- Screenshots: real macOS release-candidate captures at an Apple-supported size; no app preview for 1.0.
-- Do not add the version to App Review or release it publicly without a fresh owner confirmation.
+- Current App Store Connect state: macOS `1.0 (4)` is `Waiting for Review`, submitted on 27 August 2026.
+- Selected build: `1.0 (4)`; rejected build `1.0 (3)` remains only in history.
+- Screenshots: five real macOS release-candidate captures at an Apple-supported size; no app preview for 1.0.
+- App Privacy: published as `Data Not Collected`.
+- Distribution: public, free, and available in exactly the 27 European Union storefronts after release.
+- The reviewer reply and the notes above were sent and persisted before resubmission.
+- Do not perform a later external Store action without fresh owner confirmation.

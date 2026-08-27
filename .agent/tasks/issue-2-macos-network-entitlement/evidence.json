@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "collectedAt": "2026-08-27T10:21:44Z",
+  "collectedAt": "2026-08-27T11:38:06Z",
   "acceptanceCriteria": [
     {
       "id": "AC1",
@@ -22,7 +22,7 @@
     {
       "id": "AC3",
       "status": "PASS",
-      "summary": "Prepared review copy truthfully identifies the build 4 removal and existing Store screenshots do not claim the deferred Remote feature.",
+      "summary": "The submitted reviewer reply and saved review notes truthfully identify the build 4 removal, while the five Store screenshots do not claim the deferred Remote feature.",
       "artifacts": [
         "implementation-notes.md",
         "../../../README.md",
@@ -47,9 +47,10 @@
     {
       "id": "AC5",
       "status": "PASS",
-      "summary": "The Store remains rejected on build 3; build 4 and all reviewer/mobile actions remain local and unclaimed.",
+      "summary": "Build 4 was uploaded, selected, and resubmitted after approval; fresh Store readback shows Waiting for Review, while approval, public release, and mobile Store actions remain unclaimed.",
       "artifacts": [
-        "raw/release-inspection.txt"
+        "raw/release-inspection.txt",
+        "raw/app-store-resubmission.txt"
       ]
     }
   ]

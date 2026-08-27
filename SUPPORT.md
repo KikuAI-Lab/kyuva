@@ -9,7 +9,7 @@ This file is Kyuva's public support contract. Update it whenever the supported r
 - **Apple Watch:** Open a prompt on the paired iPhone, then open Kyuva on the Watch. The remote enables when both apps report a live connection.
 - Kyuva uses normal app windows and screens and may appear in screen shares or recordings. Check the preview before presenting.
 
-Apple rejected Mac build `3` because it contained a network-server entitlement for an unfinished iPhone remote. Build `4` removes that feature and all Mac network access; it is verified locally but has not been uploaded or resubmitted. iPhone and Apple Watch builds are currently source-build surfaces, so public mobile availability is not claimed.
+Apple rejected Mac build `3` because it contained a network-server entitlement for an unfinished iPhone remote. Build `4` removes that feature and all Mac network access. It was uploaded and resubmitted on 27 August 2026 and is now `Waiting for Review`; it is not yet approved or publicly available. iPhone and Apple Watch builds are currently source-build surfaces, so public mobile availability is not claimed.
 
 ## Report a problem
 

@@ -6,11 +6,12 @@ pass.
 
 ## Result
 
-All frozen acceptance criteria pass. Kyuva macOS `1.0 (4)` is a verified local
-candidate with the unfinished iPhone remote removed from the Mac product and no
-network entitlement or listener code in the exported package. App Store Connect
-still contains rejected build `3`; no external remediation action has been
-performed.
+All frozen acceptance criteria pass. Kyuva macOS `1.0 (4)` is a verified signed
+package with the unfinished iPhone remote removed from the Mac product and no
+network entitlement or listener code in the exported package. After explicit
+owner approval, build `4` was uploaded, selected, and resubmitted. Fresh App
+Store Connect readback shows `Waiting for Review`; approval and public release
+remain unproven.
 
 ## Acceptance criteria
 
@@ -37,13 +38,14 @@ performed.
 
 ### AC3 — PASS — review remediation is reproducible
 
-- `implementation-notes.md` contains a factual reviewer reply and App Review
-  Information draft stating that build `4` removes the unfinished local iPhone
+- `implementation-notes.md` records the factual reviewer reply that was sent,
+  and `AppStore/metadata-en.md` contains the App Review Information text that
+  was saved. Both state that build `4` removes the unfinished local iPhone
   remote and both network entitlements.
 - README, Support, Privacy, and the App Store release input no longer advertise
   or provide instructions for the unavailable Mac Remote. They distinguish
-  rejected build `3` from locally prepared build `4`.
-- The drafts do not claim a publicly available companion app.
+  rejected build `3` from the submitted replacement build `4`.
+- The submitted copy does not claim a publicly available companion app.
 - The five existing Store screenshots show the teleprompter, editor, pace,
   appearance, and hotkeys; none advertises the removed Remote feature.
 
@@ -60,12 +62,21 @@ performed.
 
 ### AC5 — PASS — Store state remains honest
 
-- App Store Connect remains at rejected macOS `1.0 (3)` under Guideline 2.4.5.
-- Build `4` is prepared locally only. It is not uploaded, attached, submitted,
-  approved, public, or released.
-- Reviewer reply, review notes, and all mobile Store actions remain unsent.
+- The signed build `4` package upload succeeded and the processed build was
+  selected in place of rejected build `3`.
+- The reviewer reply and App Review Information update were sent and confirmed
+  after reload.
+- The existing macOS `1.0` submission was resubmitted at 14:33 EEST on
+  27 August 2026. Fresh readback shows build `1.0 (4)` in `Waiting for Review`.
+- Automatic release after approval remains selected. The listing has five
+  screenshots, published `Data Not Collected` privacy data, free pricing,
+  public distribution, and exactly the EU-27 storefronts.
+- No approval or public availability is claimed, and no iPhone or Watch Store
+  action was performed.
 
 ## Primary receipt
 
-See `raw/release-inspection.txt` for the deterministic commands, inspected
-properties, package digest, and Store boundary.
+See `raw/release-inspection.txt` for the deterministic build inspection and
+`raw/app-store-resubmission.txt` for the later authorized Store receipt.
+`verdict.json` remains the independent binary-remediation verdict collected
+before upload; the Store receipt is a later operator-verified state transition.

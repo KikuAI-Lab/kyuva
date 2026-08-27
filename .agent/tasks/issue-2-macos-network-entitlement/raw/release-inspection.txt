@@ -10,8 +10,7 @@ Source and tests
 - CI now fails if either network entitlement, either local-network plist key,
   or any listener/Remote executable marker returns to the Mac product
 - README, Support, Privacy, and App Store release input consistently identify
-  rejected build 3, prepared build 4, no Mac network path, and no completed
-  resubmission
+  rejected build 3, replacement build 4, and no Mac network path
 
 Builds
 - macOS Release, generic macOS, arm64 + x86_64, signing disabled: BUILD SUCCEEDED
@@ -46,9 +45,12 @@ Exported package inspection
 - exported package SHA-256:
   dc1079f96c819511d37d7b06a270ab956e72ba936cf2600d475716cababe85c0
 
-Store boundary
-- authenticated App Store Connect status before this remediation: macOS 1.0
+Store boundary at binary verification time
+- authenticated App Store Connect status at 2026-08-27T10:21:44Z: macOS 1.0
   build 3 rejected under Guideline 2.4.5
-- build 4 has not been uploaded, attached, submitted, approved, or released
-- no reviewer reply or App Review Information update has been sent
-- no iPhone or Watch build has been uploaded or submitted
+- build 4 had not yet been uploaded, attached, submitted, approved, or released
+- no reviewer reply or App Review Information update had yet been sent
+- no iPhone or Watch build had been uploaded or submitted
+
+Later authorized Store action
+- see raw/app-store-resubmission.txt
