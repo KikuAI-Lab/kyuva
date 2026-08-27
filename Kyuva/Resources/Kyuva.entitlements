@@ -8,11 +8,5 @@
     <!-- User-selected file access for script import/export -->
     <key>com.apple.security.files.user-selected.read-write</key>
     <true/>
-    <!-- User-started encrypted iPhone remote listener -->
-    <key>com.apple.security.network.server</key>
-    <true/>
-    <!-- Bonjour advertisement sends multicast DNS before accepting TCP -->
-    <key>com.apple.security.network.client</key>
-    <true/>
 </dict>
 </plist>

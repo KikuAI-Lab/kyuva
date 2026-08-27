@@ -6,11 +6,10 @@ This file is Kyuva's public support contract. Update it whenever the supported r
 
 - **Mac:** Finish the Welcome Tour, then use the menu-bar icon to show or hide the overlay, open Settings, reopen the tour, or quit. Review Settings > Hotkeys; Kyuva does not require Accessibility or Input Monitoring permission.
 - **iPhone:** Select or create a script, edit it locally, and tap Present. Tap the prompt or the large play button to pause and resume; use AA for font, pace, mirroring, and stage-direction options. The script-actions menu imports or shares a UTF-8 `.txt` file through Apple's system surfaces.
-- **iPhone → Mac remote:** On Mac, open Settings > Remote and start a session. On iPhone, open Mac Remote, choose `Kyuva Remote`, and enter the one-time code. Both devices must allow Local Network access and be nearby on the same network. If the prompt is hidden, show it from the Mac menu-bar icon before using playback controls.
 - **Apple Watch:** Open a prompt on the paired iPhone, then open Kyuva on the Watch. The remote enables when both apps report a live connection.
 - Kyuva uses normal app windows and screens and may appear in screen shares or recordings. Check the preview before presenting.
 
-The Mac release is being prepared for the App Store. iPhone and Apple Watch builds are currently source-build surfaces; public mobile availability is not claimed until an App Store release is verified.
+Apple rejected Mac build `3` because it contained a network-server entitlement for an unfinished iPhone remote. Build `4` removes that feature and all Mac network access; it is verified locally but has not been uploaded or resubmitted. iPhone and Apple Watch builds are currently source-build surfaces, so public mobile availability is not claimed.
 
 ## Report a problem
 

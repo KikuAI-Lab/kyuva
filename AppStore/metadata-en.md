@@ -10,7 +10,7 @@
 - Bundle ID: `com.kikuai.kyuva`
 - SKU: `kyuva-macos-1`
 - Version: `1.0`
-- Build: `3`
+- Build: `4`
 - Publisher: `Mykyta Dudnichenko`
 - Primary language: English (U.S.)
 - Platform: macOS 13 or later, Apple silicon and Intel
@@ -92,10 +92,10 @@ Use the account owner's current App Review contact details in App Store Connect.
 
 ### Notes
 
-`Kyuva is a fully offline macOS menu-bar teleprompter. No account or sign-in is required. On first launch, click Skip or complete the three-page Welcome Tour; the teleprompter then appears near the top-center camera area. Use the text-bubble menu-bar icon to show or hide the teleprompter, open Settings, or reopen the tour. Settings contains the script editor, pacing controls, appearance, stage-direction options, mirroring, and hotkeys. Kyuva does not request microphone, speech-recognition, Accessibility, or Input Monitoring permission. The overlay is a normal macOS window and may appear in captures.`
+`Build 4 removes the unfinished local iPhone remote and both Mac network entitlements that were present in rejected build 3. Kyuva is a fully offline macOS menu-bar teleprompter. No account or sign-in is required. On first launch, click Skip or complete the three-page Welcome Tour; the teleprompter then appears near the top-center camera area. Use the text-bubble menu-bar icon to show or hide the teleprompter, open Settings, or reopen the tour. Settings contains the script editor, pacing controls, appearance, stage-direction options, mirroring, and hotkeys. Kyuva does not request network, microphone, speech-recognition, Accessibility, or Input Monitoring permission. The overlay is a normal macOS window and may appear in captures.`
 
 ## Release
 
-- Version release: Manually release after approval.
+- Version release: Automatically release after approval.
 - Screenshots: real macOS release-candidate captures at an Apple-supported size; no app preview for 1.0.
 - Do not add the version to App Review or release it publicly without a fresh owner confirmation.

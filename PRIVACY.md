@@ -1,7 +1,7 @@
 # Privacy Policy for Kyuva
 
 **Effective Date:** January 5, 2026  
-**Last Updated:** August 25, 2026
+**Last Updated:** August 27, 2026
 
 ## Overview
 
@@ -17,7 +17,7 @@ Kyuva ("the App") is a teleprompter for Mac and iPhone with a dependent Apple Wa
 - **Recovery:** If the main scripts file cannot be decoded, Kyuva preserves the corrupt file and attempts to load the last known-good local backup.
 - **Settings:** Your preferences are stored locally using Apple UserDefaults.
 - **Watch remote:** The paired Watch receives the current script title, play/pause state, pace label, and progress from the iPhone and sends control commands back through Apple's WatchConnectivity framework. Kyuva does not send this information to the developer or to a Kyuva server.
-- **Mac remote:** When you explicitly start and pair a local remote, the iPhone and Mac communicate directly over the local network through an encrypted, one-time session. Only play/pause, reset, pace, prompt title, state, and progress travel through this channel. Script content is never sent through the remote, pairing is not persisted, and the developer receives nothing.
+- **Mac network access:** Mac build `4` does not open network connections or request network access.
 - **Text transfer:** You can deliberately import or share a plain-text script through Apple's system Files, Share, or AirDrop surfaces. Kyuva does not automatically sync or upload the file.
 - **No Cloud Sync:** We do not sync scripts or settings to external servers.
 
@@ -70,4 +70,4 @@ Repository:
 
 ---
 
-**Summary:** Kyuva is a privacy-first app. We collect nothing. Scripts stay on devices you control; system sharing is deliberate, Watch communication stays paired to iPhone, and the optional Mac remote is a one-time encrypted local session.
+**Summary:** Kyuva is a privacy-first app. We collect nothing. Scripts stay on devices you control, system sharing is deliberate, Watch communication stays paired to iPhone, and prepared Mac build `4` has no network path.

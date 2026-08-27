@@ -1,0 +1,56 @@
+{
+  "status": "PASS",
+  "collectedAt": "2026-08-27T10:21:44Z",
+  "acceptanceCriteria": [
+    {
+      "id": "AC1",
+      "status": "PASS",
+      "summary": "Build 3's listener requirement is proven, while the macOS build 4 target and exported executable contain no local-remote listener path.",
+      "artifacts": [
+        "implementation-notes.md",
+        "raw/release-inspection.txt"
+      ]
+    },
+    {
+      "id": "AC2",
+      "status": "PASS",
+      "summary": "The exported distribution-signed app has only sandbox and user-selected file access capabilities and no network entitlements or local-network plist keys.",
+      "artifacts": [
+        "raw/release-inspection.txt"
+      ]
+    },
+    {
+      "id": "AC3",
+      "status": "PASS",
+      "summary": "Prepared review copy truthfully identifies the build 4 removal and existing Store screenshots do not claim the deferred Remote feature.",
+      "artifacts": [
+        "implementation-notes.md",
+        "../../../README.md",
+        "../../../SUPPORT.md",
+        "../../../PRIVACY.md",
+        "../../../AppStore/metadata-en.md",
+        "../issue-2-apple-suite/raw/screenshots/macos-store-01.png",
+        "../issue-2-apple-suite/raw/screenshots/macos-store-02.png",
+        "../issue-2-apple-suite/raw/screenshots/macos-store-03.png",
+        "../issue-2-apple-suite/raw/screenshots/macos-store-04.png",
+        "../issue-2-apple-suite/raw/screenshots/macos-store-05.png"
+      ]
+    },
+    {
+      "id": "AC4",
+      "status": "PASS",
+      "summary": "31 tests, universal Mac Release/archive/export, and the iPhone plus embedded Watch Release build pass; the exported app is signed, universal, and versioned 1.0 (4).",
+      "artifacts": [
+        "raw/release-inspection.txt"
+      ]
+    },
+    {
+      "id": "AC5",
+      "status": "PASS",
+      "summary": "The Store remains rejected on build 3; build 4 and all reviewer/mobile actions remain local and unclaimed.",
+      "artifacts": [
+        "raw/release-inspection.txt"
+      ]
+    }
+  ]
+}

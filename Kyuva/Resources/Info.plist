@@ -28,12 +28,6 @@
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
-    <key>NSBonjourServices</key>
-    <array>
-        <string>_kyuva._tcp</string>
-    </array>
-    <key>NSLocalNetworkUsageDescription</key>
-    <string>Kyuva accepts controls from an iPhone you explicitly pair on your local network.</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>NSHumanReadableCopyright</key>

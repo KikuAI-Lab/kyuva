@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "verifiedAt": "2026-08-27T10:21:44Z",
+  "verifier": "gpt-5.4-mini",
+  "productionCodeChangedByVerifier": false,
+  "sanitizedEvidenceRechecked": true,
+  "acceptanceCriteria": {
+    "AC1": "PASS",
+    "AC2": "PASS",
+    "AC3": "PASS",
+    "AC4": "PASS",
+    "AC5": "PASS"
+  },
+  "actionableFindings": [],
+  "unknowns": [],
+  "summary": "The macOS 1.0 (4) remediation is verified: CI, README, SUPPORT, PRIVACY, and App Store metadata now consistently describe build 4; the Mac target excludes the local remote listener sources; and the exported app is arm64+x86_64, signed, versioned 1.0 (4), and free of network.server/network.client entitlements, Bonjour/local-network plist keys, and listener markers."
+}

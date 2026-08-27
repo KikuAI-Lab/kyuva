@@ -21,7 +21,6 @@
 		018 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
 		019 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
 		020 /* ScriptModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 125 /* ScriptModels.swift */; };
-		021 /* RemoteControlProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 126 /* RemoteControlProtocol.swift */; };
 		030 /* KyuvaMobileApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130 /* KyuvaMobileApp.swift */; };
 		031 /* PhoneWatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131 /* PhoneWatchSession.swift */; };
 		032 /* MobileEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 132 /* MobileEditorView.swift */; };
@@ -41,11 +40,8 @@
 		046 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
 		047 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
 		048 /* Kyuva Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 128 /* Kyuva Watch App.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		049 /* LocalRemoteProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138 /* LocalRemoteProtocol.swift */; };
 		050 /* LocalRemoteProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138 /* LocalRemoteProtocol.swift */; };
-		051 /* LocalRemoteSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139 /* LocalRemoteSecurity.swift */; };
 		052 /* LocalRemoteSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139 /* LocalRemoteSecurity.swift */; };
-		053 /* LocalRemoteServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140 /* LocalRemoteServer.swift */; };
 		054 /* MacRemoteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141 /* MacRemoteClient.swift */; };
 		055 /* MobileMacRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142 /* MobileMacRemoteView.swift */; };
 		056 /* ScriptTextTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143 /* ScriptTextTransfer.swift */; };
@@ -412,14 +408,10 @@
 				005 /* ScriptManager.swift in Sources */,
 				020 /* ScriptModels.swift in Sources */,
 				006 /* ScrollController.swift in Sources */,
-				021 /* RemoteControlProtocol.swift in Sources */,
-				049 /* LocalRemoteProtocol.swift in Sources */,
-				051 /* LocalRemoteSecurity.swift in Sources */,
 				057 /* ScriptTextFile.swift in Sources */,
 				007 /* HotkeyManager.swift in Sources */,
 				009 /* LocalStore.swift in Sources */,
 				012 /* WindowManager.swift in Sources */,
-				053 /* LocalRemoteServer.swift in Sources */,
 				015 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -647,7 +639,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kyuva/Resources/Kyuva.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
@@ -674,7 +666,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kyuva/Resources/Kyuva.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 956F3UPBRX;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;

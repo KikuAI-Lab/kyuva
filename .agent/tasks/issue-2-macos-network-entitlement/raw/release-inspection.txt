@@ -1,0 +1,54 @@
+Kyuva macOS 1.0 (4) rejection-remediation receipt
+Collected: 2026-08-27T10:21:44Z
+
+Source and tests
+- git diff --check: PASS
+- plutil lint, Mac Info.plist: PASS
+- plutil lint, Mac entitlements: PASS
+- swift test --scratch-path <temporary>/swiftpm: PASS, 31 tests, 0 failures
+- CI-equivalent macOS bundle checks: PASS for build 4, arm64 and x86_64
+- CI now fails if either network entitlement, either local-network plist key,
+  or any listener/Remote executable marker returns to the Mac product
+- README, Support, Privacy, and App Store release input consistently identify
+  rejected build 3, prepared build 4, no Mac network path, and no completed
+  resubmission
+
+Builds
+- macOS Release, generic macOS, arm64 + x86_64, signing disabled: BUILD SUCCEEDED
+- Kyuva iOS Release, generic iOS Simulator, embedded Watch target: BUILD SUCCEEDED
+- fresh macOS archive, arm64 + x86_64: ARCHIVE SUCCEEDED
+- App Store Connect package export: EXPORT SUCCEEDED
+
+Exported package inspection
+- installer package signature: valid Apple-issued installer signature
+- application signature: valid Apple Distribution signature
+- application identifier: com.kikuai.kyuva
+- executable architectures: x86_64 arm64
+- CFBundleShortVersionString: 1.0
+- CFBundleVersion: 4
+- signed entitlements:
+  - com.apple.application-identifier
+  - com.apple.developer.team-identifier
+  - com.apple.security.app-sandbox
+  - com.apple.security.files.user-selected.read-write
+- absent signed entitlements:
+  - com.apple.security.network.server
+  - com.apple.security.network.client
+- absent Info.plist keys:
+  - NSBonjourServices
+  - NSLocalNetworkUsageDescription
+- absent executable markers:
+  - _kyuva._tcp
+  - NWListener
+  - LocalRemote
+  - Start Local Remote
+  - Control this Mac
+- exported package SHA-256:
+  dc1079f96c819511d37d7b06a270ab956e72ba936cf2600d475716cababe85c0
+
+Store boundary
+- authenticated App Store Connect status before this remediation: macOS 1.0
+  build 3 rejected under Guideline 2.4.5
+- build 4 has not been uploaded, attached, submitted, approved, or released
+- no reviewer reply or App Review Information update has been sent
+- no iPhone or Watch build has been uploaded or submitted

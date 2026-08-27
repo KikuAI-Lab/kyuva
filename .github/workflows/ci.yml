@@ -45,12 +45,17 @@ jobs:
           lipo "$KYUVA_APP/Contents/MacOS/Kyuva" -verify_arch "${{ matrix.arch }}"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$KYUVA_APP/Contents/Info.plist")" = "com.kikuai.kyuva"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$KYUVA_APP/Contents/Info.plist")" = "1.0"
-          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_APP/Contents/Info.plist")" = "3"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$KYUVA_APP/Contents/Info.plist")" = "4"
           test "$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$KYUVA_APP/Contents/Info.plist")" = "13.0"
           test "$(/usr/libexec/PlistBuddy -c 'Print :ITSAppUsesNonExemptEncryption' "$KYUVA_APP/Contents/Info.plist")" = "false"
           test "$(/usr/libexec/PlistBuddy -c 'Print :NSHumanReadableCopyright' "$KYUVA_APP/Contents/Info.plist")" = "© 2026 Mykyta Dudnichenko. All rights reserved."
           ! /usr/libexec/PlistBuddy -c 'Print :NSMicrophoneUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :NSSpeechRecognitionUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
+          ! /usr/libexec/PlistBuddy -c 'Print :NSBonjourServices' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
+          ! /usr/libexec/PlistBuddy -c 'Print :NSLocalNetworkUsageDescription' "$KYUVA_APP/Contents/Info.plist" >/dev/null 2>&1
+          ! /usr/libexec/PlistBuddy -c 'Print :com.apple.security.network.server' Kyuva/Resources/Kyuva.entitlements >/dev/null 2>&1
+          ! /usr/libexec/PlistBuddy -c 'Print :com.apple.security.network.client' Kyuva/Resources/Kyuva.entitlements >/dev/null 2>&1
+          ! strings "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -Eq '_kyuva\._tcp|NWListener|LocalRemote|Start Local Remote|Control this Mac'
 
   mobile:
     name: iPhone and Apple Watch

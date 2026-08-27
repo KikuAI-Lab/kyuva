@@ -22,7 +22,7 @@ The overlay is a normal macOS window and may appear in screen shares or recordin
 
 ## Release Status
 
-Kyuva macOS version `1.0` build `3` was uploaded to App Store Connect and submitted to App Review on 26 August 2026. Its current state is `Waiting for Review`, with automatic release enabled after approval. The listing is free and public in the 27 European Union storefronts, with five screenshots and the published `Data Not Collected` privacy answer. This is submission evidence, not approval or public-availability evidence. The iPhone and Apple Watch targets are implemented and verified locally; no mobile upload or store availability is claimed yet.
+Kyuva macOS version `1.0` build `3` was uploaded to App Store Connect and submitted to App Review on 26 August 2026. Apple rejected that binary on 27 August under Guideline 2.4.5 because it included a network-server entitlement for an unfinished iPhone remote. Build `4` is a locally verified replacement that removes the Mac remote, both network entitlements, and all Mac local-network metadata; it has not been uploaded or resubmitted. The listing remains free in the 27 European Union storefronts, with five screenshots, the published `Data Not Collected` privacy answer, and automatic release configured after approval. This is local package evidence, not approval or public-availability evidence. The iPhone and Apple Watch targets are implemented and verified locally; no mobile upload or Store availability is claimed yet.
 
 The first releases have no purchases, subscriptions, advertising, account, analytics, or required backend.
 
@@ -37,7 +37,6 @@ The binary attached to the historical `v1.0.0` GitHub release is a development b
 - Bracketed stage-direction controls plus text-only mirroring for beam-splitter rigs
 - Apple Watch play/pause, start-over, slower, and faster controls through WatchConnectivity
 - Plain-text import and sharing on iPhone plus import/export on Mac through system Files, Share, and AirDrop surfaces
-- Optional one-time, encrypted local iPhone remote for the active Mac prompt; script content never crosses its control channel
 - Recoverable local script storage
 - No account, cloud sync, analytics, or required network service
 
@@ -73,7 +72,7 @@ Kyuva keeps its core behavior local:
 - scripts are stored in the Mac or iPhone app container
 - the Watch exchanges only current prompt state and control commands with the paired iPhone
 - text transfer happens only when you choose a system file/share action
-- the optional Mac remote is explicitly started, one-time paired, encrypted, and local-network only
+- Mac build `4` does not open network connections or request network access
 - no account is required
 - no analytics or tracking are built in
 
