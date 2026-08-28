@@ -57,11 +57,11 @@ jobs:
           ! /usr/libexec/PlistBuddy -c 'Print :com.apple.security.network.server' Kyuva/Resources/Kyuva.entitlements >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :com.apple.security.network.client' Kyuva/Resources/Kyuva.entitlements >/dev/null 2>&1
           ! strings "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -Eq '_kyuva\._tcp|NWListener|LocalRemote|Start Local Remote|Control this Mac'
-          ! rg -n 'LocalRemoteServer|LocalRemoteProtocol|LocalRemoteSecurity|_kyuva\._tcp|NWListener' Kyuva KyuvaMobile Kyuva.xcodeproj/project.pbxproj
+          ! git grep -n -E 'LocalRemoteServer|LocalRemoteProtocol|LocalRemoteSecurity|_kyuva\._tcp|NWListener' -- Kyuva KyuvaMobile Kyuva.xcodeproj/project.pbxproj
           otool -L "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -q '/Speech.framework/'
-          rg -n 'requiresOnDeviceRecognition = true' Kyuva/Core/OnDeviceSpeechRecognizer.swift
-          rg -n 'static let commerceEnabled = false' Kyuva/Core/ProEntitlementStore.swift
-          rg -n 'com\.kikuai\.kyuva\.pro\.lifetime' Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'requiresOnDeviceRecognition = true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
+          git grep -n -F 'static let commerceEnabled = false' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'com.kikuai.kyuva.pro.lifetime' -- Kyuva/Core/ProEntitlementStore.swift
 
   mobile:
     name: iPhone and Apple Watch
@@ -102,7 +102,7 @@ jobs:
           ! /usr/libexec/PlistBuddy -c 'Print :NSSpeechRecognitionUsageDescription' "$KYUVA_WATCH_APP/Info.plist" >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :NSBonjourServices' "$KYUVA_IOS_APP/Info.plist" >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :NSLocalNetworkUsageDescription' "$KYUVA_IOS_APP/Info.plist" >/dev/null 2>&1
-          ! rg -n -i 'MobileMacRemoteView|MacRemoteClient|openMacRemote|iphoneMacRemote|Control a Mac' KyuvaMobile Kyuva.xcodeproj/project.pbxproj
+          ! git grep -n -i -E 'MobileMacRemoteView|MacRemoteClient|openMacRemote|iphoneMacRemote|Control a Mac' -- KyuvaMobile Kyuva.xcodeproj/project.pbxproj
           otool -L "$KYUVA_IOS_APP/Kyuva iOS" | grep -q '/Speech.framework/'
-          rg -n 'requiresOnDeviceRecognition = true' Kyuva/Core/OnDeviceSpeechRecognizer.swift
-          rg -n 'static let commerceEnabled = false' Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'requiresOnDeviceRecognition = true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
+          git grep -n -F 'static let commerceEnabled = false' -- Kyuva/Core/ProEntitlementStore.swift
