@@ -2,6 +2,7 @@ import SwiftUI
 
 struct MobilePromptSettingsView: View {
     @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var proStore = ProEntitlementStore.shared
     @AppStorage("fontSize") private var fontSize = 34.0
     @AppStorage("mirrorText") private var mirrorText = false
     @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
@@ -9,6 +10,7 @@ struct MobilePromptSettingsView: View {
     @AppStorage(ScrollController.speedDefaultsKey) private var fixedSpeed = 50.0
     @AppStorage(ScrollController.wordsPerMinuteDefaultsKey) private var wordsPerMinute = 150.0
     @AppStorage(ScrollController.targetDurationDefaultsKey) private var targetDuration = 300.0
+    @State private var proMessage: String?
 
     var body: some View {
         Form {
@@ -54,6 +56,46 @@ struct MobilePromptSettingsView: View {
                 }
             }
 
+            Section("Kyuva Pro") {
+                Label(proAccessLabel, systemImage: "sparkles")
+
+                Text("Voice Follow is the first Pro feature. It stays unlocked for everyone while the purchase preview is inactive.")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+
+                if ProEntitlementStore.commerceEnabled {
+                    if proStore.accessState == .locked {
+                        Button("Start 7-Day Trial") {
+                            proStore.startTrial()
+                        }
+                    }
+
+                    Button(proPurchaseLabel) {
+                        Task {
+                            proMessage = message(for: await proStore.purchaseLifetime())
+                        }
+                    }
+                    .disabled(proStore.lifetimeProduct == nil || proStore.isLoading)
+
+                    Button("Restore Purchase") {
+                        Task {
+                            proMessage = await proStore.restorePurchases()
+                                ? "Your lifetime purchase was restored."
+                                : "No verified lifetime purchase was found."
+                        }
+                    }
+                } else {
+                    Text("Open preview · no purchase available")
+                        .foregroundStyle(.secondary)
+                }
+
+                if let proMessage {
+                    Text(proMessage)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
             Section {
                 Text("Scripts and settings stay on this device. Kyuva has no account, analytics, ads, or required cloud service.")
                     .font(.footnote)
@@ -67,10 +109,48 @@ struct MobilePromptSettingsView: View {
                 Button("Done") { dismiss() }
             }
         }
+        .task {
+            await proStore.prepare()
+        }
     }
 
     private var durationLabel: String {
         let seconds = Int(targetDuration.rounded())
         return String(format: "%d:%02d", seconds / 60, seconds % 60)
+    }
+
+    private var proAccessLabel: String {
+        switch proStore.accessState {
+        case .openPreview:
+            return "Pro Preview Unlocked"
+        case .purchased:
+            return "Lifetime Pro Unlocked"
+        case .trial(let daysRemaining):
+            return "Pro Trial · \(daysRemaining) Days Left"
+        case .locked:
+            return "Kyuva Pro"
+        }
+    }
+
+    private var proPurchaseLabel: String {
+        if let displayPrice = proStore.displayPrice {
+            return "Unlock Forever · \(displayPrice)"
+        }
+        return "Unlock Forever"
+    }
+
+    private func message(for outcome: ProPurchaseOutcome) -> String {
+        switch outcome {
+        case .purchased:
+            return "Lifetime Pro is unlocked."
+        case .pending:
+            return "The purchase is pending Apple approval."
+        case .cancelled:
+            return "Purchase cancelled."
+        case .unavailable:
+            return "The lifetime product is not available."
+        case .failed:
+            return "Apple could not complete the purchase."
+        }
     }
 }

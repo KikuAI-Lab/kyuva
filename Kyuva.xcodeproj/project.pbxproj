@@ -40,13 +40,15 @@
 		046 /* AppIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 124 /* AppIcon.icon */; };
 		047 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 123 /* PrivacyInfo.xcprivacy */; };
 		048 /* Kyuva Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 128 /* Kyuva Watch App.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		050 /* LocalRemoteProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138 /* LocalRemoteProtocol.swift */; };
-		052 /* LocalRemoteSecurity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 139 /* LocalRemoteSecurity.swift */; };
-		054 /* MacRemoteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141 /* MacRemoteClient.swift */; };
-		055 /* MobileMacRemoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142 /* MobileMacRemoteView.swift */; };
 		056 /* ScriptTextTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143 /* ScriptTextTransfer.swift */; };
 		057 /* ScriptTextFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145 /* ScriptTextFile.swift */; };
 		058 /* ScriptTextFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145 /* ScriptTextFile.swift */; };
+		060 /* VoicePositionMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146 /* VoicePositionMatcher.swift */; };
+		061 /* VoicePositionMatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 146 /* VoicePositionMatcher.swift */; };
+		062 /* OnDeviceSpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147 /* OnDeviceSpeechRecognizer.swift */; };
+		063 /* OnDeviceSpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 147 /* OnDeviceSpeechRecognizer.swift */; };
+		064 /* ProEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148 /* ProEntitlementStore.swift */; };
+		065 /* ProEntitlementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 148 /* ProEntitlementStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,14 +104,12 @@
 		135 /* KyuvaWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KyuvaWatchApp.swift; sourceTree = "<group>"; };
 		136 /* WatchSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionController.swift; sourceTree = "<group>"; };
 		137 /* WatchRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchRemoteView.swift; sourceTree = "<group>"; };
-		138 /* LocalRemoteProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRemoteProtocol.swift; sourceTree = "<group>"; };
-		139 /* LocalRemoteSecurity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRemoteSecurity.swift; sourceTree = "<group>"; };
-		140 /* LocalRemoteServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRemoteServer.swift; sourceTree = "<group>"; };
-		141 /* MacRemoteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRemoteClient.swift; sourceTree = "<group>"; };
-		142 /* MobileMacRemoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MobileMacRemoteView.swift; sourceTree = "<group>"; };
 		143 /* ScriptTextTransfer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptTextTransfer.swift; sourceTree = "<group>"; };
 		144 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		145 /* ScriptTextFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptTextFile.swift; sourceTree = "<group>"; };
+		146 /* VoicePositionMatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoicePositionMatcher.swift; sourceTree = "<group>"; };
+		147 /* OnDeviceSpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnDeviceSpeechRecognizer.swift; sourceTree = "<group>"; };
+		148 /* ProEntitlementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProEntitlementStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -168,11 +168,12 @@
 			isa = PBXGroup;
 			children = (
 				125 /* ScriptModels.swift */,
+				146 /* VoicePositionMatcher.swift */,
+				147 /* OnDeviceSpeechRecognizer.swift */,
+				148 /* ProEntitlementStore.swift */,
 				105 /* ScriptManager.swift */,
 				106 /* ScrollController.swift */,
 				126 /* RemoteControlProtocol.swift */,
-				138 /* LocalRemoteProtocol.swift */,
-				139 /* LocalRemoteSecurity.swift */,
 				145 /* ScriptTextFile.swift */,
 				107 /* HotkeyManager.swift */,
 				215 /* Storage */,
@@ -184,7 +185,6 @@
 			isa = PBXGroup;
 			children = (
 				112 /* WindowManager.swift */,
-				140 /* LocalRemoteServer.swift */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
@@ -233,7 +233,6 @@
 			isa = PBXGroup;
 			children = (
 				131 /* PhoneWatchSession.swift */,
-				141 /* MacRemoteClient.swift */,
 			);
 			path = Connectivity;
 			sourceTree = "<group>";
@@ -244,7 +243,6 @@
 				132 /* MobileEditorView.swift */,
 				134 /* MobilePromptView.swift */,
 				133 /* MobilePromptSettingsView.swift */,
-				142 /* MobileMacRemoteView.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -413,6 +411,9 @@
 				009 /* LocalStore.swift in Sources */,
 				012 /* WindowManager.swift in Sources */,
 				015 /* OnboardingView.swift in Sources */,
+				060 /* VoicePositionMatcher.swift in Sources */,
+				062 /* OnDeviceSpeechRecognizer.swift in Sources */,
+				064 /* ProEntitlementStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,20 +423,19 @@
 			files = (
 				030 /* KyuvaMobileApp.swift in Sources */,
 				031 /* PhoneWatchSession.swift in Sources */,
-				054 /* MacRemoteClient.swift in Sources */,
 				032 /* MobileEditorView.swift in Sources */,
 				033 /* MobilePromptSettingsView.swift in Sources */,
 				034 /* MobilePromptView.swift in Sources */,
-				055 /* MobileMacRemoteView.swift in Sources */,
 				056 /* ScriptTextTransfer.swift in Sources */,
 				035 /* ScriptModels.swift in Sources */,
 				036 /* ScriptManager.swift in Sources */,
 				037 /* ScrollController.swift in Sources */,
 				038 /* RemoteControlProtocol.swift in Sources */,
-				050 /* LocalRemoteProtocol.swift in Sources */,
-				052 /* LocalRemoteSecurity.swift in Sources */,
 				058 /* ScriptTextFile.swift in Sources */,
 				039 /* LocalStore.swift in Sources */,
+				061 /* VoicePositionMatcher.swift in Sources */,
+				063 /* OnDeviceSpeechRecognizer.swift in Sources */,
+				065 /* ProEntitlementStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

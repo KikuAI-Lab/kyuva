@@ -6,6 +6,7 @@ final class PhoneWatchSession: NSObject, WCSessionDelegate {
 
     private weak var scrollController: ScrollController?
     private var scriptTitle = "Kyuva"
+    private var commandHandler: ((RemoteCommand) -> Bool)?
 
     private override init() {
         super.init()
@@ -18,15 +19,21 @@ final class PhoneWatchSession: NSObject, WCSessionDelegate {
         session.activate()
     }
 
-    func bind(scrollController: ScrollController, scriptTitle: String) {
+    func bind(
+        scrollController: ScrollController,
+        scriptTitle: String,
+        commandHandler: ((RemoteCommand) -> Bool)? = nil
+    ) {
         self.scrollController = scrollController
         self.scriptTitle = scriptTitle
+        self.commandHandler = commandHandler
         publishSnapshot()
     }
 
     func unbind(scrollController: ScrollController) {
         guard self.scrollController === scrollController else { return }
         self.scrollController = nil
+        commandHandler = nil
         publishSnapshot()
     }
 
@@ -58,6 +65,10 @@ final class PhoneWatchSession: NSObject, WCSessionDelegate {
 
     private func apply(_ command: RemoteCommand) -> PlaybackSnapshot {
         guard let scrollController else { return snapshot }
+        if commandHandler?(command) == true {
+            publishSnapshot()
+            return snapshot
+        }
 
         switch command {
         case .requestSnapshot:

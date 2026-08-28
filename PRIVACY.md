@@ -1,7 +1,7 @@
 # Privacy Policy for Kyuva
 
 **Effective Date:** January 5, 2026  
-**Last Updated:** August 27, 2026
+**Last Updated:** August 28, 2026
 
 ## Overview
 
@@ -17,13 +17,16 @@ Kyuva ("the App") is a teleprompter for Mac and iPhone with a dependent Apple Wa
 - **Recovery:** If the main scripts file cannot be decoded, Kyuva preserves the corrupt file and attempts to load the last known-good local backup.
 - **Settings:** Your preferences are stored locally using Apple UserDefaults.
 - **Watch remote:** The paired Watch receives the current script title, play/pause state, pace label, and progress from the iPhone and sends control commands back through Apple's WatchConnectivity framework. Kyuva does not send this information to the developer or to a Kyuva server.
+- **iPhone-to-Mac remote:** The iPhone app does not discover or connect to Macs. Its remote-control path is limited to the paired Watch through WatchConnectivity.
 - **Mac network access:** Mac build `4` does not open network connections or request network access.
 - **Text transfer:** You can deliberately import or share a plain-text script through Apple's system Files, Share, or AirDrop surfaces. Kyuva does not automatically sync or upload the file.
 - **No Cloud Sync:** We do not sync scripts or settings to external servers.
 
 ### Audio and Speech
-- Kyuva's current release does not request microphone or speech-recognition access
-- No audio processing, recording, transcription, or voice-following is shipped
+- Mac App Store version 1.0 does not request microphone or speech-recognition access.
+- Current development builds include an optional Voice Follow control. It requests microphone and Speech permission only when you turn that feature on.
+- Voice Follow requires Apple's on-device recognition support for the selected script language. Kyuva does not fall back to cloud recognition.
+- Microphone buffers are passed directly to Apple's on-device speech recognizer while Voice Follow is active. Kyuva does not save the audio or send it to the developer or a Kyuva server.
 
 ## Capture Visibility
 
@@ -33,7 +36,7 @@ Kyuva uses normal app windows and screens. Its prompt may appear in screen share
 
 Kyuva does not integrate with any third-party analytics, advertising, or tracking services.
 
-Kyuva's current release has no StoreKit or Pro purchase path. The repository does not depend on analytics, advertising, or any cloud backend.
+Mac App Store version 1.0 has no StoreKit or Pro purchase path. Current development source contains a disabled lifetime Pro entitlement foundation for future review and testing. While commerce is disabled, it makes no StoreKit product request and all prepared Pro features remain an open preview. Any future public purchase activation requires an updated release and privacy review. The repository does not depend on analytics, advertising, or any cloud backend.
 
 ## Data Sharing
 
@@ -70,4 +73,4 @@ Repository:
 
 ---
 
-**Summary:** Kyuva is a privacy-first app. We collect nothing. Scripts stay on devices you control, system sharing is deliberate, Watch communication stays paired to iPhone, and prepared Mac build `4` has no network path.
+**Summary:** Kyuva is a privacy-first app. We collect nothing. Scripts stay on devices you control, system sharing is deliberate, Watch communication stays paired to iPhone, and optional Voice Follow is constrained to Apple's supported on-device recognizers.

@@ -14,9 +14,12 @@ struct MobilePromptView: View {
 
     @Environment(\.dismiss) private var dismiss
     @StateObject private var scrollController = ScrollController()
+    @StateObject private var speechRecognizer = OnDeviceSpeechRecognizer()
+    @ObservedObject private var proStore = ProEntitlementStore.shared
     @State private var isShowingSettings = false
     @State private var contentHeight: CGFloat = 0
     @State private var viewportHeight: CGFloat = 0
+    @State private var voiceMatcher: VoicePositionMatcher?
 
     @AppStorage("fontSize") private var fontSize = 34.0
     @AppStorage("mirrorText") private var mirrorText = false
@@ -77,7 +80,10 @@ struct MobilePromptView: View {
             scrollController.applyPersistedScrollSpeed()
             updateContentMetrics()
         }
-        .onChange(of: scrollController.isPaused) {
+        .onChange(of: scrollController.isPaused) { _, isPaused in
+            if speechRecognizer.state.isListening && !isPaused {
+                scrollController.pause()
+            }
             PhoneWatchSession.shared.publishSnapshot()
         }
         .onChange(of: scrollController.paceControlLabel) {
@@ -92,13 +98,22 @@ struct MobilePromptView: View {
             scrollController.applyPersistedScrollSpeed()
             PhoneWatchSession.shared.bind(
                 scrollController: scrollController,
-                scriptTitle: script.name
+                scriptTitle: script.name,
+                commandHandler: handleWatchCommand
             )
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
+            speechRecognizer.stop()
+            voiceMatcher = nil
             scrollController.pause()
             PhoneWatchSession.shared.unbind(scrollController: scrollController)
+        }
+        .onChange(of: speechRecognizer.latestTranscript) { _, transcript in
+            consumeVoiceTranscript(transcript)
+        }
+        .task {
+            await proStore.prepare()
         }
     }
 
@@ -139,7 +154,7 @@ struct MobilePromptView: View {
         .scaleEffect(x: mirrorText ? -1 : 1, y: 1)
         .contentShape(Rectangle())
         .onTapGesture {
-            scrollController.togglePause()
+            handlePromptTap()
         }
     }
 
@@ -185,6 +200,26 @@ struct MobilePromptView: View {
                 Spacer()
 
                 Button {
+                    toggleVoiceFollow()
+                } label: {
+                    Image(
+                        systemName: speechRecognizer.state.isListening
+                            ? "waveform.circle.fill"
+                            : "waveform.circle"
+                    )
+                    .foregroundStyle(speechRecognizer.state.isListening ? .cyan : .white)
+                    .frame(width: 44, height: 44)
+                }
+                .buttonStyle(.bordered)
+                .disabled(speechRecognizer.state == .requestingPermission)
+                .accessibilityLabel(
+                    speechRecognizer.state.isListening
+                        ? "Stop Voice Follow"
+                        : "Start Voice Follow"
+                )
+                .accessibilityValue(voiceStatusLabel)
+
+                Button {
                     isShowingSettings = true
                 } label: {
                     Image(systemName: "textformat.size")
@@ -207,7 +242,7 @@ struct MobilePromptView: View {
 
                 HStack(spacing: 10) {
                     Button {
-                        scrollController.reset()
+                        resetPromptPosition()
                     } label: {
                         Image(systemName: "backward.end.fill")
                             .frame(width: 44, height: 44)
@@ -224,6 +259,7 @@ struct MobilePromptView: View {
                             .background(.white.opacity(0.14), in: Circle())
                     }
                     .buttonStyle(.plain)
+                    .disabled(speechRecognizer.state.isListening)
                     .accessibilityLabel("Slower")
 
                     Button {
@@ -236,6 +272,7 @@ struct MobilePromptView: View {
                             .background(.cyan, in: Capsule())
                     }
                     .buttonStyle(.plain)
+                    .disabled(speechRecognizer.state.isListening)
                     .accessibilityLabel(scrollController.isPaused ? "Play" : "Pause")
 
                     Button {
@@ -246,6 +283,7 @@ struct MobilePromptView: View {
                             .background(.white.opacity(0.14), in: Circle())
                     }
                     .buttonStyle(.plain)
+                    .disabled(speechRecognizer.state.isListening)
                     .accessibilityLabel("Faster")
 
                     Text(scrollController.paceControlLabel)
@@ -264,6 +302,21 @@ struct MobilePromptView: View {
     }
 
     private var progressLabel: String {
+        switch speechRecognizer.state {
+        case .requestingPermission:
+            return "Preparing Voice Follow…"
+        case .listening:
+            return "Voice Follow · \(Int(scrollController.progress * 100))%"
+        case .permissionDenied:
+            return "Voice Follow needs microphone and Speech access"
+        case .unsupported(let localeIdentifier):
+            return "On-device speech unavailable for \(localeIdentifier)"
+        case .failed:
+            return "Voice Follow stopped · tap to retry"
+        case .idle:
+            break
+        }
+
         guard let remaining = scrollController.remainingTime else {
             return "Paused at the start"
         }
@@ -278,5 +331,100 @@ struct MobilePromptView: View {
             visibleHeight: viewportHeight,
             wordCount: pacedWordCount
         )
+    }
+
+    private var voiceStatusLabel: String {
+        switch speechRecognizer.state {
+        case .idle:
+            return proStore.accessState.hasAccess ? "Off" : "Requires Kyuva Pro"
+        case .requestingPermission:
+            return "Requesting permission"
+        case .listening(let localeIdentifier):
+            return "Listening on device in \(localeIdentifier)"
+        case .permissionDenied:
+            return "Permission denied"
+        case .unsupported(let localeIdentifier):
+            return "On-device recognition unavailable for \(localeIdentifier)"
+        case .failed:
+            return "Stopped after a recognition error"
+        }
+    }
+
+    private func toggleVoiceFollow() {
+        if speechRecognizer.state.isListening {
+            speechRecognizer.stop()
+            voiceMatcher = nil
+            return
+        }
+
+        guard proStore.accessState.hasAccess else {
+            isShowingSettings = true
+            return
+        }
+
+        scrollController.manualPause()
+        voiceMatcher = VoicePositionMatcher(
+            tokens: script.tokens,
+            startTokenIndex: voiceStartTokenIndex
+        )
+
+        Task {
+            await speechRecognizer.start(scriptText: script.content)
+        }
+    }
+
+    private func handlePromptTap() {
+        if speechRecognizer.state.isListening {
+            speechRecognizer.stop()
+            voiceMatcher = nil
+        } else {
+            scrollController.togglePause()
+        }
+    }
+
+    private func consumeVoiceTranscript(_ transcript: String) {
+        guard var matcher = voiceMatcher else { return }
+        defer { voiceMatcher = matcher }
+
+        guard let match = matcher.consume(transcript) else { return }
+        scrollController.pause()
+        scrollController.goToOffset(
+            CGFloat(match.progress) * scrollController.maximumOffset
+        )
+        PhoneWatchSession.shared.publishSnapshot()
+    }
+
+    private var voiceStartTokenIndex: Int {
+        guard !script.tokens.isEmpty, scrollController.progress > 0 else { return -1 }
+        return min(
+            script.tokens.count - 1,
+            Int((scrollController.progress * Double(script.tokens.count - 1)).rounded(.down))
+        )
+    }
+
+    private func handleWatchCommand(_ command: RemoteCommand) -> Bool {
+        guard speechRecognizer.state.isListening else { return false }
+
+        switch command {
+        case .requestSnapshot:
+            return false
+        case .togglePlayback:
+            speechRecognizer.stop()
+            voiceMatcher = nil
+        case .reset:
+            resetPromptPosition()
+        case .faster, .slower:
+            break
+        }
+
+        return true
+    }
+
+    private func resetPromptPosition() {
+        scrollController.reset()
+        if var matcher = voiceMatcher {
+            matcher.reset()
+            voiceMatcher = matcher
+        }
     }
 }

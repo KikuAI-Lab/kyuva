@@ -325,6 +325,8 @@ struct OverlayContentView: View {
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
     @ObservedObject var scriptManager: ScriptManager
     @ObservedObject var scrollController: ScrollController
+    @StateObject private var speechRecognizer = OnDeviceSpeechRecognizer()
+    @ObservedObject private var proStore = ProEntitlementStore.shared
     var onHover: (Bool) -> Void
     var onDrag: ((CGPoint, Bool) -> Void)?
     var onResize: ((CGFloat, CGFloat, Bool) -> Void)? // width delta, height delta, isEnded
@@ -346,6 +348,7 @@ struct OverlayContentView: View {
     @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
     
     @State private var showControls = false
+    @State private var voiceMatcher: VoicePositionMatcher?
 
     private var lineHeight: CGFloat {
         max(28, CGFloat(fontSize) * 1.2 + 8)
@@ -478,6 +481,7 @@ struct OverlayContentView: View {
                                                 highlightedLineIndex: promptLine.sourceIndex,
                                                 autoResumeAfter: 1.0
                                             )
+                                            resetVoiceMatcher(nearLineIndex: promptLine.sourceIndex)
                                         }
                                 }
                             }
@@ -544,7 +548,7 @@ struct OverlayContentView: View {
                     VStack {
                         HStack {
                             Spacer()
-                            Label(remainingTimeText, systemImage: "clock")
+                            Label(overlayStatusText, systemImage: overlayStatusIcon)
                                 .font(.system(size: 9, weight: .medium, design: .monospaced))
                                 .foregroundColor(.white.opacity(0.7))
                                 .padding(.horizontal, 7)
@@ -557,8 +561,10 @@ struct OverlayContentView: View {
                     .padding(7)
                     .allowsHitTesting(false)
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel("Remaining time")
-                    .accessibilityValue(remainingTimeText)
+                    .accessibilityLabel(
+                        speechRecognizer.state == .idle ? "Remaining time" : "Voice Follow"
+                    )
+                    .accessibilityValue(overlayStatusText)
                     
                     // Pause indicator
                     if scrollController.isPaused && !showControls {
@@ -589,11 +595,30 @@ struct OverlayContentView: View {
         .onAppear {
             scrollController.updateWordCount(pacedWordCount)
         }
+        .onDisappear {
+            speechRecognizer.stop()
+            voiceMatcher = nil
+        }
         .onChange(of: scriptManager.selectedScript?.content) { _ in
             scrollController.updateWordCount(pacedWordCount)
+            if speechRecognizer.state.isListening {
+                speechRecognizer.stop()
+                voiceMatcher = nil
+            }
         }
         .onChange(of: stageDirectionStyle) { _ in
             scrollController.updateWordCount(pacedWordCount)
+        }
+        .onChange(of: scrollController.isPaused) { isPaused in
+            if speechRecognizer.state.isListening && !isPaused {
+                scrollController.pause()
+            }
+        }
+        .onChange(of: speechRecognizer.latestTranscript) { transcript in
+            consumeVoiceTranscript(transcript)
+        }
+        .task {
+            await proStore.prepare()
         }
     }
     
@@ -639,9 +664,39 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .disabled(speechRecognizer.state.isListening)
             .help(scrollController.isPaused ? "Start scrolling" : "Pause scrolling")
             .accessibilityLabel(scrollController.isPaused ? "Start scrolling" : "Pause scrolling")
             
+            Divider()
+                .frame(height: 16)
+                .background(.white.opacity(0.3))
+
+            Button(action: toggleVoiceFollow) {
+                Image(
+                    systemName: speechRecognizer.state.isListening
+                        ? "waveform.circle.fill"
+                        : "waveform.circle"
+                )
+                .foregroundColor(speechRecognizer.state.isListening ? .yellow : .white)
+                .font(.system(size: 16))
+                .frame(width: 28, height: 28)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(speechRecognizer.state == .requestingPermission)
+            .help(
+                speechRecognizer.state.isListening
+                    ? "Stop Voice Follow"
+                    : "Start on-device Voice Follow"
+            )
+            .accessibilityLabel(
+                speechRecognizer.state.isListening
+                    ? "Stop Voice Follow"
+                    : "Start Voice Follow"
+            )
+            .accessibilityValue(voiceStatusLabel)
+
             Divider()
                 .frame(height: 16)
                 .background(.white.opacity(0.3))
@@ -654,6 +709,7 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .disabled(speechRecognizer.state.isListening)
             .help("Slower")
             .accessibilityLabel("Slower")
             
@@ -671,13 +727,14 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .disabled(speechRecognizer.state.isListening)
             .help("Faster")
             .accessibilityLabel("Faster")
             
             Spacer()
             
             // Reset
-            Button(action: { scrollController.reset() }) {
+            Button(action: resetPromptPosition) {
                 Image(systemName: "arrow.counterclockwise")
                     .font(.system(size: 12))
                     .frame(width: 24, height: 24)
@@ -705,5 +762,109 @@ struct OverlayContentView: View {
             )
         }
         return String(format: "%d:%02d", totalSeconds / 60, totalSeconds % 60)
+    }
+
+    private var overlayStatusText: String {
+        switch speechRecognizer.state {
+        case .idle:
+            return remainingTimeText
+        case .requestingPermission:
+            return "Preparing voice"
+        case .listening:
+            return "Voice \(Int(scrollController.progress * 100))%"
+        case .permissionDenied:
+            return "Voice permission denied"
+        case .unsupported(let localeIdentifier):
+            return "No on-device \(localeIdentifier)"
+        case .failed:
+            return "Voice stopped"
+        }
+    }
+
+    private var overlayStatusIcon: String {
+        speechRecognizer.state == .idle ? "clock" : "waveform"
+    }
+
+    private var voiceStatusLabel: String {
+        switch speechRecognizer.state {
+        case .idle:
+            return proStore.accessState.hasAccess ? "Off" : "Requires Kyuva Pro"
+        case .requestingPermission:
+            return "Requesting permission"
+        case .listening(let localeIdentifier):
+            return "Listening on device in \(localeIdentifier)"
+        case .permissionDenied:
+            return "Permission denied"
+        case .unsupported(let localeIdentifier):
+            return "On-device recognition unavailable for \(localeIdentifier)"
+        case .failed:
+            return "Stopped after a recognition error"
+        }
+    }
+
+    private func toggleVoiceFollow() {
+        if speechRecognizer.state.isListening {
+            speechRecognizer.stop()
+            voiceMatcher = nil
+            return
+        }
+
+        guard proStore.accessState.hasAccess else {
+            NotificationCenter.default.post(
+                name: NSNotification.Name("ShowSettings"),
+                object: nil
+            )
+            return
+        }
+        guard let script = scriptManager.selectedScript else { return }
+
+        scrollController.manualPause()
+        voiceMatcher = VoicePositionMatcher(
+            tokens: script.tokens,
+            startTokenIndex: voiceStartTokenIndex(for: script)
+        )
+
+        Task {
+            await speechRecognizer.start(scriptText: script.content)
+        }
+    }
+
+    private func consumeVoiceTranscript(_ transcript: String) {
+        guard var matcher = voiceMatcher else { return }
+        defer { voiceMatcher = matcher }
+
+        guard let match = matcher.consume(transcript) else { return }
+        scrollController.pause()
+        scrollController.goToOffset(
+            CGFloat(match.progress) * scrollController.maximumOffset
+        )
+    }
+
+    private func voiceStartTokenIndex(for script: Script) -> Int {
+        guard !script.tokens.isEmpty, scrollController.progress > 0 else { return -1 }
+        return min(
+            script.tokens.count - 1,
+            Int((scrollController.progress * Double(script.tokens.count - 1)).rounded(.down))
+        )
+    }
+
+    private func resetPromptPosition() {
+        scrollController.reset()
+        if var matcher = voiceMatcher {
+            matcher.reset()
+            voiceMatcher = matcher
+        }
+    }
+
+    private func resetVoiceMatcher(nearLineIndex lineIndex: Int) {
+        guard speechRecognizer.state.isListening,
+              let script = scriptManager.selectedScript,
+              var matcher = voiceMatcher else { return }
+
+        let firstTokenOnOrAfterLine = script.tokens.firstIndex {
+            $0.lineIndex >= lineIndex
+        } ?? script.tokens.count
+        matcher.reset(nearTokenIndex: firstTokenOnOrAfterLine - 1)
+        voiceMatcher = matcher
     }
 }

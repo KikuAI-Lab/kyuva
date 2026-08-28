@@ -22,9 +22,9 @@ The overlay is a normal macOS window and may appear in screen shares or recordin
 
 ## Release Status
 
-Kyuva macOS version `1.0` build `3` was uploaded to App Store Connect and submitted to App Review on 26 August 2026. Apple rejected that binary on 27 August under Guideline 2.4.5 because it included a network-server entitlement for an unfinished iPhone remote. Build `4` removes the Mac remote, both network entitlements, and all Mac local-network metadata. It was uploaded, selected, and resubmitted on 27 August 2026; the live App Store Connect state is `Waiting for Review`, with automatic release configured after approval. The public listing remains free in exactly the 27 European Union storefronts, with five screenshots and the published `Data Not Collected` privacy answer. This is submission evidence, not approval or public-availability evidence. The iPhone and Apple Watch targets are implemented and verified locally; no mobile upload or Store availability is claimed yet.
+Kyuva macOS version `1.0` is [live on the Mac App Store](https://apps.apple.com/app/id6804827338?mt=12). Apple storefront lookup verified the free listing in all 27 European Union countries on 28 August 2026. The approved build removes the unfinished Mac remote, both network entitlements, and all Mac local-network metadata. The iPhone and Apple Watch targets are implemented and verified locally; the iPhone app provides local editing/prompting and its paired Watch remote, not an iPhone-to-Mac remote. No mobile App Store availability is claimed yet.
 
-The first releases have no purchases, subscriptions, advertising, account, analytics, or required backend.
+The live macOS 1.0 release has no purchases, subscriptions, advertising, account, analytics, or required backend.
 
 The binary attached to the historical `v1.0.0` GitHub release is a development build, not a verified App Store distribution artifact. Build the current source until a signed and verified replacement is published.
 
@@ -36,9 +36,16 @@ The binary attached to the historical `v1.0.0` GitHub release is a development b
 - Centered reading cue with progress and remaining-time feedback
 - Bracketed stage-direction controls plus text-only mirroring for beam-splitter rigs
 - Apple Watch play/pause, start-over, slower, and faster controls through WatchConnectivity
+- Development preview: multilingual Voice Follow that advances by recognized script position and refuses cloud-recognition fallback
 - Plain-text import and sharing on iPhone plus import/export on Mac through system Files, Share, and AirDrop surfaces
 - Recoverable local script storage
 - No account, cloud sync, analytics, or required network service
+
+## Pro Foundation
+
+Current development source prepares one cross-platform, non-consumable **Kyuva Pro Lifetime** entitlement with a target EU price of `€24.99` and a seven-day local trial. Voice Follow is the first prepared Pro feature.
+
+Commerce is deliberately disabled in source until the App Store Connect product, paid agreements, DSA trader disclosure, review metadata, and a fresh owner approval are all complete. While disabled, Voice Follow remains an open preview for everyone and Kyuva makes no StoreKit product request. The public app has no purchase path yet.
 
 ## Build From Source
 
@@ -71,6 +78,7 @@ Kyuva keeps its core behavior local:
 - prompting and script editing happen locally
 - scripts are stored in the Mac or iPhone app container
 - the Watch exchanges only current prompt state and control commands with the paired iPhone
+- optional Voice Follow uses Apple's on-device recognizer only, never a Kyuva speech server
 - text transfer happens only when you choose a system file/share action
 - Mac build `4` does not open network connections or request network access
 - no account is required

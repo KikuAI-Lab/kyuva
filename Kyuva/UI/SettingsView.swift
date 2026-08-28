@@ -26,6 +26,8 @@ struct SettingsView: View {
     @AppStorage("endBehavior") private var endBehavior: Int = 0 // 0=Do Nothing, 1=Start Over, 2=Play Next
     
     @StateObject private var scriptManager = ScriptManager.shared
+    @ObservedObject private var proStore = ProEntitlementStore.shared
+    @State private var proMessage: String?
     
     var body: some View {
         TabView {
@@ -62,6 +64,9 @@ struct SettingsView: View {
         }
         .padding()
         .frame(minWidth: 500, minHeight: 400)
+        .task {
+            await proStore.prepare()
+        }
     }
     
     // MARK: - Script Tab
@@ -417,6 +422,52 @@ struct SettingsView: View {
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal)
+
+            VStack(spacing: 8) {
+                Label(proAccessLabel, systemImage: "sparkles")
+                    .font(.headline)
+
+                Text("Voice Follow is the first Pro feature. It stays unlocked for everyone while the purchase preview is inactive.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+
+                if ProEntitlementStore.commerceEnabled {
+                    HStack {
+                        if proStore.accessState == .locked {
+                            Button("Start 7-Day Trial") {
+                                proStore.startTrial()
+                            }
+                        }
+
+                        Button(proPurchaseLabel) {
+                            Task {
+                                proMessage = message(for: await proStore.purchaseLifetime())
+                            }
+                        }
+                        .disabled(proStore.lifetimeProduct == nil || proStore.isLoading)
+
+                        Button("Restore") {
+                            Task {
+                                proMessage = await proStore.restorePurchases()
+                                    ? "Your lifetime purchase was restored."
+                                    : "No verified lifetime purchase was found."
+                            }
+                        }
+                    }
+                } else {
+                    Text("Open preview · no purchase available")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                if let proMessage {
+                    Text(proMessage)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(.horizontal)
             
             Spacer()
             
@@ -480,6 +531,41 @@ struct SettingsView: View {
 
     private var copyrightText: String {
         Bundle.main.object(forInfoDictionaryKey: "NSHumanReadableCopyright") as? String ?? ""
+    }
+
+    private var proAccessLabel: String {
+        switch proStore.accessState {
+        case .openPreview:
+            return "Pro Preview Unlocked"
+        case .purchased:
+            return "Lifetime Pro Unlocked"
+        case .trial(let daysRemaining):
+            return "Pro Trial · \(daysRemaining) Days Left"
+        case .locked:
+            return "Kyuva Pro"
+        }
+    }
+
+    private var proPurchaseLabel: String {
+        if let displayPrice = proStore.displayPrice {
+            return "Unlock Forever · \(displayPrice)"
+        }
+        return "Unlock Forever"
+    }
+
+    private func message(for outcome: ProPurchaseOutcome) -> String {
+        switch outcome {
+        case .purchased:
+            return "Lifetime Pro is unlocked."
+        case .pending:
+            return "The purchase is pending Apple approval."
+        case .cancelled:
+            return "Purchase cancelled."
+        case .unavailable:
+            return "The lifetime product is not available."
+        case .failed:
+            return "Apple could not complete the purchase."
+        }
     }
 }
 

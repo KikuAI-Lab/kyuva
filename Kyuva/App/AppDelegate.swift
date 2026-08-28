@@ -23,6 +23,12 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             name: NSNotification.Name("ShowOnboarding"),
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(openSettings),
+            name: NSNotification.Name("ShowSettings"),
+            object: nil
+        )
         
         // Kyuva remains a menu-bar agent throughout onboarding; the welcome
         // window can become key without adding a temporary Dock icon.

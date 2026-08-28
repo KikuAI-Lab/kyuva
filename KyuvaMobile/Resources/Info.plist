@@ -26,14 +26,12 @@
     <string>public.app-category.productivity</string>
     <key>LSRequiresIPhoneOS</key>
     <true/>
-    <key>NSBonjourServices</key>
-    <array>
-        <string>_kyuva._tcp</string>
-    </array>
     <key>NSHumanReadableCopyright</key>
     <string>© 2026 Mykyta Dudnichenko. All rights reserved.</string>
-    <key>NSLocalNetworkUsageDescription</key>
-    <string>Kyuva discovers and controls a Mac you explicitly pair on your local network.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Kyuva uses the microphone only while Voice Follow keeps the prompt aligned with your speech.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Kyuva uses Apple's on-device speech recognition for Voice Follow. Kyuva does not store your audio.</string>
     <key>UIApplicationSceneManifest</key>
     <dict>
         <key>UIApplicationSupportsMultipleScenes</key>

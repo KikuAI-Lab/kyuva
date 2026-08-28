@@ -7,7 +7,6 @@ struct MobileEditorView: View {
     @State private var isShowingSettings = false
     @State private var isConfirmingDelete = false
     @State private var isImportingScript = false
-    @State private var isShowingMacRemote = false
     @State private var importError: String?
 
     private var selectedIndex: Int? {
@@ -70,16 +69,6 @@ struct MobileEditorView: View {
             .padding()
             .navigationTitle("Kyuva")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button {
-                        isShowingMacRemote = true
-                    } label: {
-                        Image(systemName: "laptopcomputer.and.iphone")
-                    }
-                    .accessibilityLabel("Control a Mac")
-                    .accessibilityIdentifier("openMacRemote")
-                }
-
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Button {
                         scriptManager.createNewScript()
@@ -130,11 +119,6 @@ struct MobileEditorView: View {
                 MobilePromptSettingsView()
             }
             .presentationDetents([.medium, .large])
-        }
-        .sheet(isPresented: $isShowingMacRemote) {
-            NavigationStack {
-                MobileMacRemoteView()
-            }
         }
         .fileImporter(
             isPresented: $isImportingScript,

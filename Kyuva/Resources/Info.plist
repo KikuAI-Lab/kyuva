@@ -28,6 +28,10 @@
     <true/>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Kyuva uses the microphone only while Voice Follow keeps the prompt aligned with your speech.</string>
+    <key>NSSpeechRecognitionUsageDescription</key>
+    <string>Kyuva uses Apple's on-device speech recognition for Voice Follow. Kyuva does not store your audio.</string>
     <key>ITSAppUsesNonExemptEncryption</key>
     <false/>
     <key>NSHumanReadableCopyright</key>
