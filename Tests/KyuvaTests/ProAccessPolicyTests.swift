@@ -78,6 +78,50 @@ final class ProAccessPolicyTests: XCTestCase {
         XCTAssertFalse(ProAccessState.locked.hasAccess)
     }
 
+    @MainActor
+    func testDisabledCommerceStoreStaysInOpenPreviewWithoutStoreKitProductLoad() async {
+        let (defaults, suiteName) = makeIsolatedDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let store = ProEntitlementStore(
+            userDefaults: defaults,
+            now: { self.now }
+        )
+
+        XCTAssertEqual(store.accessState, .openPreview)
+        XCTAssertNil(store.lifetimeProduct)
+        XCTAssertNil(store.displayPrice)
+
+        await store.prepare()
+
+        XCTAssertEqual(store.accessState, .openPreview)
+        XCTAssertNil(store.lifetimeProduct)
+        XCTAssertNil(store.displayPrice)
+        XCTAssertFalse(store.isLoading)
+    }
+
+    @MainActor
+    func testDisabledCommerceStoreDoesNotStartTrialOrRestoreOrPurchase() async {
+        let (defaults, suiteName) = makeIsolatedDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let store = ProEntitlementStore(
+            userDefaults: defaults,
+            now: { self.now }
+        )
+
+        store.startTrial()
+
+        XCTAssertEqual(store.accessState, .openPreview)
+        XCTAssertNil(defaults.persistentDomain(forName: suiteName))
+        let purchaseOutcome = await store.purchaseLifetime()
+        let restoreOutcome = await store.restorePurchases()
+        XCTAssertEqual(purchaseOutcome, .unavailable)
+        XCTAssertFalse(restoreOutcome)
+        XCTAssertEqual(store.accessState, .openPreview)
+        XCTAssertNil(defaults.persistentDomain(forName: suiteName))
+    }
+
     private func evaluate(
         commerceEnabled: Bool,
         purchased: Bool,
@@ -89,5 +133,12 @@ final class ProAccessPolicyTests: XCTestCase {
             trialStartedAt: trialStartedAt,
             now: now
         )
+    }
+
+    private func makeIsolatedDefaults() -> (UserDefaults, String) {
+        let suiteName = "KyuvaTests.ProAccessPolicyTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName)!
+        defaults.removePersistentDomain(forName: suiteName)
+        return (defaults, suiteName)
     }
 }
