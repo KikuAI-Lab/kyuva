@@ -81,7 +81,7 @@ struct MobilePromptView: View {
             updateContentMetrics()
         }
         .onChange(of: scrollController.isPaused) { _, isPaused in
-            if speechRecognizer.state.isListening && !isPaused {
+            if speechRecognizer.state.isEngaged && !isPaused {
                 scrollController.pause()
             }
             PhoneWatchSession.shared.publishSnapshot()
@@ -259,7 +259,7 @@ struct MobilePromptView: View {
                             .background(.white.opacity(0.14), in: Circle())
                     }
                     .buttonStyle(.plain)
-                    .disabled(speechRecognizer.state.isListening)
+                    .disabled(speechRecognizer.state.isEngaged)
                     .accessibilityLabel("Slower")
 
                     Button {
@@ -272,7 +272,7 @@ struct MobilePromptView: View {
                             .background(.cyan, in: Capsule())
                     }
                     .buttonStyle(.plain)
-                    .disabled(speechRecognizer.state.isListening)
+                    .disabled(speechRecognizer.state.isEngaged)
                     .accessibilityLabel(scrollController.isPaused ? "Play" : "Pause")
 
                     Button {
@@ -283,7 +283,7 @@ struct MobilePromptView: View {
                             .background(.white.opacity(0.14), in: Circle())
                     }
                     .buttonStyle(.plain)
-                    .disabled(speechRecognizer.state.isListening)
+                    .disabled(speechRecognizer.state.isEngaged)
                     .accessibilityLabel("Faster")
 
                     Text(scrollController.paceControlLabel)
@@ -351,7 +351,7 @@ struct MobilePromptView: View {
     }
 
     private func toggleVoiceFollow() {
-        if speechRecognizer.state.isListening {
+        if speechRecognizer.state.isEngaged {
             speechRecognizer.stop()
             voiceMatcher = nil
             return
@@ -374,7 +374,7 @@ struct MobilePromptView: View {
     }
 
     private func handlePromptTap() {
-        if speechRecognizer.state.isListening {
+        if speechRecognizer.state.isEngaged {
             speechRecognizer.stop()
             voiceMatcher = nil
         } else {
@@ -403,7 +403,7 @@ struct MobilePromptView: View {
     }
 
     private func handleWatchCommand(_ command: RemoteCommand) -> Bool {
-        guard speechRecognizer.state.isListening else { return false }
+        guard speechRecognizer.state.isEngaged else { return false }
 
         switch command {
         case .requestSnapshot:

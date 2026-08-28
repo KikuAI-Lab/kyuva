@@ -601,7 +601,7 @@ struct OverlayContentView: View {
         }
         .onChange(of: scriptManager.selectedScript?.content) { _ in
             scrollController.updateWordCount(pacedWordCount)
-            if speechRecognizer.state.isListening {
+            if speechRecognizer.state.isEngaged {
                 speechRecognizer.stop()
                 voiceMatcher = nil
             }
@@ -610,7 +610,7 @@ struct OverlayContentView: View {
             scrollController.updateWordCount(pacedWordCount)
         }
         .onChange(of: scrollController.isPaused) { isPaused in
-            if speechRecognizer.state.isListening && !isPaused {
+            if speechRecognizer.state.isEngaged && !isPaused {
                 scrollController.pause()
             }
         }
@@ -664,7 +664,7 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .disabled(speechRecognizer.state.isListening)
+            .disabled(speechRecognizer.state.isEngaged)
             .help(scrollController.isPaused ? "Start scrolling" : "Pause scrolling")
             .accessibilityLabel(scrollController.isPaused ? "Start scrolling" : "Pause scrolling")
             
@@ -709,7 +709,7 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .disabled(speechRecognizer.state.isListening)
+            .disabled(speechRecognizer.state.isEngaged)
             .help("Slower")
             .accessibilityLabel("Slower")
             
@@ -727,7 +727,7 @@ struct OverlayContentView: View {
                     .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
-            .disabled(speechRecognizer.state.isListening)
+            .disabled(speechRecognizer.state.isEngaged)
             .help("Faster")
             .accessibilityLabel("Faster")
             
@@ -803,7 +803,7 @@ struct OverlayContentView: View {
     }
 
     private func toggleVoiceFollow() {
-        if speechRecognizer.state.isListening {
+        if speechRecognizer.state.isEngaged {
             speechRecognizer.stop()
             voiceMatcher = nil
             return
@@ -857,7 +857,7 @@ struct OverlayContentView: View {
     }
 
     private func resetVoiceMatcher(nearLineIndex lineIndex: Int) {
-        guard speechRecognizer.state.isListening,
+        guard speechRecognizer.state.isEngaged,
               let script = scriptManager.selectedScript,
               var matcher = voiceMatcher else { return }
 

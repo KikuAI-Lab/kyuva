@@ -16,6 +16,15 @@ enum OnDeviceSpeechState: Equatable {
         if case .listening = self { return true }
         return false
     }
+
+    var isEngaged: Bool {
+        switch self {
+        case .requestingPermission, .listening:
+            return true
+        case .idle, .permissionDenied, .unsupported, .failed:
+            return false
+        }
+    }
 }
 
 /// Streams partial transcripts from Apple's local speech recognizer.
