@@ -1,6 +1,7 @@
 import AppKit
 import SwiftUI
 import Combine
+import StoreKit
 
 struct WindowDragTracker {
     private var startOrigin: CGPoint?
@@ -324,6 +325,7 @@ class OverlayWindow: NSWindow {
 
 /// SwiftUI content for the overlay
 struct OverlayContentView: View {
+    @Environment(\.requestReview) private var requestReview
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.colorSchemeContrast) private var colorSchemeContrast
@@ -353,6 +355,7 @@ struct OverlayContentView: View {
     
     @State private var showControls = false
     @State private var voiceMatcher: VoicePositionMatcher?
+    @State private var hasRecordedCurrentCompletion = false
 
     private var lineHeight: CGFloat {
         max(28, CGFloat(fontSize) * 1.2 + 8)
@@ -604,6 +607,7 @@ struct OverlayContentView: View {
             voiceMatcher = nil
         }
         .onChange(of: scriptManager.selectedScript?.content) { _ in
+            hasRecordedCurrentCompletion = false
             scrollController.updateWordCount(pacedWordCount)
             if speechRecognizer.state.isEngaged {
                 speechRecognizer.stop()
@@ -617,6 +621,13 @@ struct OverlayContentView: View {
             if speechRecognizer.state.isEngaged && !isPaused {
                 scrollController.pause()
             }
+        }
+        .onChange(of: Int(scrollController.progress * 100)) { progressPercent in
+            recordCompletedPromptIfNeeded(progressPercent: progressPercent)
+        }
+        .onChange(of: showControls) { controlsVisible in
+            guard controlsVisible else { return }
+            requestReviewIfReady()
         }
         .onChange(of: speechRecognizer.latestTranscript) { transcript in
             consumeVoiceTranscript(transcript)
@@ -857,9 +868,25 @@ struct OverlayContentView: View {
 
     private func resetPromptPosition() {
         scrollController.reset()
+        hasRecordedCurrentCompletion = false
         if var matcher = voiceMatcher {
             matcher.reset()
             voiceMatcher = matcher
+        }
+    }
+
+    private func recordCompletedPromptIfNeeded(progressPercent: Int) {
+        guard progressPercent >= 98, !hasRecordedCurrentCompletion else { return }
+        hasRecordedCurrentCompletion = true
+        ReviewPromptPolicy().recordSuccessfulPrompt()
+    }
+
+    private func requestReviewIfReady() {
+        guard ReviewPromptPolicy().claimPendingRequest() else { return }
+
+        Task {
+            try? await Task.sleep(nanoseconds: 2_000_000_000)
+            requestReview()
         }
     }
 

@@ -487,13 +487,21 @@ struct SettingsView: View {
                 .buttonStyle(.bordered)
                 
                 Button(action: {
-                    if let url = URL(string: "https://github.com/kiku-jw/kyuva") {
+                    if let url = URL(string: "https://v0-kyuva.vercel.app") {
                         NSWorkspace.shared.open(url)
                     }
                 }) {
                     HStack {
                         Image(systemName: "globe")
                         Text("Website")
+                    }
+                }
+                .buttonStyle(.bordered)
+
+                Link(destination: ReviewPromptPolicy.appStoreReviewURL) {
+                    HStack {
+                        Image(systemName: "star.fill")
+                        Text("Rate Kyuva")
                     }
                 }
                 .buttonStyle(.bordered)

@@ -20,6 +20,7 @@ struct MobilePromptView: View {
     @State private var contentHeight: CGFloat = 0
     @State private var viewportHeight: CGFloat = 0
     @State private var voiceMatcher: VoicePositionMatcher?
+    @State private var hasRecordedCurrentCompletion = false
 
     @AppStorage("fontSize") private var fontSize = 34.0
     @AppStorage("mirrorText") private var mirrorText = false
@@ -89,11 +90,13 @@ struct MobilePromptView: View {
         .onChange(of: scrollController.paceControlLabel) {
             PhoneWatchSession.shared.publishSnapshot()
         }
-        .onChange(of: Int(scrollController.progress * 100)) {
+        .onChange(of: Int(scrollController.progress * 100)) { _, progressPercent in
             PhoneWatchSession.shared.publishSnapshot()
+            recordCompletedPromptIfNeeded(progressPercent: progressPercent)
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = true
+            hasRecordedCurrentCompletion = false
             scrollController.reset()
             scrollController.applyPersistedScrollSpeed()
             PhoneWatchSession.shared.bind(
@@ -422,9 +425,16 @@ struct MobilePromptView: View {
 
     private func resetPromptPosition() {
         scrollController.reset()
+        hasRecordedCurrentCompletion = false
         if var matcher = voiceMatcher {
             matcher.reset()
             voiceMatcher = matcher
         }
+    }
+
+    private func recordCompletedPromptIfNeeded(progressPercent: Int) {
+        guard progressPercent >= 98, !hasRecordedCurrentCompletion else { return }
+        hasRecordedCurrentCompletion = true
+        ReviewPromptPolicy().recordSuccessfulPrompt()
     }
 }

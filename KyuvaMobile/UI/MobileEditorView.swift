@@ -1,7 +1,9 @@
 import SwiftUI
+import StoreKit
 import UniformTypeIdentifiers
 
 struct MobileEditorView: View {
+    @Environment(\.requestReview) private var requestReview
     @EnvironmentObject private var scriptManager: ScriptManager
     @State private var isPresenting = false
     @State private var isShowingSettings = false
@@ -135,6 +137,14 @@ struct MobileEditorView: View {
         .fullScreenCover(isPresented: $isPresenting) {
             if let script = scriptManager.selectedScript {
                 MobilePromptView(script: script)
+            }
+        }
+        .onChange(of: isPresenting) { _, isPresented in
+            guard !isPresented, ReviewPromptPolicy().claimPendingRequest() else { return }
+
+            Task {
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                requestReview()
             }
         }
         .alert("Delete this script?", isPresented: $isConfirmingDelete) {
