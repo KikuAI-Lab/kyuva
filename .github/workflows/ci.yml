@@ -60,6 +60,8 @@ jobs:
           ! git grep -n -E 'LocalRemoteServer|LocalRemoteProtocol|LocalRemoteSecurity|_kyuva\._tcp|NWListener' -- Kyuva KyuvaMobile Kyuva.xcodeproj/project.pbxproj
           otool -L "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -q '/Speech.framework/'
           git grep -n -F 'requiresOnDeviceRecognition = true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
+          git grep -n -F 'localesSupportingOnDeviceRecognition' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
+          git grep -n -F 'supportsOnDeviceRecognition == true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
           git grep -n -F 'static let commerceEnabled = false' -- Kyuva/Core/ProEntitlementStore.swift
           git grep -n -F 'com.kikuai.kyuva.pro.lifetime' -- Kyuva/Core/ProEntitlementStore.swift
 
@@ -105,4 +107,6 @@ jobs:
           ! git grep -n -i -E 'MobileMacRemoteView|MacRemoteClient|openMacRemote|iphoneMacRemote|Control a Mac' -- KyuvaMobile Kyuva.xcodeproj/project.pbxproj
           otool -L "$KYUVA_IOS_APP/Kyuva iOS" | grep -q '/Speech.framework/'
           git grep -n -F 'requiresOnDeviceRecognition = true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
+          git grep -n -F 'localesSupportingOnDeviceRecognition' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
+          git grep -n -F 'supportsOnDeviceRecognition == true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
           git grep -n -F 'static let commerceEnabled = false' -- Kyuva/Core/ProEntitlementStore.swift

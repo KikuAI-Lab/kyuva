@@ -76,9 +76,14 @@ final class OnDeviceSpeechRecognizer: ObservableObject {
         }
 
         let detectedLanguage = NLLanguageRecognizer.dominantLanguage(for: scriptText)?.rawValue
+        let onDeviceLocales = Self.localesSupportingOnDeviceRecognition(
+            from: SFSpeechRecognizer.supportedLocales()
+        ) { locale in
+            SFSpeechRecognizer(locale: locale)?.supportsOnDeviceRecognition == true
+        }
         let locale = Self.chooseRecognitionLocale(
             languageCode: detectedLanguage,
-            supportedLocales: SFSpeechRecognizer.supportedLocales(),
+            supportedLocales: onDeviceLocales,
             preferredLanguageIdentifiers: Locale.preferredLanguages
         )
         let localeIdentifier = locale?.identifier
@@ -139,6 +144,13 @@ final class OnDeviceSpeechRecognizer: ObservableObject {
         }
 
         return supportedLocales.sorted(by: { $0.identifier < $1.identifier }).first
+    }
+
+    nonisolated static func localesSupportingOnDeviceRecognition(
+        from candidates: Set<Locale>,
+        supportsOnDevice: (Locale) -> Bool
+    ) -> Set<Locale> {
+        Set(candidates.filter(supportsOnDevice))
     }
 
     private func startRecognitionSession(generation expectedGeneration: Int) {

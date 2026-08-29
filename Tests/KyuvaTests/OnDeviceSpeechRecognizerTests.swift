@@ -3,6 +3,24 @@ import XCTest
 @testable import Kyuva
 
 final class OnDeviceSpeechRecognizerTests: XCTestCase {
+    func testLocaleSelectionExcludesSpeechLocalesWithoutOnDeviceSupport() {
+        let cloudOnly = Locale(identifier: "en-AE")
+        let onDevice = Locale(identifier: "en-US")
+        let filtered = OnDeviceSpeechRecognizer.localesSupportingOnDeviceRecognition(
+            from: [cloudOnly, onDevice]
+        ) { $0 == onDevice }
+
+        XCTAssertEqual(filtered, [onDevice])
+        XCTAssertEqual(
+            OnDeviceSpeechRecognizer.chooseRecognitionLocale(
+                languageCode: "en",
+                supportedLocales: filtered,
+                preferredLanguageIdentifiers: []
+            ),
+            onDevice
+        )
+    }
+
     func testOnlyPreparingAndListeningStatesAreEngaged() {
         XCTAssertFalse(OnDeviceSpeechState.idle.isEngaged)
         XCTAssertTrue(OnDeviceSpeechState.requestingPermission.isEngaged)

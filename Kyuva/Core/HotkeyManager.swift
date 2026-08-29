@@ -10,6 +10,7 @@ final class HotkeyManager {
         case speedUp = 1
         case speedDown
         case togglePause
+        case toggleVoiceFollow
         case reset
         case toggleOverlay
         case nextDisplay
@@ -22,6 +23,8 @@ final class HotkeyManager {
                 return Shortcut(keyCode: UInt32(kVK_LeftArrow), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥←")
             case .togglePause:
                 return Shortcut(keyCode: UInt32(kVK_Space), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥Space")
+            case .toggleVoiceFollow:
+                return Shortcut(keyCode: UInt32(kVK_ANSI_V), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥V")
             case .reset:
                 return Shortcut(keyCode: UInt32(kVK_ANSI_R), modifiers: UInt32(controlKey | optionKey), display: "⌃⌥R")
             case .toggleOverlay:
@@ -137,4 +140,8 @@ final class HotkeyManager {
         handler()
         return noErr
     }
+}
+
+extension Notification.Name {
+    static let toggleVoiceFollow = Notification.Name("ToggleVoiceFollow")
 }

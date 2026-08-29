@@ -36,7 +36,7 @@ The binary attached to the historical `v1.0.0` GitHub release is a development b
 - Centered reading cue with progress and remaining-time feedback
 - Bracketed stage-direction controls plus text-only mirroring for beam-splitter rigs
 - Apple Watch play/pause, start-over, slower, and faster controls through WatchConnectivity
-- Development preview: multilingual Voice Follow that advances by recognized script position and refuses cloud-recognition fallback
+- Development preview: multilingual Voice Follow that advances by recognized script position, selects only locales available on device, and refuses cloud-recognition fallback; on Mac, toggle it from the Teleprompter menu or with `⌃⌥V`
 - Plain-text import and sharing on iPhone plus import/export on Mac through system Files, Share, and AirDrop surfaces
 - Recoverable local script storage
 - No account, cloud sync, analytics, or required network service

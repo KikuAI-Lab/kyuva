@@ -10,6 +10,10 @@ struct KyuvaApp: App {
         }
         .commands {
             CommandMenu("Teleprompter") {
+                Button("Toggle Voice Follow") {
+                    NotificationCenter.default.post(name: .toggleVoiceFollow, object: nil)
+                }
+
                 Button("Move to Next Display") {
                     appDelegate.moveOverlayToNextDisplay()
                 }

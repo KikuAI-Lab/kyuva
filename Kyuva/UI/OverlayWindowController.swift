@@ -236,6 +236,10 @@ class OverlayWindowController: NSWindowController {
         hotkeyManager?.register(.togglePause) { [weak self] in
             self?.scrollController?.togglePause()
         }
+
+        hotkeyManager?.register(.toggleVoiceFollow) {
+            NotificationCenter.default.post(name: .toggleVoiceFollow, object: nil)
+        }
         
         hotkeyManager?.register(.reset) { [weak self] in
             self?.scrollController?.reset()
@@ -616,6 +620,9 @@ struct OverlayContentView: View {
         }
         .onChange(of: speechRecognizer.latestTranscript) { transcript in
             consumeVoiceTranscript(transcript)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleVoiceFollow)) { _ in
+            toggleVoiceFollow()
         }
         .task {
             await proStore.prepare()

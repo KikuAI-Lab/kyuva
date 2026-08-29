@@ -383,6 +383,7 @@ struct SettingsView: View {
                 FixedHotkeyRow(label: "Speed Up", shortcut: HotkeyManager.Hotkey.speedUp.shortcut.display)
                 FixedHotkeyRow(label: "Speed Down", shortcut: HotkeyManager.Hotkey.speedDown.shortcut.display)
                 FixedHotkeyRow(label: "Pause/Resume", shortcut: HotkeyManager.Hotkey.togglePause.shortcut.display)
+                FixedHotkeyRow(label: "Voice Follow", shortcut: HotkeyManager.Hotkey.toggleVoiceFollow.shortcut.display)
                 FixedHotkeyRow(label: "Reset", shortcut: HotkeyManager.Hotkey.reset.shortcut.display)
                 FixedHotkeyRow(label: "Toggle Overlay", shortcut: HotkeyManager.Hotkey.toggleOverlay.shortcut.display)
                 FixedHotkeyRow(label: "Move to Next Display", shortcut: HotkeyManager.Hotkey.nextDisplay.shortcut.display)
