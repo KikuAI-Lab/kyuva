@@ -27,6 +27,20 @@
 - Privacy policy: `https://kiku-jw.github.io/kyuva-landing/privacy/`
 - Marketing: `https://kiku-jw.github.io/kyuva-landing/`
 
+## Distribution links
+
+These are App Store Connect campaign links. They use the English-language Irish
+storefront because Kyuva is currently EU-only; the country-neutral URL can
+resolve to an unavailable non-EU storefront. Campaign reporting remains inside
+Apple and becomes available only after installs from five distinct Apple
+Accounts.
+
+- Landing: `https://apps.apple.com/ie/app/apple-store/id6804827338?pt=129302835&ct=kyuva-landing&mt=8`
+- GitHub: `https://apps.apple.com/ie/app/apple-store/id6804827338?pt=129302835&ct=github&mt=8`
+- KikuAI: `https://apps.apple.com/ie/app/apple-store/id6804827338?pt=129302835&ct=kikuai&mt=8`
+- Telegram: `https://apps.apple.com/ie/app/apple-store/id6804827338?pt=129302835&ct=telegram&mt=8`
+- LinkedIn: `https://apps.apple.com/ie/app/apple-store/id6804827338?pt=129302835&ct=linkedin&mt=8`
+
 ## Product page
 
 ### Subtitle
