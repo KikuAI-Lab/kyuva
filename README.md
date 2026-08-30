@@ -24,7 +24,7 @@ The overlay is a normal macOS window and may appear in screen shares or recordin
 
 ## Release Status
 
-Kyuva macOS version `1.0` is [live on the Mac App Store](https://apps.apple.com/app/id6804827338?mt=12). Apple storefront lookup verified the free listing in all 27 European Union countries on 28 August 2026. The approved build removes the unfinished Mac remote, both network entitlements, and all Mac local-network metadata. The iPhone and Apple Watch targets are implemented and verified locally; the iPhone app provides local editing/prompting and its paired Watch remote, not an iPhone-to-Mac remote. No mobile App Store availability is claimed yet.
+Kyuva macOS version `1.0` is [live on the Mac App Store](https://apps.apple.com/ie/app/apple-store/id6804827338?pt=129302835&ct=github&mt=8). Apple storefront lookup verified the free listing in all 27 European Union countries on 28 August 2026. The approved build removes the unfinished Mac remote, both network entitlements, and all Mac local-network metadata. The iPhone and Apple Watch targets are implemented and verified locally; the iPhone app provides local editing/prompting and its paired Watch remote, not an iPhone-to-Mac remote. No mobile App Store availability is claimed yet.
 
 The live macOS 1.0 release has no purchases, subscriptions, advertising, account, analytics, or required backend.
 
