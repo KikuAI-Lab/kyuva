@@ -79,7 +79,7 @@ The prompter is a normal macOS window and may appear in screen shares or recordi
 
 ### Keywords
 
-`autocue,webcam,meeting,speaker,notes,scroll,recording,video,mirror,offline,overlay,speech`
+`autocue,webcam,meeting,presenter,notes,scroll,recording,video,mirror,offline,overlay,speech`
 
 ### Version 1.1 release notes
 
