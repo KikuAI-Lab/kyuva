@@ -11,7 +11,7 @@
 - Bundle ID: `com.kikuai.kyuva`
 - SKU: `kyuva-macos-1`
 - Public version/build: `1.0 (4)`
-- Prepared update/build: `1.1 (5)`
+- Prepared update/build: `1.1 (6)`
 - Publisher: `Mykyta Dudnichenko`
 - Primary language: English (U.S.)
 - Platform: macOS 13 or later, Apple silicon and Intel
@@ -23,9 +23,9 @@
 
 ## URLs
 
-- Support: `https://v0-kyuva.vercel.app/support`
-- Privacy policy: `https://v0-kyuva.vercel.app/privacy`
-- Marketing: `https://v0-kyuva.vercel.app/`
+- Support: `https://kiku-jw.github.io/kyuva-landing/support/`
+- Privacy policy: `https://kiku-jw.github.io/kyuva-landing/privacy/`
+- Marketing: `https://kiku-jw.github.io/kyuva-landing/`
 
 ## Product page
 
@@ -95,13 +95,13 @@ Use the account owner's current App Review contact details in App Store Connect.
 
 ### Notes
 
-`Build 5 keeps the unfinished local iPhone remote removed and contains no Mac network entitlement or listener. No account or sign-in is required. On first launch, click Skip or complete the three-page Welcome Tour; the teleprompter then appears near the top-center camera area. Use the text-bubble menu-bar icon to show or hide the teleprompter, open Settings, or reopen the tour. Settings contains the script editor, pacing controls, appearance, stage-direction options, mirroring, and hotkeys. Optional Voice Follow can be toggled from Teleprompter > Toggle Voice Follow or with Control-Option-V. It asks for Microphone and Speech Recognition permission on first use, requires a locale Apple reports as on-device, saves no audio, and refuses cloud-only recognition. StoreKit commerce remains disabled and no product request is made. The overlay is a normal macOS window and may appear in captures.`
+`Build 6 keeps the unfinished local iPhone remote removed and contains no Mac network entitlement or listener. No account or sign-in is required. On first launch, click Skip or complete the three-page Welcome Tour; the teleprompter then appears near the top-center camera area. Use the text-bubble menu-bar icon to show or hide the teleprompter, open Settings, or reopen the tour. Settings contains the script editor, pacing controls, appearance, stage-direction options, mirroring, and hotkeys. Optional Voice Follow can be toggled from Teleprompter > Toggle Voice Follow or with Control-Option-V. It asks for Microphone and Speech Recognition permission on first use, requires a locale Apple reports as on-device, saves no audio, and refuses cloud-only recognition. StoreKit commerce remains disabled and no product request is made. The overlay is a normal macOS window and may appear in captures.`
 
 ## Release
 
 - Version release: Automatically release after approval.
 - Current public state: macOS `1.0 (4)` is live after Apple approval on 27 August 2026.
-- Prepared update: `1.1 (5)` is local source metadata only until a fresh upload receipt exists.
+- Prepared update: `1.1 (6)` is local source metadata only until a fresh upload receipt exists.
 - Screenshots: five real macOS release-candidate captures at an Apple-supported size; no app preview for 1.0.
 - App Privacy: published as `Data Not Collected`.
 - Distribution: public, free, and verified in exactly the 27 European Union storefronts.

@@ -487,7 +487,7 @@ struct SettingsView: View {
                 .buttonStyle(.bordered)
                 
                 Button(action: {
-                    if let url = URL(string: "https://v0-kyuva.vercel.app") {
+                    if let url = URL(string: "https://kiku-jw.github.io/kyuva-landing/") {
                         NSWorkspace.shared.open(url)
                     }
                 }) {
