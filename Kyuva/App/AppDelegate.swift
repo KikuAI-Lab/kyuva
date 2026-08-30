@@ -7,26 +7,32 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var overlayWindowController: OverlayWindowController?
     private var settingsWindow: NSWindow?
     private var onboardingWindow: NSWindow?
-    private var shouldShowOverlayAfterOnboarding = true
+    private var shouldShowOverlayAfterOnboarding = false
     
     func applicationDidFinishLaunching(_ notification: Notification) {
         let completed = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
         print("[Kyuva] Starting up, hasCompletedOnboarding: \(completed)")
         
         setupStatusBarItem()
-        setupOverlayWindow(isVisible: completed)
+        setupOverlayWindow(isVisible: false)
         
         // Listen for onboarding triggers from UI
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(showOnboardingManual),
-            name: NSNotification.Name("ShowOnboarding"),
+            name: .showOnboarding,
             object: nil
         )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(openSettings),
-            name: NSNotification.Name("ShowSettings"),
+            name: .showSettings,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(showOverlay),
+            name: .showOverlay,
             object: nil
         )
         
@@ -34,9 +40,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         // window can become key without adding a temporary Dock icon.
         if !completed {
             print("[Kyuva] Showing onboarding...")
-            showOnboarding(showOverlayOnClose: true)
+            showOnboarding(showOverlayOnClose: false)
         } else {
             print("[Kyuva] Skipping onboarding, already completed")
+            openSettings()
         }
     }
     
@@ -48,8 +55,10 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         }
         
         let menu = NSMenu()
-        menu.addItem(NSMenuItem(title: "Show Teleprompter", action: #selector(showOverlay), keyEquivalent: "t"))
-        menu.addItem(NSMenuItem(title: "Hide Teleprompter", action: #selector(hideOverlay), keyEquivalent: "h"))
+        menu.addItem(NSMenuItem(title: "Open Kyuva", action: #selector(openSettings), keyEquivalent: ""))
+        menu.addItem(NSMenuItem.separator())
+        menu.addItem(NSMenuItem(title: "Show Prompt", action: #selector(showOverlay), keyEquivalent: "t"))
+        menu.addItem(NSMenuItem(title: "Hide Prompt", action: #selector(hideOverlay), keyEquivalent: "h"))
         let nextDisplayItem = NSMenuItem(
             title: "Move to Next Display",
             action: #selector(moveOverlayToNextDisplay),
@@ -57,8 +66,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         )
         menu.addItem(nextDisplayItem)
         menu.addItem(NSMenuItem.separator())
-        menu.addItem(NSMenuItem(title: "Settings...", action: #selector(openSettings), keyEquivalent: ","))
-        menu.addItem(NSMenuItem(title: "Welcome Tour...", action: #selector(showOnboardingManual), keyEquivalent: ""))
+        menu.addItem(NSMenuItem(title: "Welcome Guide…", action: #selector(showOnboardingManual), keyEquivalent: ""))
         menu.addItem(NSMenuItem.separator())
         menu.addItem(NSMenuItem(title: "Quit Kyuva", action: #selector(quitApp), keyEquivalent: "q"))
         
@@ -129,13 +137,14 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         if settingsWindow == nil {
             let settingsView = SettingsView()
             settingsWindow = NSWindow(
-                contentRect: NSRect(x: 0, y: 0, width: 500, height: 400),
+                contentRect: NSRect(x: 0, y: 0, width: 1080, height: 680),
                 styleMask: [.titled, .closable, .resizable],
                 backing: .buffered,
                 defer: false
             )
             settingsWindow?.isReleasedWhenClosed = false
-            settingsWindow?.title = "Kyuva Settings"
+            settingsWindow?.title = "Kyuva"
+            settingsWindow?.minSize = NSSize(width: 920, height: 580)
             settingsWindow?.contentView = NSHostingView(rootView: settingsView)
             settingsWindow?.delegate = self
             settingsWindow?.center()
@@ -169,6 +178,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
                     self?.overlayWindowController?.showOverlay()
                 } else {
                     self?.overlayWindowController?.hideOverlay()
+                    self?.openSettings()
                 }
             }
         } else if closingWindow === settingsWindow {

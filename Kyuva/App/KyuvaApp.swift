@@ -9,7 +9,20 @@ struct KyuvaApp: App {
             SettingsView()
         }
         .commands {
+            CommandGroup(replacing: .appSettings) {
+                Button("Open Kyuva…") {
+                    NotificationCenter.default.post(name: .showSettings, object: nil)
+                }
+                .keyboardShortcut(",", modifiers: .command)
+            }
+
             CommandMenu("Teleprompter") {
+                Button("Open Prompt") {
+                    NotificationCenter.default.post(name: .showOverlay, object: nil)
+                }
+
+                Divider()
+
                 Button("Toggle Voice Follow") {
                     NotificationCenter.default.post(name: .toggleVoiceFollow, object: nil)
                 }

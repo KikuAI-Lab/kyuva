@@ -357,6 +357,8 @@ struct OverlayContentView: View {
     @State private var voiceMatcher: VoicePositionMatcher?
     @State private var hasRecordedCurrentCompletion = false
 
+    private let promptAccent = Color(red: 0.79, green: 0.81, blue: 1.0)
+
     private var lineHeight: CGFloat {
         max(28, CGFloat(fontSize) * 1.2 + 8)
     }
@@ -429,14 +431,9 @@ struct OverlayContentView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            // Control bar with drag handle (shows on hover)
-            if showControls {
-                controlBar
-            }
-
-            // Measure only the prompt viewport. The control bar changes the
-            // available height, and pace calculations must use that real area.
+        ZStack(alignment: .top) {
+            // Controls float over the prompt so the reading line never shifts
+            // when the pointer enters or leaves the window.
             GeometryReader { geometry in
                 let readingEdgePadding = max(0, geometry.size.height / 2 - lineHeight / 2)
 
@@ -476,7 +473,7 @@ struct OverlayContentView: View {
                                             RoundedRectangle(cornerRadius: 6)
                                                 .stroke(
                                                     scrollController.highlightedLine == promptLine.sourceIndex
-                                                        ? Color.yellow
+                                                        ? promptAccent
                                                         : Color.clear,
                                                     lineWidth: 2
                                                 )
@@ -521,7 +518,7 @@ struct OverlayContentView: View {
                     VStack {
                         Spacer()
                         Rectangle()
-                            .fill(.yellow.opacity(0.12))
+                            .fill(promptAccent.opacity(requiresOpaqueBackground ? 0.18 : 0.13))
                             .frame(height: lineHeight + 12)
                         Spacer()
                     }
@@ -530,7 +527,7 @@ struct OverlayContentView: View {
 
                     Image(systemName: "play.fill")
                         .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(.yellow.opacity(0.8))
+                        .foregroundColor(promptAccent.opacity(0.9))
                         .frame(
                             width: max(0, geometry.size.width - 14),
                             height: geometry.size.height,
@@ -544,7 +541,7 @@ struct OverlayContentView: View {
                         Spacer()
                         ProgressView(value: scrollController.progress)
                             .progressViewStyle(.linear)
-                            .tint(.yellow)
+                            .tint(promptAccent)
                             .padding(.horizontal, 6)
                             .padding(.bottom, 2)
                             .accessibilityLabel("Script progress")
@@ -590,6 +587,12 @@ struct OverlayContentView: View {
                     }
                 }
                 .frame(width: geometry.size.width, height: geometry.size.height)
+            }
+
+            if showControls {
+                controlBar
+                    .padding(6)
+                    .transition(.opacity)
             }
         }
         .clipShape(UnevenRoundedRectangle(topLeadingRadius: 0, bottomLeadingRadius: 16, bottomTrailingRadius: 16, topTrailingRadius: 0))
@@ -696,7 +699,7 @@ struct OverlayContentView: View {
                         ? "waveform.circle.fill"
                         : "waveform.circle"
                 )
-                .foregroundColor(speechRecognizer.state.isListening ? .yellow : .white)
+                .foregroundColor(speechRecognizer.state.isListening ? promptAccent : .white)
                 .font(.system(size: 16))
                 .frame(width: 28, height: 28)
                 .contentShape(Rectangle())
@@ -762,9 +765,14 @@ struct OverlayContentView: View {
             .help("Reset to the beginning")
             .accessibilityLabel("Reset to the beginning")
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(.black.opacity(requiresOpaqueBackground ? 1 : 0.7))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(.ultraThinMaterial, in: Capsule())
+        .background(.black.opacity(requiresOpaqueBackground ? 1 : 0.5), in: Capsule())
+        .overlay {
+            Capsule()
+                .stroke(.white.opacity(0.12), lineWidth: 1)
+        }
         .foregroundColor(.white)
     }
 
@@ -829,7 +837,7 @@ struct OverlayContentView: View {
 
         guard proStore.accessState.hasAccess else {
             NotificationCenter.default.post(
-                name: NSNotification.Name("ShowSettings"),
+                name: .showSettings,
                 object: nil
             )
             return

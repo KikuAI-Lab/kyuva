@@ -13,6 +13,8 @@ struct MobilePromptView: View {
     let script: Script
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
     @StateObject private var scrollController = ScrollController()
     @StateObject private var speechRecognizer = OnDeviceSpeechRecognizer()
     @ObservedObject private var proStore = ProEntitlementStore.shared
@@ -26,6 +28,8 @@ struct MobilePromptView: View {
     @AppStorage("mirrorText") private var mirrorText = false
     @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
 
+    private let promptAccent = Color(red: 0.79, green: 0.81, blue: 1.0)
+
     private var displayedLines: [PromptLine] {
         if stageDirectionStyle == 2 {
             return script.promptLines.filter { !$0.isStageDirection }
@@ -35,6 +39,10 @@ struct MobilePromptView: View {
 
     private var pacedWordCount: Int {
         script.wordCount(excludingStageDirections: stageDirectionStyle != 0)
+    }
+
+    private var isChromeVisible: Bool {
+        scrollController.isPaused || speechRecognizer.state.isEngaged
     }
 
     var body: some View {
@@ -53,8 +61,15 @@ struct MobilePromptView: View {
 
                 readingCue
 
-                chrome
+                if isChromeVisible {
+                    chrome
+                        .transition(.opacity.combined(with: .scale(scale: 0.98)))
+                } else {
+                    compactStatus
+                        .transition(.opacity)
+                }
             }
+            .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: isChromeVisible)
             .onAppear {
                 viewportHeight = geometry.size.height
                 updateContentMetrics()
@@ -127,7 +142,7 @@ struct MobilePromptView: View {
 
             ForEach(displayedLines) { line in
                 Text(line.text)
-                    .font(.system(size: fontSize, weight: .semibold, design: .rounded))
+                    .font(.system(size: fontSize, weight: .medium, design: .default))
                     .multilineTextAlignment(.center)
                     .foregroundStyle(
                         .white.opacity(
@@ -166,11 +181,11 @@ struct MobilePromptView: View {
             HStack(spacing: 10) {
                 Image(systemName: "arrowtriangle.right.fill")
                     .font(.caption)
-                    .foregroundStyle(.cyan)
+                    .foregroundStyle(promptAccent.opacity(0.9))
 
                 Rectangle()
-                    .fill(.cyan.opacity(0.65))
-                    .frame(height: 2)
+                    .fill(promptAccent.opacity(0.3))
+                    .frame(height: 1)
             }
             .padding(.horizontal, 12)
             .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
@@ -180,7 +195,7 @@ struct MobilePromptView: View {
     }
 
     private var chrome: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 12) {
             HStack(spacing: 12) {
                 Button {
                     dismiss()
@@ -210,7 +225,7 @@ struct MobilePromptView: View {
                             ? "waveform.circle.fill"
                             : "waveform.circle"
                     )
-                    .foregroundStyle(speechRecognizer.state.isListening ? .cyan : .white)
+                    .foregroundStyle(speechRecognizer.state.isListening ? promptAccent : .white)
                     .frame(width: 44, height: 44)
                 }
                 .buttonStyle(.bordered)
@@ -231,15 +246,21 @@ struct MobilePromptView: View {
                 .buttonStyle(.bordered)
                 .accessibilityLabel("Prompt settings")
             }
-            .padding(.horizontal)
-            .padding(.top, 8)
-            .background(.black.opacity(0.9))
+            .padding(.horizontal, 10)
+            .padding(.vertical, 8)
+            .background(chromeMaterial, in: Capsule())
+            .overlay {
+                Capsule()
+                    .stroke(.white.opacity(0.12), lineWidth: 1)
+            }
+            .padding(.horizontal, 12)
+            .padding(.top, 10)
 
             Spacer()
 
             VStack(spacing: 10) {
                 ProgressView(value: scrollController.progress)
-                    .tint(.cyan)
+                    .tint(promptAccent)
                     .accessibilityLabel("Prompt progress")
                     .accessibilityValue("\(Int(scrollController.progress * 100)) percent")
 
@@ -272,7 +293,7 @@ struct MobilePromptView: View {
                             .font(.title2)
                             .foregroundStyle(.black)
                             .frame(width: 64, height: 52)
-                            .background(.cyan, in: Capsule())
+                            .background(promptAccent, in: Capsule())
                     }
                     .buttonStyle(.plain)
                     .disabled(speechRecognizer.state.isEngaged)
@@ -298,10 +319,51 @@ struct MobilePromptView: View {
                         .accessibilityValue(scrollController.paceControlLabel)
                 }
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 14)
             .padding(.vertical, 12)
-            .background(.black)
+            .background(chromeMaterial, in: RoundedRectangle(cornerRadius: 28))
+            .overlay {
+                RoundedRectangle(cornerRadius: 28)
+                    .stroke(.white.opacity(0.12), lineWidth: 1)
+            }
+            .padding(.horizontal, 12)
+            .padding(.bottom, 12)
         }
+        .dynamicTypeSize(.large)
+    }
+
+    private var compactStatus: some View {
+        HStack {
+            Spacer()
+            Label(compactProgressLabel, systemImage: "clock")
+                .font(.caption.monospacedDigit().weight(.medium))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 7)
+                .background(chromeMaterial, in: Capsule())
+                .overlay {
+                    Capsule()
+                        .stroke(.white.opacity(0.1), lineWidth: 1)
+                }
+        }
+        .padding(.horizontal, 12)
+        .padding(.top, 12)
+        .dynamicTypeSize(.large)
+        .allowsHitTesting(false)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Prompt progress")
+        .accessibilityValue(compactProgressLabel)
+    }
+
+    private var chromeMaterial: some ShapeStyle {
+        reduceTransparency ? AnyShapeStyle(Color.black) : AnyShapeStyle(.ultraThinMaterial)
+    }
+
+    private var compactProgressLabel: String {
+        guard let remaining = scrollController.remainingTime else {
+            return "\(Int(scrollController.progress * 100))%"
+        }
+        let seconds = max(0, Int(remaining.rounded()))
+        return "\(Int(scrollController.progress * 100))% · \(seconds / 60):\(String(format: "%02d", seconds % 60))"
     }
 
     private var progressLabel: String {

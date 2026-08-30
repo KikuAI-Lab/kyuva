@@ -144,4 +144,7 @@ final class HotkeyManager {
 
 extension Notification.Name {
     static let toggleVoiceFollow = Notification.Name("ToggleVoiceFollow")
+    static let showOverlay = Notification.Name("ShowOverlay")
+    static let showSettings = Notification.Name("ShowSettings")
+    static let showOnboarding = Notification.Name("ShowOnboarding")
 }

@@ -1,547 +1,666 @@
 import AppKit
 import SwiftUI
 
-struct SettingsView: View {
-    @AppStorage("overlayOpacity") private var opacity: Double = 0.85
-    @AppStorage("fontSize") private var fontSize: Double = 18
-    @AppStorage("scrollSpeed") private var scrollSpeed: Double = 50
-    
-    // Appearance
-    @AppStorage("overlayWidth") private var overlayWidth: Double = 350
-    @AppStorage("overlayHeight") private var overlayHeight: Double = 150
-    @AppStorage("textAlignment") private var textAlignment: Int = 1 // 0=Left, 1=Center, 2=Right
-    @AppStorage("fontFamily") private var fontFamily: Int = 0 // 0=System, 1=Mono, 2=Serif, 3=Rounded
-    @AppStorage("mirrorText") private var mirrorText = false
-    @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
+private let studioAccent = Color(red: 0.79, green: 0.81, blue: 1.0)
 
-    // Pace
-    @AppStorage(ScrollController.paceModeDefaultsKey) private var scrollPaceMode = ScrollPaceMode.fixedSpeed.rawValue
-    @AppStorage(ScrollController.wordsPerMinuteDefaultsKey) private var wordsPerMinute: Double = 150
-    @AppStorage(ScrollController.targetDurationDefaultsKey) private var targetDurationSeconds: Double = 300
-    
-    // Focus Mode
-    @AppStorage("focusModeIntensity") private var focusModeIntensity: Int = 0 // 0=Off, 1=Subtle, 2=Medium, 3=Strong
-    
-    // Behavior
-    @AppStorage("endBehavior") private var endBehavior: Int = 0 // 0=Do Nothing, 1=Start Over, 2=Play Next
-    
+private enum StudioInspectorPane: String, CaseIterable, Identifiable {
+    case prompt = "Prompt"
+    case shortcuts = "Shortcuts"
+    case about = "About"
+
+    var id: String { rawValue }
+}
+
+struct SettingsView: View {
     @StateObject private var scriptManager = ScriptManager.shared
     @ObservedObject private var proStore = ProEntitlementStore.shared
+
+    @State private var searchText = ""
+    @State private var inspectorPane = StudioInspectorPane.prompt
+    @State private var showDeleteConfirmation = false
+    @State private var scriptToDelete: UUID?
     @State private var proMessage: String?
-    
+
+    @AppStorage("overlayOpacity") private var opacity = 0.85
+    @AppStorage("fontSize") private var fontSize = 18.0
+    @AppStorage("scrollSpeed") private var scrollSpeed = 50.0
+    @AppStorage("overlayWidth") private var overlayWidth = 350.0
+    @AppStorage("overlayHeight") private var overlayHeight = 150.0
+    @AppStorage("textAlignment") private var textAlignment = 1
+    @AppStorage("fontFamily") private var fontFamily = 0
+    @AppStorage("mirrorText") private var mirrorText = false
+    @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
+    @AppStorage(ScrollController.paceModeDefaultsKey) private var scrollPaceMode = ScrollPaceMode.fixedSpeed.rawValue
+    @AppStorage(ScrollController.wordsPerMinuteDefaultsKey) private var wordsPerMinute = 150.0
+    @AppStorage(ScrollController.targetDurationDefaultsKey) private var targetDurationSeconds = 300.0
+    @AppStorage("focusModeIntensity") private var focusModeIntensity = 0
+    @AppStorage("endBehavior") private var endBehavior = 0
+
+    private var selectedIndex: Int? {
+        guard let selectedId = scriptManager.selectedScriptId else { return nil }
+        return scriptManager.scripts.firstIndex { $0.id == selectedId }
+    }
+
+    private var filteredScripts: [Script] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return scriptManager.scripts }
+        return scriptManager.scripts.filter {
+            $0.name.localizedCaseInsensitiveContains(query) ||
+            $0.content.localizedCaseInsensitiveContains(query)
+        }
+    }
+
     var body: some View {
-        TabView {
-            // Script Tab
-            scriptTab
-                .tabItem {
-                    Label("Script", systemImage: "doc.text")
-                }
-            
-            // Appearance Tab
-            appearanceTab
-                .tabItem {
-                    Label("Appearance", systemImage: "paintbrush")
-                }
-            
-            // Scroll Tab
-            scrollTab
-                .tabItem {
-                    Label("Scroll", systemImage: "scroll")
-                }
-            
-            // Hotkeys Tab
-            hotkeysTab
-                .tabItem {
-                    Label("Hotkeys", systemImage: "keyboard")
+        NavigationSplitView {
+            scriptLibrary
+                .navigationSplitViewColumnWidth(min: 220, ideal: 250, max: 320)
+        } detail: {
+            HSplitView {
+                editor
+                    .frame(minWidth: 430, maxWidth: .infinity, maxHeight: .infinity)
+
+                inspector
+                    .frame(minWidth: 280, idealWidth: 300, maxWidth: 340, maxHeight: .infinity)
+            }
+        }
+        .navigationTitle("Kyuva")
+        .toolbar {
+            ToolbarItemGroup {
+                Button {
+                    scriptManager.importScript()
+                } label: {
+                    Label("Import", systemImage: "square.and.arrow.down")
                 }
 
-            // About Tab
-            aboutTab
-                .tabItem {
-                    Label("About", systemImage: "info.circle")
+                Button {
+                    showPrompt()
+                } label: {
+                    Label("Open Prompt", systemImage: "play.fill")
                 }
-            
+                .buttonStyle(.borderedProminent)
+                .tint(studioAccent)
+                .foregroundStyle(.black)
+                .disabled(scriptManager.selectedScript?.lines.isEmpty != false)
+            }
         }
-        .padding()
-        .frame(minWidth: 500, minHeight: 400)
+        .tint(studioAccent)
+        .frame(minWidth: 920, minHeight: 580)
         .task {
             await proStore.prepare()
         }
-    }
-    
-    // MARK: - Script Tab
-    
-    @State private var showDeleteConfirm = false
-    @State private var scriptToDelete: UUID?
-    
-    private var scriptTab: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // Header with actions
-            HStack {
-                Text("Scripts")
-                    .font(.headline)
-                Spacer()
-                
-                if scriptManager.selectedScriptId != nil {
-                    Button(action: {
-                        scriptToDelete = scriptManager.selectedScriptId
-                        showDeleteConfirm = true
-                    }) {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
-                    }
-                    .buttonStyle(.plain)
-                    .help("Delete selected script")
-                    .accessibilityLabel("Delete selected script")
-                }
-                
-                Button(action: { scriptManager.createNewScript() }) {
-                    Image(systemName: "plus")
-                }
-                .help("New script")
-                .accessibilityLabel("New script")
-                
-                Button(action: { scriptManager.importScript() }) {
-                    Image(systemName: "square.and.arrow.down")
-                }
-                .help("Import from file")
-                .accessibilityLabel("Import from file")
-                
-                if let script = scriptManager.selectedScript {
-                    Button(action: { scriptManager.exportScript(script) }) {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                    .help("Export to file")
-                    .accessibilityLabel("Export selected script")
-                }
-            }
-            
-            // Script list
-            List(selection: $scriptManager.selectedScriptId) {
-                ForEach(scriptManager.scripts) { script in
-                    HStack {
-                        Text(script.name)
-                        Spacer()
-                        Text("\(script.wordCount(excludingStageDirections: false)) words")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                    }
-                    .tag(script.id)
-                    .contextMenu {
-                        Button("Export") { scriptManager.exportScript(script) }
-                        Divider()
-                        Button("Delete", role: .destructive) {
-                            scriptToDelete = script.id
-                            showDeleteConfirm = true
-                        }
-                    }
-                }
-            }
-            .frame(height: 120)
-            .cornerRadius(6)
-            
-            // Script editor
-            if let selectedId = scriptManager.selectedScriptId,
-               let index = scriptManager.scripts.firstIndex(where: { $0.id == selectedId }) {
-                
-                // Name field
-                TextField("Script Name", text: $scriptManager.scripts[index].name)
-                    .textFieldStyle(.roundedBorder)
-                    .onChange(of: scriptManager.scripts[index].name) { _ in
-                        scriptManager.debounceSaveFromUI()
-                    }
-                
-                // Stats bar
-                HStack(spacing: 16) {
-                    let wordCount = scriptManager.scripts[index].wordCount(excludingStageDirections: false)
-                    let readingTime = max(1, Int(ceil(Double(wordCount) / 150)))
-                    
-                    Label("\(wordCount) words", systemImage: "text.word.spacing")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    Label("~\(readingTime) min", systemImage: "clock")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    
-                    Spacer()
-                }
-                
-                // Content editor - direct binding, live updates
-                TextEditor(text: $scriptManager.scripts[index].content)
-                    .font(.system(size: 13, design: .monospaced))
-                    .accessibilityLabel("Script text")
-                    .frame(minHeight: 120)
-                    .cornerRadius(6)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 6)
-                            .stroke(Color.secondary.opacity(0.2), lineWidth: 1)
-                    )
-                    .onChange(of: scriptManager.scripts[index].content) { _ in
-                        scriptManager.reindexScript(selectedId)
-                        scriptManager.debounceSaveFromUI()
-                    }
-            } else {
-                Text("Select or create a script")
-                    .foregroundColor(.secondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            }
-        }
-        .padding()
-        .alert("Delete Script?", isPresented: $showDeleteConfirm) {
-            Button("Cancel", role: .cancel) { }
-            Button("Delete", role: .destructive) {
-                if let id = scriptToDelete,
-                   let index = scriptManager.scripts.firstIndex(where: { $0.id == id }) {
-                    scriptManager.deleteScripts(at: IndexSet(integer: index))
-                }
+        .alert("Delete this script?", isPresented: $showDeleteConfirmation) {
+            Button("Cancel", role: .cancel) {
                 scriptToDelete = nil
             }
+            Button("Delete", role: .destructive) {
+                deletePendingScript()
+            }
         } message: {
-            Text("This action cannot be undone.")
+            Text("This cannot be undone.")
         }
     }
-    
-    // MARK: - Appearance Tab
-    
-    private var appearanceTab: some View {
-        Form {
-            Section("Overlay Size") {
-                HStack {
-                    Text("Width")
-                    Slider(value: $overlayWidth, in: 200...600, step: 10)
-                        .accessibilityLabel("Overlay width")
-                        .accessibilityValue("\(Int(overlayWidth)) pixels")
-                    Text("\(Int(overlayWidth))px")
-                        .foregroundColor(.secondary)
-                        .frame(width: 50)
+
+    private var scriptLibrary: some View {
+        VStack(spacing: 0) {
+            HStack {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Scripts")
+                        .font(.title2.bold())
+                    Text("Stored only on this Mac")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
-                
-                HStack {
-                    Text("Height")
-                    Slider(value: $overlayHeight, in: 80...400, step: 10)
-                        .accessibilityLabel("Overlay height")
-                        .accessibilityValue("\(Int(overlayHeight)) pixels")
-                    Text("\(Int(overlayHeight))px")
-                        .foregroundColor(.secondary)
-                        .frame(width: 50)
+
+                Spacer()
+
+                Button {
+                    scriptManager.createNewScript()
+                } label: {
+                    Image(systemName: "plus")
                 }
-                
-                HStack {
-                    Text("Opacity")
-                    Slider(value: $opacity, in: 0.3...1.0)
-                        .accessibilityLabel("Overlay opacity")
-                        .accessibilityValue("\(Int(opacity * 100)) percent")
-                    Text("\(Int(opacity * 100))%")
-                        .foregroundColor(.secondary)
-                        .frame(width: 50)
+                .buttonStyle(.bordered)
+                .help("New script")
+                .accessibilityLabel("New script")
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 16)
+            .padding(.bottom, 10)
+
+            List(selection: $scriptManager.selectedScriptId) {
+                ForEach(filteredScripts) { script in
+                    ScriptLibraryRow(script: script)
+                        .tag(script.id)
+                        .contextMenu {
+                            Button("Export") {
+                                scriptManager.exportScript(script)
+                            }
+                            Divider()
+                            Button("Delete", role: .destructive) {
+                                requestDelete(script.id)
+                            }
+                            .disabled(scriptManager.scripts.count <= 1)
+                        }
                 }
             }
-            
-            Section("Text") {
-                Picker("Font", selection: $fontFamily) {
-                    Text("System").tag(0)
-                    Text("Monospaced").tag(1)
-                    Text("Serif").tag(2)
-                    Text("Rounded").tag(3)
-                }
-                
-                HStack {
-                    Text("Font Size")
-                    Slider(value: $fontSize, in: 12...36)
-                        .accessibilityLabel("Font size")
-                        .accessibilityValue("\(Int(fontSize)) points")
-                    Text("\(Int(fontSize)) pt")
-                        .foregroundColor(.secondary)
-                        .frame(width: 50)
-                }
-                
-                Picker("Text Alignment", selection: $textAlignment) {
-                    Text("Left").tag(0)
-                    Text("Center").tag(1)
-                    Text("Right").tag(2)
-                }
-                .pickerStyle(.segmented)
+            .listStyle(.sidebar)
+            .searchable(text: $searchText, placement: .sidebar, prompt: "Search scripts")
 
-                Toggle("Mirror text horizontally", isOn: $mirrorText)
-                    .help("Use with a physical beam-splitter teleprompter mirror.")
-
-                Picker("Bracketed Directions", selection: $stageDirectionStyle) {
-                    Text("Show").tag(0)
-                    Text("Dim").tag(1)
-                    Text("Hide").tag(2)
+            if filteredScripts.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "doc.text.magnifyingglass")
+                        .font(.title2)
+                        .foregroundStyle(.secondary)
+                    Text("No matching scripts")
+                        .font(.headline)
+                    Text("Try another search or create a new script.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
                 }
-                .pickerStyle(.segmented)
-
-                Text("Applies to complete lines wrapped in [square] or (round) brackets.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-            }
-            
-            Section("Focus Mode") {
-                Text("Create a focused reading experience by dimming text outside the reading zone")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Picker("Intensity", selection: $focusModeIntensity) {
-                    Text("Off").tag(0)
-                    Text("Subtle").tag(1)
-                    Text("Medium").tag(2)
-                    Text("Strong").tag(3)
-                }
-                .pickerStyle(.segmented)
+                .padding(24)
             }
         }
-        .padding()
+        .background(Color(nsColor: .controlBackgroundColor))
     }
-    
-    // MARK: - Scroll Tab
-    
-    private var scrollTab: some View {
-        Form {
-            Section("Pace") {
-                Picker("Mode", selection: $scrollPaceMode) {
-                    ForEach(ScrollPaceMode.allCases) { mode in
-                        Text(mode.title).tag(mode.rawValue)
-                    }
-                }
-                .pickerStyle(.segmented)
 
-                switch ScrollPaceMode(rawValue: scrollPaceMode) ?? .fixedSpeed {
-                case .fixedSpeed:
-                    Slider(
-                        value: $scrollSpeed,
-                        in: ScrollController.minimumSpeed...ScrollController.maximumSpeed
-                    ) {
-                        Text("Scroll Speed")
-                    }
-                    Text("\(Int(scrollSpeed)) px/sec")
-                        .foregroundColor(.secondary)
-                case .wordsPerMinute:
-                    Slider(
-                        value: $wordsPerMinute,
-                        in: ScrollController.minimumWordsPerMinute...ScrollController.maximumWordsPerMinute,
-                        step: 5
-                    ) {
-                        Text("Reading Pace")
-                    }
-                    Text("\(Int(wordsPerMinute)) words per minute")
-                        .foregroundColor(.secondary)
-                case .targetDuration:
-                    Slider(
-                        value: $targetDurationSeconds,
-                        in: ScrollController.minimumTargetDuration...ScrollController.maximumTargetDuration,
-                        step: 30
-                    ) {
-                        Text("Target Duration")
-                    }
-                    Text(durationText(targetDurationSeconds))
-                        .foregroundColor(.secondary)
-                }
+    @ViewBuilder
+    private var editor: some View {
+        if let index = selectedIndex {
+            VStack(alignment: .leading, spacing: 0) {
+                HStack(alignment: .center, spacing: 12) {
+                    TextField(
+                        "Script title",
+                        text: nameBinding(for: scriptManager.scripts[index].id)
+                    )
+                        .textFieldStyle(.plain)
+                        .font(.title2.weight(.semibold))
+                        .accessibilityLabel("Script title")
 
-                Text("WPM and Duration use the measured script height, so the selected script reaches the end at the requested pace.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                    Button {
+                        scriptManager.exportScript(scriptManager.scripts[index])
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .buttonStyle(.borderless)
+                    .help("Export script")
+                    .accessibilityLabel("Export script")
+
+                    Button {
+                        requestDelete(scriptManager.scripts[index].id)
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .buttonStyle(.borderless)
+                    .foregroundStyle(.secondary)
+                    .help("Delete script")
+                    .accessibilityLabel("Delete script")
+                    .disabled(scriptManager.scripts.count <= 1)
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 22)
+                .padding(.bottom, 10)
+
+                HStack(spacing: 16) {
+                    Label(
+                        "\(scriptManager.scripts[index].wordCount(excludingStageDirections: false)) words",
+                        systemImage: "text.word.spacing"
+                    )
+                    Label(
+                        estimatedDuration(for: scriptManager.scripts[index]),
+                        systemImage: "clock"
+                    )
+                    Spacer()
+                    Label("Autosaved locally", systemImage: "checkmark.circle")
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 14)
+
+                Divider()
+
+                TextEditor(text: contentBinding(for: scriptManager.scripts[index].id))
+                    .font(.system(size: 16, design: .default))
+                    .lineSpacing(5)
+                    .scrollContentBackground(.hidden)
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 16)
+                    .background(Color(nsColor: .textBackgroundColor))
+                    .accessibilityLabel("Script text")
+
+                Divider()
+
+                HStack(spacing: 8) {
+                    Image(systemName: "text.badge.checkmark")
+                        .foregroundStyle(.secondary)
+                    Text("Put stage directions on their own line inside [square] or (round) brackets.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Button("Open Prompt") {
+                        showPrompt()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .tint(studioAccent)
+                    .foregroundStyle(.black)
+                    .disabled(scriptManager.scripts[index].lines.isEmpty)
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
+                .background(Color(nsColor: .controlBackgroundColor))
             }
-            
-            Section("Behavior") {
-                Text("Scrolling is smooth and pauses while the pointer is over the overlay.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Picker("When Scrolled to End", selection: $endBehavior) {
-                    Text("Do Nothing").tag(0)
-                    Text("Start Over").tag(1)
-                    Text("Play Next Script").tag(2)
+        } else {
+            VStack(spacing: 12) {
+                Image(systemName: "doc.text")
+                    .font(.system(size: 36))
+                    .foregroundStyle(.secondary)
+                Text("Choose a script")
+                    .font(.title2.bold())
+                Text("Select a script from the library or create a new one.")
+                    .foregroundStyle(.secondary)
+                Button("New Script") {
+                    scriptManager.createNewScript()
                 }
+                .buttonStyle(.borderedProminent)
+                .tint(studioAccent)
+                .foregroundStyle(.black)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private var inspector: some View {
+        VStack(spacing: 0) {
+            Picker("Inspector", selection: $inspectorPane) {
+                ForEach(StudioInspectorPane.allCases) { pane in
+                    Text(pane.rawValue).tag(pane)
+                }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+            .padding(16)
+
+            Divider()
+
+            ScrollView {
+                Group {
+                    switch inspectorPane {
+                    case .prompt:
+                        promptInspector
+                    case .shortcuts:
+                        shortcutsInspector
+                    case .about:
+                        aboutInspector
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(18)
             }
         }
-        .padding()
+        .background(Color(nsColor: .controlBackgroundColor))
+    }
+
+    private var promptInspector: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            inspectorHeader("Pace", detail: "Choose how the prompt advances.")
+
+            Picker("Pace mode", selection: $scrollPaceMode) {
+                ForEach(ScrollPaceMode.allCases) { mode in
+                    Text(mode.title).tag(mode.rawValue)
+                }
+            }
+            .pickerStyle(.segmented)
+            .labelsHidden()
+
+            paceControl
+
+            Divider()
+
+            inspectorHeader("Reading", detail: "Tune the words, not the interface.")
+
+            valueSlider(
+                title: "Text size",
+                value: $fontSize,
+                range: 12...36,
+                step: 1,
+                valueLabel: "\(Int(fontSize)) pt"
+            )
+
+            Picker("Typeface", selection: $fontFamily) {
+                Text("System").tag(0)
+                Text("Monospaced").tag(1)
+                Text("Serif").tag(2)
+                Text("Rounded").tag(3)
+            }
+
+            Picker("Alignment", selection: $textAlignment) {
+                Text("Left").tag(0)
+                Text("Center").tag(1)
+                Text("Right").tag(2)
+            }
+            .pickerStyle(.segmented)
+
+            Picker("Stage directions", selection: $stageDirectionStyle) {
+                Text("Show").tag(0)
+                Text("Dim").tag(1)
+                Text("Hide").tag(2)
+            }
+            .pickerStyle(.segmented)
+
+            Toggle("Mirror text for teleprompter glass", isOn: $mirrorText)
+
+            Divider()
+
+            DisclosureGroup("Overlay layout") {
+                VStack(alignment: .leading, spacing: 14) {
+                    valueSlider(
+                        title: "Width",
+                        value: $overlayWidth,
+                        range: 200...600,
+                        step: 10,
+                        valueLabel: "\(Int(overlayWidth)) px"
+                    )
+                    valueSlider(
+                        title: "Height",
+                        value: $overlayHeight,
+                        range: 80...400,
+                        step: 10,
+                        valueLabel: "\(Int(overlayHeight)) px"
+                    )
+                    valueSlider(
+                        title: "Opacity",
+                        value: $opacity,
+                        range: 0.3...1,
+                        step: 0.05,
+                        valueLabel: "\(Int(opacity * 100))%"
+                    )
+
+                    Picker("Focus", selection: $focusModeIntensity) {
+                        Text("Off").tag(0)
+                        Text("Soft").tag(1)
+                        Text("Medium").tag(2)
+                        Text("Strong").tag(3)
+                    }
+
+                    Picker("At the end", selection: $endBehavior) {
+                        Text("Stay at end").tag(0)
+                        Text("Start over").tag(1)
+                        Text("Next script").tag(2)
+                    }
+                }
+                .padding(.top, 12)
+            }
+
+            Button {
+                showPrompt()
+            } label: {
+                Label("Open Camera-Side Prompt", systemImage: "play.fill")
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .tint(studioAccent)
+            .foregroundStyle(.black)
+            .disabled(scriptManager.selectedScript?.lines.isEmpty != false)
+        }
+    }
+
+    @ViewBuilder
+    private var paceControl: some View {
+        switch ScrollPaceMode(rawValue: scrollPaceMode) ?? .fixedSpeed {
+        case .fixedSpeed:
+            valueSlider(
+                title: "Scroll speed",
+                value: $scrollSpeed,
+                range: ScrollController.minimumSpeed...ScrollController.maximumSpeed,
+                step: 5,
+                valueLabel: "\(Int(scrollSpeed))"
+            )
+        case .wordsPerMinute:
+            valueSlider(
+                title: "Reading pace",
+                value: $wordsPerMinute,
+                range: ScrollController.minimumWordsPerMinute...ScrollController.maximumWordsPerMinute,
+                step: 5,
+                valueLabel: "\(Int(wordsPerMinute)) WPM"
+            )
+        case .targetDuration:
+            valueSlider(
+                title: "Finish in",
+                value: $targetDurationSeconds,
+                range: ScrollController.minimumTargetDuration...ScrollController.maximumTargetDuration,
+                step: 30,
+                valueLabel: durationText(targetDurationSeconds)
+            )
+        }
+    }
+
+    private var shortcutsInspector: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            inspectorHeader(
+                "Global shortcuts",
+                detail: "Fixed shortcuts work without keyboard-monitoring permission."
+            )
+
+            shortcutRow("Play or pause", HotkeyManager.Hotkey.togglePause.shortcut.display)
+            shortcutRow("Faster", HotkeyManager.Hotkey.speedUp.shortcut.display)
+            shortcutRow("Slower", HotkeyManager.Hotkey.speedDown.shortcut.display)
+            shortcutRow("Voice Follow", HotkeyManager.Hotkey.toggleVoiceFollow.shortcut.display)
+            shortcutRow("Start over", HotkeyManager.Hotkey.reset.shortcut.display)
+            shortcutRow("Show or hide prompt", HotkeyManager.Hotkey.toggleOverlay.shortcut.display)
+            shortcutRow("Next display", HotkeyManager.Hotkey.nextDisplay.shortcut.display)
+        }
+    }
+
+    private var aboutInspector: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(spacing: 12) {
+                Image(nsImage: NSApplication.shared.applicationIconImage)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 54, height: 54)
+                    .accessibilityHidden(true)
+
+                VStack(alignment: .leading, spacing: 3) {
+                    Text("Kyuva")
+                        .font(.title2.bold())
+                    Text(versionText)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    Text("Private prompting across your Apple devices")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Divider()
+
+            Label("Your scripts stay on this device.", systemImage: "lock.shield")
+                .font(.headline)
+
+            Text("Kyuva has no account, analytics, ads, or required cloud service. The prompt may appear in screen shares or recordings, so verify your preview before presenting.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Label(proAccessLabel, systemImage: "waveform")
+                .font(.headline)
+
+            Text(proDescription)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            if ProEntitlementStore.commerceEnabled {
+                proControls
+            } else {
+                Text("Open preview · no purchase available")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            if let proMessage {
+                Text(proMessage)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+
+            Divider()
+
+            Button("Show Welcome Guide") {
+                NotificationCenter.default.post(name: .showOnboarding, object: nil)
+            }
+
+            Link("Website", destination: URL(string: "https://kiku-jw.github.io/kyuva-landing/")!)
+            Link("Rate Kyuva", destination: ReviewPromptPolicy.appStoreReviewURL)
+
+            Button("Send Feedback") {
+                if let url = URL(string: "mailto:support@kikuai.dev") {
+                    NSWorkspace.shared.open(url)
+                }
+            }
+
+            Text(copyrightText)
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+        }
+    }
+
+    private var proControls: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            if proStore.accessState == .locked {
+                Button("Start 7-Day Trial") {
+                    proStore.startTrial()
+                }
+            }
+
+            if proStore.accessState != .purchased {
+                Button(proPurchaseLabel) {
+                    guard let confirmationWindow = NSApp.keyWindow else {
+                        proMessage = "Kyuva could not open the purchase confirmation."
+                        return
+                    }
+                    Task {
+                        proMessage = message(
+                            for: await proStore.purchaseLifetime(confirmIn: confirmationWindow)
+                        )
+                    }
+                }
+                .disabled(
+                    proStore.lifetimeProduct == nil ||
+                    proStore.isLoading ||
+                    proStore.isProcessingTransaction
+                )
+            }
+
+            Button("Restore Purchase") {
+                Task {
+                    proMessage = await proStore.restorePurchases()
+                        ? "Your lifetime purchase was restored."
+                        : "No verified lifetime purchase was found."
+                }
+            }
+            .disabled(proStore.isLoading || proStore.isProcessingTransaction)
+        }
+    }
+
+    private func inspectorHeader(_ title: String, detail: String) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.headline)
+            Text(detail)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private func valueSlider(
+        title: String,
+        value: Binding<Double>,
+        range: ClosedRange<Double>,
+        step: Double,
+        valueLabel: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text(title)
+                Spacer()
+                Text(valueLabel)
+                    .font(.system(.caption, design: .monospaced))
+                    .foregroundStyle(.secondary)
+            }
+            Slider(value: value, in: range, step: step)
+                .accessibilityLabel(title)
+                .accessibilityValue(valueLabel)
+        }
+    }
+
+    private func shortcutRow(_ title: String, _ shortcut: String) -> some View {
+        HStack {
+            Text(title)
+            Spacer()
+            Text(shortcut)
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(.secondary)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(Color(nsColor: .windowBackgroundColor), in: RoundedRectangle(cornerRadius: 7))
+        }
+    }
+
+    private func nameBinding(for id: UUID) -> Binding<String> {
+        Binding(
+            get: { scriptManager.scripts.first(where: { $0.id == id })?.name ?? "" },
+            set: { scriptManager.updateScriptName(id, name: $0) }
+        )
+    }
+
+    private func contentBinding(for id: UUID) -> Binding<String> {
+        Binding(
+            get: { scriptManager.scripts.first(where: { $0.id == id })?.content ?? "" },
+            set: { scriptManager.updateScriptContent(id, content: $0) }
+        )
+    }
+
+    private func estimatedDuration(for script: Script) -> String {
+        let words = script.wordCount(excludingStageDirections: stageDirectionStyle != 0)
+        let pace = max(1, wordsPerMinute)
+        let seconds = max(1, Int((Double(words) / pace * 60).rounded()))
+        return "About \(durationText(Double(seconds)))"
     }
 
     private func durationText(_ duration: TimeInterval) -> String {
         let totalSeconds = Int(duration.rounded())
         if totalSeconds >= 3_600 {
             return String(
-                format: "%d hr %02d min",
+                format: "%d:%02d:%02d",
                 totalSeconds / 3_600,
-                (totalSeconds % 3_600) / 60
+                (totalSeconds % 3_600) / 60,
+                totalSeconds % 60
             )
         }
-        return String(format: "%d min %02d sec", totalSeconds / 60, totalSeconds % 60)
+        return String(format: "%d:%02d", totalSeconds / 60, totalSeconds % 60)
     }
-    
-    // MARK: - Hotkeys Tab
-    
-    private var hotkeysTab: some View {
-        Form {
-            Section("Global Shortcuts") {
-                Text("These fixed shortcuts are registered directly with macOS and do not require keyboard-monitoring permission.")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                FixedHotkeyRow(label: "Speed Up", shortcut: HotkeyManager.Hotkey.speedUp.shortcut.display)
-                FixedHotkeyRow(label: "Speed Down", shortcut: HotkeyManager.Hotkey.speedDown.shortcut.display)
-                FixedHotkeyRow(label: "Pause/Resume", shortcut: HotkeyManager.Hotkey.togglePause.shortcut.display)
-                FixedHotkeyRow(label: "Voice Follow", shortcut: HotkeyManager.Hotkey.toggleVoiceFollow.shortcut.display)
-                FixedHotkeyRow(label: "Reset", shortcut: HotkeyManager.Hotkey.reset.shortcut.display)
-                FixedHotkeyRow(label: "Toggle Overlay", shortcut: HotkeyManager.Hotkey.toggleOverlay.shortcut.display)
-                FixedHotkeyRow(label: "Move to Next Display", shortcut: HotkeyManager.Hotkey.nextDisplay.shortcut.display)
-            }
-        }
-        .padding()
+
+    private func showPrompt() {
+        scriptManager.flushPendingSave()
+        NotificationCenter.default.post(name: .showOverlay, object: nil)
     }
-    
-    // MARK: - About Tab
 
-    private var aboutTab: some View {
-        VStack(spacing: 20) {
-            Spacer()
-            
-            // App icon and name
-            VStack(spacing: 8) {
-                Image(nsImage: NSApplication.shared.applicationIconImage)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 88, height: 88)
-                    .accessibilityHidden(true)
-                
-                Text("Kyuva")
-                    .font(.largeTitle.bold())
-                
-                Text(versionText)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                
-                Text("Your camera-side teleprompter")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
+    private func requestDelete(_ id: UUID) {
+        scriptToDelete = id
+        showDeleteConfirmation = true
+    }
 
-            Text("Capture visibility: The overlay may appear in screen shares or recordings. Verify the preview, or share a single app window that omits Kyuva.")
-                .font(.caption)
-                .foregroundColor(.primary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-
-            VStack(spacing: 8) {
-                Label(proAccessLabel, systemImage: "sparkles")
-                    .font(.headline)
-
-                Text(proDescription)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .multilineTextAlignment(.center)
-
-                if ProEntitlementStore.commerceEnabled {
-                    HStack {
-                        if proStore.accessState == .locked {
-                            Button("Start 7-Day Trial") {
-                                proStore.startTrial()
-                            }
-                        }
-
-                        if proStore.accessState != .purchased {
-                            Button(proPurchaseLabel) {
-                                guard let confirmationWindow = NSApp.keyWindow else {
-                                    proMessage = "Kyuva could not open the purchase confirmation."
-                                    return
-                                }
-                                Task {
-                                    proMessage = message(
-                                        for: await proStore.purchaseLifetime(
-                                            confirmIn: confirmationWindow
-                                        )
-                                    )
-                                }
-                            }
-                            .disabled(
-                                proStore.lifetimeProduct == nil ||
-                                proStore.isLoading ||
-                                proStore.isProcessingTransaction
-                            )
-                        }
-
-                        Button("Restore") {
-                            Task {
-                                proMessage = await proStore.restorePurchases()
-                                    ? "Your lifetime purchase was restored."
-                                    : "No verified lifetime purchase was found."
-                            }
-                        }
-                        .disabled(proStore.isLoading || proStore.isProcessingTransaction)
-                    }
-                } else {
-                    Text("Open preview · no purchase available")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-
-                if let proMessage {
-                    Text(proMessage)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
-            .padding(.horizontal)
-            
-            Spacer()
-            
-            // Action buttons
-            HStack(spacing: 16) {
-                Button(action: {
-                    if let url = URL(string: "mailto:support@kikuai.dev") {
-                        NSWorkspace.shared.open(url)
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: "envelope.fill")
-                        Text("Send Feedback")
-                    }
-                }
-                .buttonStyle(.bordered)
-                
-                Button(action: {
-                    if let url = URL(string: "https://kiku-jw.github.io/kyuva-landing/") {
-                        NSWorkspace.shared.open(url)
-                    }
-                }) {
-                    HStack {
-                        Image(systemName: "globe")
-                        Text("Website")
-                    }
-                }
-                .buttonStyle(.bordered)
-
-                Link(destination: ReviewPromptPolicy.appStoreReviewURL) {
-                    HStack {
-                        Image(systemName: "star.fill")
-                        Text("Rate Kyuva")
-                    }
-                }
-                .buttonStyle(.bordered)
-            }
-            
-            Button(action: {
-                // Trigger Welcome Tour
-                NotificationCenter.default.post(name: .init("ShowOnboarding"), object: nil)
-            }) {
-                HStack {
-                    Image(systemName: "sparkles")
-                    Text("Show Welcome Guide")
-                }
-                .foregroundColor(.black)
-            }
-            .buttonStyle(.borderedProminent)
-            .tint(.cyan)
-            
-            Spacer()
-            
-            Text(copyrightText)
-                .font(.caption2)
-                .foregroundColor(.secondary)
+    private func deletePendingScript() {
+        guard scriptManager.scripts.count > 1,
+              let id = scriptToDelete,
+              let index = scriptManager.scripts.firstIndex(where: { $0.id == id }) else {
+            scriptToDelete = nil
+            return
         }
-        .padding()
+        scriptManager.deleteScripts(at: IndexSet(integer: index))
+        scriptToDelete = nil
     }
 
     private var versionText: String {
@@ -560,7 +679,7 @@ struct SettingsView: View {
     private var proAccessLabel: String {
         switch proStore.accessState {
         case .openPreview:
-            return "Pro Preview Unlocked"
+            return "Voice Follow Preview"
         case .purchased:
             return "Lifetime Pro Unlocked"
         case .trial(let daysRemaining):
@@ -581,7 +700,7 @@ struct SettingsView: View {
         if ProEntitlementStore.commerceEnabled {
             return "Voice Follow is the first Pro feature. Buy once to unlock it on Mac and iPhone, or try it free for seven days."
         }
-        return "Voice Follow is the first Pro feature. It stays unlocked for everyone while the purchase preview is inactive."
+        return "On-device Voice Follow remains available to everyone while commerce is inactive."
     }
 
     private func message(for outcome: ProPurchaseOutcome) -> String {
@@ -600,17 +719,29 @@ struct SettingsView: View {
     }
 }
 
-struct FixedHotkeyRow: View {
-    let label: String
-    let shortcut: String
+private struct ScriptLibraryRow: View {
+    let script: Script
+
+    private var preview: String {
+        script.lines.first ?? "Empty script"
+    }
 
     var body: some View {
-        HStack {
-            Text(label)
-            Spacer()
-            Text(shortcut)
-                .font(.system(.caption, design: .monospaced))
-                .foregroundColor(.secondary)
+        VStack(alignment: .leading, spacing: 5) {
+            Text(script.name)
+                .font(.headline)
+                .lineLimit(1)
+
+            Text(preview)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .lineLimit(2)
+
+            Text("\(script.wordCount(excludingStageDirections: false)) words")
+                .font(.system(.caption2, design: .monospaced))
+                .foregroundStyle(.tertiary)
         }
+        .padding(.vertical, 5)
+        .accessibilityElement(children: .combine)
     }
 }

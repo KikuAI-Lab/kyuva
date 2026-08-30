@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-30T19:41:31Z",
+  "title": "Design System: Kyuva",
+  "extensions": {
+    "colorMeta": {
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Deep Graphite",
+        "canonical": "#111217",
+        "tonalRamp": ["#0A0B0E", "#111217", "#1B1C22", "#272830", "#41434E", "#6B6D78", "#B9BAC4", "#F6F6F8"]
+      },
+      "lens-lavender": {
+        "role": "primary",
+        "displayName": "Lens Lavender",
+        "canonical": "#C9CEFF",
+        "tonalRamp": ["#171A36", "#282D58", "#414878", "#626B9B", "#8791BF", "#AAB4E1", "#C9CEFF", "#EEF0FF"]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Workspace and script titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Editor text and explanatory copy."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Pace, duration, time remaining, and progress only."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "state-fast",
+        "value": "150ms ease-out",
+        "purpose": "Hover, focus, and compact control state changes."
+      },
+      {
+        "name": "state-standard",
+        "value": "200ms ease-out",
+        "purpose": "Inspector, prompt dock, and navigation state changes."
+      }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single obvious next action on a library, editor, or prompt surface.",
+      "html": "<button class=\"ds-primary\">Present</button>",
+      "css": ".ds-primary { background:#C9CEFF; color:#111217; border:0; border-radius:12px; padding:10px 16px; font:600 13px -apple-system, BlinkMacSystemFont, sans-serif; transition:background 150ms ease-out, transform 150ms ease-out; } .ds-primary:hover { background:#D8DCFF; } .ds-primary:active { background:#AAB4FF; transform:scale(.98); } .ds-primary:focus-visible { outline:3px solid #AAB4FF; outline-offset:2px; }"
+    },
+    {
+      "name": "Script Row",
+      "kind": "nav",
+      "refersTo": "script-row-selected",
+      "description": "A readable library row with title, preview, and useful metadata.",
+      "html": "<button class=\"ds-script-row\"><span class=\"ds-script-title\">Opening remarks</span><span class=\"ds-script-meta\">142 words · 1 min</span></button>",
+      "css": ".ds-script-row { width:260px; display:flex; flex-direction:column; gap:5px; align-items:flex-start; background:#272830; color:#F6F6F8; border:0; border-radius:12px; padding:12px; text-align:left; } .ds-script-row:hover { background:#30313A; } .ds-script-row:focus-visible { outline:2px solid #C9CEFF; outline-offset:2px; } .ds-script-title { font:600 15px -apple-system, BlinkMacSystemFont, sans-serif; } .ds-script-meta { color:#B9BAC4; font:500 12px ui-monospace, monospace; }"
+    },
+    {
+      "name": "Prompt Dock",
+      "kind": "custom",
+      "description": "A temporary floating control group over the reading surface.",
+      "html": "<div class=\"ds-prompt-dock\"><button aria-label=\"Slower\">−</button><button class=\"ds-play\" aria-label=\"Play\">▶</button><button aria-label=\"Faster\">+</button></div>",
+      "css": ".ds-prompt-dock { display:flex; gap:8px; align-items:center; background:rgba(27,28,34,.88); color:#F6F6F8; border-radius:16px; padding:8px; backdrop-filter:blur(18px); } .ds-prompt-dock button { width:44px; height:44px; border:0; border-radius:12px; background:#272830; color:#F6F6F8; font:600 18px -apple-system, BlinkMacSystemFont, sans-serif; } .ds-prompt-dock button:hover { background:#343640; } .ds-prompt-dock button:focus-visible { outline:2px solid #C9CEFF; outline-offset:2px; } .ds-prompt-dock .ds-play { background:#C9CEFF; color:#111217; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The quiet lens",
+    "overview": "Kyuva behaves like the dark space immediately around a camera lens: visually quiet, precisely aligned, and present only to help the speaker stay connected. Graphite surfaces reduce glare during delivery, while the pearl-lavender accent recalls the app icon's optical glass and marks only the current selection, reading cue, and primary action.",
+    "keyCharacteristics": [
+      "Script-dominant layouts with a clear library-to-editor-to-prompt sequence.",
+      "Restrained graphite neutrals with one optical lavender accent.",
+      "Familiar Apple navigation and controls, tuned for confident large-type reading.",
+      "Fast 150–200 ms state transitions that respect reduced motion.",
+      "Tonal grouping instead of nested cards and decorative shadows."
+    ],
+    "rules": [
+      {
+        "name": "The One Lens Rule",
+        "body": "Lens lavender occupies no more than ten percent of an editor screen; its rarity identifies what the user can do next.",
+        "section": "colors"
+      },
+      {
+        "name": "The Words Own the Scale Rule",
+        "body": "The largest text in a prompt is always the script. App labels never compete with it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Glass Has a Job Rule",
+        "body": "Glass is permitted only for controls that physically overlay moving script text. It is forbidden as decoration in libraries, editors, settings, or empty states.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do make the user's script the largest and quietest uninterrupted surface.",
+      "Do preserve familiar Apple list, navigation, menu, slider, and accessibility behavior."
+    ],
+    "donts": [
+      "Don't recreate a Settings-window utility where writing a script feels like configuring software.",
+      "Don't build a control-dense production dashboard or generic SaaS card grid.",
+      "Don't use neon cyan gaming controls, decorative gradients, or glass on every surface."
+    ]
+  }
+}
