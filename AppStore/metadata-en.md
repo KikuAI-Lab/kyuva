@@ -111,11 +111,46 @@ Use the account owner's current App Review contact details in App Store Connect.
 
 `Build 6 keeps the unfinished local iPhone remote removed and contains no Mac network entitlement or listener. No account or sign-in is required. On first launch, click Skip or complete the three-page Welcome Tour; the teleprompter then appears near the top-center camera area. Use the text-bubble menu-bar icon to show or hide the teleprompter, open Settings, or reopen the tour. Settings contains the script editor, pacing controls, appearance, stage-direction options, mirroring, and hotkeys. Optional Voice Follow can be toggled from Teleprompter > Toggle Voice Follow or with Control-Option-V. It asks for Microphone and Speech Recognition permission on first use, requires a locale Apple reports as on-device, saves no audio, and refuses cloud-only recognition. StoreKit commerce remains disabled and no product request is made. The overlay is a normal macOS window and may appear in captures.`
 
+## Prepared lifetime Pro product — not created in App Store Connect
+
+This is a provider handoff, not a record of a live product. Keep
+`ProEntitlementStore.commerceEnabled = false` until the product, agreements,
+compliance answers, sandbox behavior, review metadata, and a fresh owner-approved
+release are all verified.
+
+- Type: Non-Consumable
+- Reference name: `Kyuva Pro Lifetime`
+- Product ID: `com.kikuai.kyuva.pro.lifetime`
+- App record: the same multiplatform Kyuva record for macOS and iOS
+- Base country or region: Ireland
+- Target base price: `EUR 24.99`; select and read back the exact Apple price point
+  instead of hard-coding a localized price in the app
+- Initial availability: the same 27 EU storefronts as Kyuva; do not activate paid
+  availability before the DSA/trader and Paid Apps Agreement decisions
+- English display name: `Kyuva Pro Lifetime` (18 of 30 characters)
+- English description: `Unlock Voice Follow on Mac and iPhone.` (38 of 45
+  characters)
+- Review screenshot: capture the in-app Kyuva Pro section only from the exact
+  candidate submitted with the first purchase
+- Review notes: `One non-consumable purchase unlocks on-device Voice Follow in the macOS and iPhone versions of Kyuva under the same App Store Connect app record. No account, server, cloud service, or subscription is used. Before commerce is enabled, Voice Follow remains an open preview and the app makes no StoreKit product request. On Mac, open Settings > Kyuva Pro and use Teleprompter > Toggle Voice Follow. On iPhone, open a script, tap Present, then tap the waveform button. Speech recognition is allowed only when Apple reports the selected locale as on-device. The seven-day trial is local app state, not an App Store subscription trial.`
+- Trial wording: call it a local seven-day trial only after commerce is enabled;
+  do not describe it as an Apple-managed subscription trial or promise that it
+  survives reinstall or device changes
+- Submission gate: Apple requires the first In-App Purchase to be submitted with
+  a new app version. Do not create, price, submit, or enable this product without
+  a fresh owner-approved paid-release action and exact post-action readback.
+
 ## Release
 
 - Version release: Automatically release after approval.
 - Current public state: macOS `1.0 (4)` is live after Apple approval on 27 August 2026.
-- Prepared update: `1.1 (6)` is local source metadata only until a fresh upload receipt exists.
+- Prepared update: macOS `1.1 (6)` was accepted by Apple's uploader on 30 August
+  2026 and App Store Connect now reports the binary as confirmed and ready to
+  submit. Its processed metadata reads back version `1.1`, build `6`, bundle ID
+  `com.kikuai.kyuva`, macOS 13, `arm64` + `x86_64`, no non-exempt encryption,
+  and only sandbox, microphone, user-selected-file, application/team identifier
+  entitlements. It has not been selected for a version, submitted for review,
+  or released.
 - Screenshots: five real macOS release-candidate captures at an Apple-supported size; no app preview for 1.0.
 - App Privacy: published as `Data Not Collected`.
 - Distribution: public, free, and verified in exactly the 27 European Union storefronts.
