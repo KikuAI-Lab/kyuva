@@ -16,6 +16,8 @@
 
 Kyuva is an open-source Apple teleprompter. The Mac app keeps a compact overlay near the camera, the iPhone app provides a full-screen prompting surface, and the dependent Apple Watch app acts as a short-interaction remote.
 
+Website: [kiku-jw.github.io/kyuva-landing](https://kiku-jw.github.io/kyuva-landing/)
+
 ### Capture visibility
 
 The overlay is a normal macOS window and may appear in screen shares or recordings. Verify the preview before presenting, or share a single app window that omits Kyuva. Kyuva does not promise capture exclusion.
