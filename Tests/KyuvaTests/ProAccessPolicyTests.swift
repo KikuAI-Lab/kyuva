@@ -122,6 +122,28 @@ final class ProAccessPolicyTests: XCTestCase {
         XCTAssertNil(defaults.persistentDomain(forName: suiteName))
     }
 
+    @MainActor
+    func testExplicitLocalCommerceStartsLockedAndCanStartTrial() {
+        let (defaults, suiteName) = makeIsolatedDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        let store = ProEntitlementStore(
+            userDefaults: defaults,
+            now: { self.now },
+            commerceEnabled: true
+        )
+
+        XCTAssertEqual(store.accessState, .locked)
+
+        store.startTrial()
+
+        XCTAssertEqual(store.accessState, .trial(daysRemaining: 7))
+        XCTAssertEqual(
+            defaults.object(forKey: "proTrialStartedAt") as? Date,
+            now
+        )
+    }
+
     private func evaluate(
         commerceEnabled: Bool,
         purchased: Bool,

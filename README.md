@@ -49,6 +49,8 @@ Current development source prepares one cross-platform, non-consumable **Kyuva P
 
 Commerce is deliberately disabled in source until the App Store Connect product, paid agreements, DSA trader disclosure, review metadata, and a fresh owner approval are all complete. While disabled, Voice Follow remains an open preview for everyone and Kyuva makes no StoreKit product request. The public app has no purchase path yet.
 
+The shared Mac and iPhone Debug schemes use `AppStore/KyuvaPro.storekit` to test the exact lifetime product locally. Run either scheme from Xcode to load the simulated Irish storefront, then use Kyuva's Pro controls to buy or restore without an App Store Connect product or real charge. Profile, Archive, and every Release build remain hard-disabled for commerce.
+
 ## Build From Source
 
 ```bash

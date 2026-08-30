@@ -29,6 +29,20 @@ jobs:
       - name: SwiftPM release build
         run: swift build -c release --disable-sandbox
 
+      - name: Validate local StoreKit contract
+        run: |
+          jq -e '
+            (.products | length) == 1 and
+            .products[0].productID == "com.kikuai.kyuva.pro.lifetime" and
+            .products[0].type == "NonConsumable" and
+            .products[0].displayPrice == "24.99" and
+            .settings._storefront == "IRL"
+          ' AppStore/KyuvaPro.storekit >/dev/null
+          xmllint --noout Kyuva.xcodeproj/xcshareddata/xcschemes/Kyuva.xcscheme
+          xmllint --noout 'Kyuva.xcodeproj/xcshareddata/xcschemes/Kyuva iOS.xcscheme'
+          git grep -n -F 'identifier = "../../AppStore/KyuvaPro.storekit"' -- Kyuva.xcodeproj/xcshareddata/xcschemes/Kyuva.xcscheme 'Kyuva.xcodeproj/xcshareddata/xcschemes/Kyuva iOS.xcscheme'
+          git grep -n -F 'key = "KYUVA_LOCAL_STOREKIT_TESTING"' -- Kyuva.xcodeproj/xcshareddata/xcschemes/Kyuva.xcscheme 'Kyuva.xcodeproj/xcshareddata/xcschemes/Kyuva iOS.xcscheme'
+
       - name: Xcode release build
         run: >-
           xcodebuild -project Kyuva.xcodeproj -scheme Kyuva -configuration Release
@@ -57,12 +71,18 @@ jobs:
           ! /usr/libexec/PlistBuddy -c 'Print :com.apple.security.network.server' Kyuva/Resources/Kyuva.entitlements >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :com.apple.security.network.client' Kyuva/Resources/Kyuva.entitlements >/dev/null 2>&1
           ! strings "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -Eq '_kyuva\._tcp|NWListener|LocalRemote|Start Local Remote|Control this Mac'
+          ! strings "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -F 'KYUVA_LOCAL_STOREKIT_TESTING'
+          ! find "$KYUVA_APP" -name '*.storekit' -print -quit | grep -q .
           ! git grep -n -E 'LocalRemoteServer|LocalRemoteProtocol|LocalRemoteSecurity|_kyuva\._tcp|NWListener' -- Kyuva KyuvaMobile Kyuva.xcodeproj/project.pbxproj
           otool -L "$KYUVA_APP/Contents/MacOS/Kyuva" | grep -q '/Speech.framework/'
           git grep -n -F 'requiresOnDeviceRecognition = true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
           git grep -n -F 'localesSupportingOnDeviceRecognition' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
           git grep -n -F 'supportsOnDeviceRecognition == true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
-          git grep -n -F 'static let commerceEnabled = false' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'static var commerceEnabled: Bool' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'KYUVA_LOCAL_STOREKIT_TESTING' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F '#if DEBUG' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F '#else' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'false' -- Kyuva/Core/ProEntitlementStore.swift
           git grep -n -F 'com.kikuai.kyuva.pro.lifetime' -- Kyuva/Core/ProEntitlementStore.swift
 
   mobile:
@@ -105,8 +125,11 @@ jobs:
           ! /usr/libexec/PlistBuddy -c 'Print :NSBonjourServices' "$KYUVA_IOS_APP/Info.plist" >/dev/null 2>&1
           ! /usr/libexec/PlistBuddy -c 'Print :NSLocalNetworkUsageDescription' "$KYUVA_IOS_APP/Info.plist" >/dev/null 2>&1
           ! git grep -n -i -E 'MobileMacRemoteView|MacRemoteClient|openMacRemote|iphoneMacRemote|Control a Mac' -- KyuvaMobile Kyuva.xcodeproj/project.pbxproj
+          ! strings "$KYUVA_IOS_APP/Kyuva iOS" | grep -F 'KYUVA_LOCAL_STOREKIT_TESTING'
+          ! find "$KYUVA_IOS_APP" -name '*.storekit' -print -quit | grep -q .
           otool -L "$KYUVA_IOS_APP/Kyuva iOS" | grep -q '/Speech.framework/'
           git grep -n -F 'requiresOnDeviceRecognition = true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
           git grep -n -F 'localesSupportingOnDeviceRecognition' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
           git grep -n -F 'supportsOnDeviceRecognition == true' -- Kyuva/Core/OnDeviceSpeechRecognizer.swift
-          git grep -n -F 'static let commerceEnabled = false' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'static var commerceEnabled: Bool' -- Kyuva/Core/ProEntitlementStore.swift
+          git grep -n -F 'KYUVA_LOCAL_STOREKIT_TESTING' -- Kyuva/Core/ProEntitlementStore.swift

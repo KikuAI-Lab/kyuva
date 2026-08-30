@@ -59,7 +59,7 @@ struct MobilePromptSettingsView: View {
             Section("Kyuva Pro") {
                 Label(proAccessLabel, systemImage: "sparkles")
 
-                Text("Voice Follow is the first Pro feature. It stays unlocked for everyone while the purchase preview is inactive.")
+                Text(proDescription)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
 
@@ -70,12 +70,18 @@ struct MobilePromptSettingsView: View {
                         }
                     }
 
-                    Button(proPurchaseLabel) {
-                        Task {
-                            proMessage = message(for: await proStore.purchaseLifetime())
+                    if proStore.accessState != .purchased {
+                        Button(proPurchaseLabel) {
+                            Task {
+                                proMessage = message(for: await proStore.purchaseLifetime())
+                            }
                         }
+                        .disabled(
+                            proStore.lifetimeProduct == nil ||
+                            proStore.isLoading ||
+                            proStore.isProcessingTransaction
+                        )
                     }
-                    .disabled(proStore.lifetimeProduct == nil || proStore.isLoading)
 
                     Button("Restore Purchase") {
                         Task {
@@ -84,6 +90,7 @@ struct MobilePromptSettingsView: View {
                                 : "No verified lifetime purchase was found."
                         }
                     }
+                    .disabled(proStore.isLoading || proStore.isProcessingTransaction)
                 } else {
                     Text("Open preview · no purchase available")
                         .foregroundStyle(.secondary)
@@ -137,6 +144,13 @@ struct MobilePromptSettingsView: View {
             return "Unlock Forever · \(displayPrice)"
         }
         return "Unlock Forever"
+    }
+
+    private var proDescription: String {
+        if ProEntitlementStore.commerceEnabled {
+            return "Voice Follow is the first Pro feature. Buy once to unlock it on Mac and iPhone, or try it free for seven days."
+        }
+        return "Voice Follow is the first Pro feature. It stays unlocked for everyone while the purchase preview is inactive."
     }
 
     private func message(for outcome: ProPurchaseOutcome) -> String {

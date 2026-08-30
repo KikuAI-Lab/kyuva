@@ -1,6 +1,9 @@
 import Combine
 import Foundation
 import StoreKit
+#if os(macOS)
+import AppKit
+#endif
 
 enum ProAccessState: Equatable {
     case openPreview
@@ -57,33 +60,43 @@ enum ProPurchaseOutcome: Equatable {
 final class ProEntitlementStore: ObservableObject {
     static let shared = ProEntitlementStore()
     static let lifetimeProductID = "com.kikuai.kyuva.pro.lifetime"
-    static let commerceEnabled = false
+    nonisolated static var commerceEnabled: Bool {
+        #if DEBUG
+        ProcessInfo.processInfo.environment["KYUVA_LOCAL_STOREKIT_TESTING"] == "1"
+        #else
+        false
+        #endif
+    }
 
     private static let trialStartedAtKey = "proTrialStartedAt"
 
     @Published private(set) var accessState: ProAccessState
     @Published private(set) var lifetimeProduct: Product?
     @Published private(set) var isLoading = false
+    @Published private(set) var isProcessingTransaction = false
 
     private let userDefaults: UserDefaults
     private let now: () -> Date
+    private let isCommerceEnabled: Bool
     private var hasVerifiedPurchase = false
     private var transactionUpdatesTask: Task<Void, Never>?
 
     init(
         userDefaults: UserDefaults = .standard,
-        now: @escaping () -> Date = Date.init
+        now: @escaping () -> Date = Date.init,
+        commerceEnabled: Bool = ProEntitlementStore.commerceEnabled
     ) {
         self.userDefaults = userDefaults
         self.now = now
+        self.isCommerceEnabled = commerceEnabled
         self.accessState = ProAccessPolicy.evaluate(
-            commerceEnabled: Self.commerceEnabled,
+            commerceEnabled: commerceEnabled,
             hasVerifiedPurchase: false,
             trialStartedAt: userDefaults.object(forKey: Self.trialStartedAtKey) as? Date,
             now: now()
         )
 
-        guard Self.commerceEnabled else { return }
+        guard commerceEnabled else { return }
         transactionUpdatesTask = Task { [weak self] in
             await self?.listenForTransactionUpdates()
         }
@@ -98,7 +111,7 @@ final class ProEntitlementStore: ObservableObject {
     }
 
     func prepare() async {
-        guard Self.commerceEnabled else {
+        guard isCommerceEnabled else {
             refreshAccessState()
             return
         }
@@ -118,7 +131,7 @@ final class ProEntitlementStore: ObservableObject {
     }
 
     func startTrial() {
-        guard Self.commerceEnabled else { return }
+        guard isCommerceEnabled else { return }
         guard userDefaults.object(forKey: Self.trialStartedAtKey) == nil else {
             refreshAccessState()
             return
@@ -128,13 +141,37 @@ final class ProEntitlementStore: ObservableObject {
         refreshAccessState()
     }
 
+    #if os(macOS)
+    func purchaseLifetime(confirmIn window: NSWindow? = nil) async -> ProPurchaseOutcome {
+        guard let window else { return .unavailable }
+        return await purchaseLifetime { product in
+            if #available(macOS 15.2, *) {
+                return try await product.purchase(confirmIn: window)
+            }
+            return try await product.purchase()
+        }
+    }
+    #else
     func purchaseLifetime() async -> ProPurchaseOutcome {
-        guard Self.commerceEnabled, let lifetimeProduct else {
+        await purchaseLifetime { product in
+            try await product.purchase()
+        }
+    }
+    #endif
+
+    private func purchaseLifetime(
+        using purchase: (Product) async throws -> Product.PurchaseResult
+    ) async -> ProPurchaseOutcome {
+        guard isCommerceEnabled, let lifetimeProduct else {
             return .unavailable
         }
+        guard !isProcessingTransaction else { return .pending }
+
+        isProcessingTransaction = true
+        defer { isProcessingTransaction = false }
 
         do {
-            switch try await lifetimeProduct.purchase() {
+            switch try await purchase(lifetimeProduct) {
             case .success(.verified(let transaction)):
                 await transaction.finish()
                 await refreshVerifiedEntitlement()
@@ -154,7 +191,11 @@ final class ProEntitlementStore: ObservableObject {
     }
 
     func restorePurchases() async -> Bool {
-        guard Self.commerceEnabled else { return false }
+        guard isCommerceEnabled else { return false }
+        guard !isProcessingTransaction else { return false }
+
+        isProcessingTransaction = true
+        defer { isProcessingTransaction = false }
 
         do {
             try await AppStore.sync()
@@ -194,7 +235,7 @@ final class ProEntitlementStore: ObservableObject {
 
     private func refreshAccessState() {
         accessState = ProAccessPolicy.evaluate(
-            commerceEnabled: Self.commerceEnabled,
+            commerceEnabled: isCommerceEnabled,
             hasVerifiedPurchase: hasVerifiedPurchase,
             trialStartedAt: userDefaults.object(forKey: Self.trialStartedAtKey) as? Date,
             now: now()
