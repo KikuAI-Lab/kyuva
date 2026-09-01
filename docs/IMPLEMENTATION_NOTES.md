@@ -2,6 +2,16 @@
 
 > Live decision record for non-obvious product and implementation tradeoffs. Issue #2 owns delivery state; code and tests own behavior. Update this file only when a decision or residual risk changes.
 
+## 2026-09-01 — Readability parity before feature growth
+
+### Decision
+
+Close the iPhone prompt's typography gap before adding another product surface. The phone now exposes the same system, monospaced, serif, and rounded typefaces as Mac, plus logical leading, center, and trailing alignment. Keep these choices in the existing prompt settings flow and continue to defer recording, cloud, accounts, and new remote transports until owner acceptance.
+
+### Rationale
+
+The iPhone prompt previously hard-coded the system typeface and centered every script even though the shared product contract requires multiple writing systems and right-to-left content. Logical alignment labels preserve that intent, while navigation-style pickers remain legible at accessibility text sizes without adding permanent prompt chrome.
+
 ## 2026-08-30 — Core experience reset
 
 ### Decision

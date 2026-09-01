@@ -4,6 +4,8 @@ struct MobilePromptSettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var proStore = ProEntitlementStore.shared
     @AppStorage("fontSize") private var fontSize = 34.0
+    @AppStorage("textAlignment") private var textAlignment = 1
+    @AppStorage("fontFamily") private var fontFamily = 0
     @AppStorage("mirrorText") private var mirrorText = false
     @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
     @AppStorage(ScrollController.paceModeDefaultsKey) private var paceMode = ScrollPaceMode.fixedSpeed.rawValue
@@ -19,6 +21,21 @@ struct MobilePromptSettingsView: View {
                 Slider(value: $fontSize, in: 22...72, step: 1)
                     .accessibilityLabel("Text size")
                     .accessibilityValue("\(Int(fontSize)) points")
+
+                Picker("Typeface", selection: $fontFamily) {
+                    Text("System").tag(0)
+                    Text("Monospaced").tag(1)
+                    Text("Serif").tag(2)
+                    Text("Rounded").tag(3)
+                }
+                .pickerStyle(.navigationLink)
+
+                Picker("Alignment", selection: $textAlignment) {
+                    Text("Leading").tag(0)
+                    Text("Center").tag(1)
+                    Text("Trailing").tag(2)
+                }
+                .pickerStyle(.navigationLink)
 
                 Toggle("Mirror for teleprompter glass", isOn: $mirrorText)
 

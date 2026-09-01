@@ -1,8 +1,14 @@
 import SwiftUI
 import StoreKit
+import UIKit
 import UniformTypeIdentifiers
 
 private let mobileAccent = Color(red: 0.79, green: 0.81, blue: 1.0)
+private let mobileInteractiveTint = Color(uiColor: UIColor { traits in
+    traits.userInterfaceStyle == .dark
+        ? UIColor(red: 0.79, green: 0.81, blue: 1.0, alpha: 1)
+        : UIColor(red: 0.36, green: 0.38, blue: 0.72, alpha: 1)
+})
 
 struct MobileEditorView: View {
     @EnvironmentObject private var scriptManager: ScriptManager
@@ -92,7 +98,7 @@ struct MobileEditorView: View {
                 MobileScriptEditorView(scriptId: scriptId)
             }
         }
-        .tint(mobileAccent)
+        .tint(mobileInteractiveTint)
         .fileImporter(
             isPresented: $isImportingScript,
             allowedContentTypes: [.plainText, .text],
@@ -317,7 +323,9 @@ private struct MobileScriptEditorView: View {
             NavigationStack {
                 MobilePromptSettingsView()
             }
-            .presentationDetents([.medium, .large])
+            .presentationDetents(
+                dynamicTypeSize.isAccessibilitySize ? [.large] : [.medium, .large]
+            )
         }
         .fullScreenCover(isPresented: $isPresenting) {
             if let script = currentScript {

@@ -15,6 +15,7 @@ struct MobilePromptView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @StateObject private var scrollController = ScrollController()
     @StateObject private var speechRecognizer = OnDeviceSpeechRecognizer()
     @ObservedObject private var proStore = ProEntitlementStore.shared
@@ -25,6 +26,8 @@ struct MobilePromptView: View {
     @State private var hasRecordedCurrentCompletion = false
 
     @AppStorage("fontSize") private var fontSize = 34.0
+    @AppStorage("textAlignment") private var textAlignment = 1
+    @AppStorage("fontFamily") private var fontFamily = 0
     @AppStorage("mirrorText") private var mirrorText = false
     @AppStorage("stageDirectionStyle") private var stageDirectionStyle = 1
 
@@ -43,6 +46,31 @@ struct MobilePromptView: View {
 
     private var isChromeVisible: Bool {
         scrollController.isPaused || speechRecognizer.state.isEngaged
+    }
+
+    private var promptAlignment: Alignment {
+        switch textAlignment {
+        case 0: return .leading
+        case 2: return .trailing
+        default: return .center
+        }
+    }
+
+    private var promptTextAlignment: TextAlignment {
+        switch textAlignment {
+        case 0: return .leading
+        case 2: return .trailing
+        default: return .center
+        }
+    }
+
+    private var promptFontDesign: Font.Design {
+        switch fontFamily {
+        case 1: return .monospaced
+        case 2: return .serif
+        case 3: return .rounded
+        default: return .default
+        }
     }
 
     var body: some View {
@@ -86,7 +114,9 @@ struct MobilePromptView: View {
             NavigationStack {
                 MobilePromptSettingsView()
             }
-            .presentationDetents([.medium, .large])
+            .presentationDetents(
+                dynamicTypeSize.isAccessibilitySize ? [.large] : [.medium, .large]
+            )
         }
         .onPreferenceChange(PromptContentHeightKey.self) { newHeight in
             contentHeight = newHeight
@@ -142,14 +172,14 @@ struct MobilePromptView: View {
 
             ForEach(displayedLines) { line in
                 Text(line.text)
-                    .font(.system(size: fontSize, weight: .medium, design: .default))
-                    .multilineTextAlignment(.center)
+                    .font(.system(size: fontSize, weight: .medium, design: promptFontDesign))
+                    .multilineTextAlignment(promptTextAlignment)
                     .foregroundStyle(
                         .white.opacity(
                             line.isStageDirection && stageDirectionStyle == 1 ? 0.5 : 1
                         )
                     )
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, alignment: promptAlignment)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityLabel(line.text)
             }

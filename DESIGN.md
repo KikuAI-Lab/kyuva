@@ -9,6 +9,7 @@ colors:
   pearl-muted: "#B9BAC4"
   lens-lavender: "#C9CEFF"
   lens-lavender-strong: "#AAB4FF"
+  lens-indigo-interactive: "#5C61B8"
   success: "#7DD5A7"
   warning: "#E9C46A"
   destructive: "#FF7D86"
@@ -110,6 +111,7 @@ The palette is a restrained optical neutral system: near-black graphite supports
 
 - **Lens Lavender:** The sole primary accent for the current reading cue, primary button, focus, and selection.
 - **Focused Lens Lavender:** The pressed, active, and high-emphasis variant; never a decorative glow.
+- **Interactive Lens Indigo:** The same optical accent darkened only for small text, icons, sliders, and focus on light surfaces. Dark surfaces retain Lens Lavender.
 
 ### Neutral
 

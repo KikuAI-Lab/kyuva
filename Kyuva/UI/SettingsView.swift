@@ -334,9 +334,9 @@ struct SettingsView: View {
             }
 
             Picker("Alignment", selection: $textAlignment) {
-                Text("Left").tag(0)
+                Text("Leading").tag(0)
                 Text("Center").tag(1)
-                Text("Right").tag(2)
+                Text("Trailing").tag(2)
             }
             .pickerStyle(.segmented)
 
